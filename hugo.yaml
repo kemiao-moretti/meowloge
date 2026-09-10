@@ -1,0 +1,385 @@
+# ============ 站点全局设置 ============
+
+# 博客的访问地址（部署域名），RSS/SEO/分享链接都会基于它生成
+baseURL: https://blog.815339.xyz/
+# 站点名称，显示在浏览器标签页标题、页头左上角等位置
+title: 喵洛阁
+# 站点区域设置，影响日期格式等本地化表现
+locale: zh-CN
+# 默认内容语言，影响页面的 lang 属性与主题的多语言文案选择
+defaultContentLanguage: zh-cn
+# 时区，影响文章日期显示与构建时的时间计算
+timeZone: Asia/Shanghai
+# 是否生成 robots.txt（搜索引擎抓取规则文件，位于站点根路径）
+enableRobotsTXT: true
+# 是否启用 Git 信息（显示每篇文章的最后提交时间，需要文章在 git 仓库中）
+enableGitInfo: false
+# URL 风格：posts 设为 true 表示文章使用 /p/xxx.html 这种带扩展名的"丑链接"
+uglyURLs:
+  posts: true
+# 使用的主题，对应 themes/ 目录下的文件夹名（themes/solitude）
+theme: solitude
+
+# ============ 输出格式 ============
+# 控制各类页面生成哪些输出：HTML 是页面本身，RSS 是订阅源，
+# Search 和 Links 是 solitude 主题扩展的输出（本地搜索索引 / 链接数据）
+outputs:
+  home: [HTML, RSS, Search, Links]   # 首页额外生成搜索索引和链接数据
+  section: [HTML, RSS]               # 列表页（如分类/标签下的文章列表）
+  taxonomy: [HTML, RSS]              # 分类/标签总览页
+  term: [HTML, RSS]                  # 单个分类/标签页
+
+# ============ 分页 ============
+# 每页显示的文章数量（文章列表页每页 10 篇）
+pagination:
+  pagerSize: 10
+
+# ============ 文章链接格式 ============
+# 文章的永久链接规则：所有文章 URL 为 /p/文章slug 的形式，
+# slug 取自文章 front matter 里的 slug 或文件名
+permalinks:
+  posts: /p/:slug
+
+# ============ 导航菜单 ============
+# 控制页头导航栏的结构。identifier 表示"父级菜单项"（点击弹出子菜单），
+# pageRef 指向站内页面，weight 越小排得越靠前
+menus:
+  main:
+    # "文库"父菜单：只作为分组，不带链接，鼠标悬停/点击展开子项
+    - name: 文库
+      identifier: library
+      weight: 10
+    # "友链"父菜单
+    - name: 友链
+      identifier: friends
+      weight: 20
+    # "项目"父菜单
+    - name: 项目
+      identifier: personal
+      weight: 30
+    # ↓ 以下是"文库"下的子菜单
+    - name: 全部文章          # 子菜单显示文字
+      pageRef: /archives      # 指向归档页（全部文章列表）
+      parent: library         # 归属哪个父菜单（对应上面的 identifier）
+      weight: 10              # 在兄弟子菜单中的排序
+      params:
+        icon: fas fa-folder-closed   # 菜单项图标（Font Awesome 类名）
+    - name: 全部分类
+      pageRef: /categories    # 指向分类总览页
+      parent: library
+      weight: 20
+      params:
+        icon: fas fa-clone
+    - name: 全部标签
+      pageRef: /tags          # 指向标签总览页
+      parent: library
+      weight: 30
+      params:
+        icon: fas fa-tags
+    # ↓ 以下是"友链"下的子菜单
+    - name: 友情链接
+      pageRef: /links         # 指向友链页
+      parent: friends
+      weight: 10
+      params:
+        icon: fas fa-link
+    # "宝藏博主"没有 pageRef，而是用 action: travelling（主题内置的开往/漫游行为）
+    - name: 宝藏博主
+      parent: friends
+      weight: 20
+      params:
+        action: travelling
+        icon: fas fa-gift
+    # ↓ 以下是"项目"下的子菜单
+    - name: 我的装备
+      pageRef: /equipment     # 指向装备页
+      parent: personal
+      weight: 10
+      params:
+        icon: fas fa-cogs
+    - name: 关于主题
+      pageRef: /about         # 指向关于页
+      parent: personal
+      weight: 20
+      params:
+        icon: fas fa-user
+
+# ============ 站点参数（主题相关的所有配置都在 params 下） ============
+params:
+  # 作者信息
+  author:
+    name: 克喵Moretti          # 作者名，显示在文章页作者栏、页脚等处
+    email: mcy@kemiaosw.top    # 作者邮箱，部分主题位置会展示或用于头像
+  # 站点描述（slogan），显示在页脚、SEO meta description 中
+  description: 克喵的小站，记录着我的一些文字~
+
+  # ===== solitude 主题专属配置 =====
+  solitude:
+    # 注入到 <head> 的自定义 HTML/CSS（不改主题文件，随站点配置生效）
+    extends:
+      head:
+        - '<style>.card-info .description{display:block}.card-info .description kbd{display:inline-block;padding:0 6px;margin:0 2px;border-radius:4px;border:1px solid currentColor;box-shadow:0 2px 0 rgba(0,0,0,.15);font-size:12px;line-height:1.5;vertical-align:middle}</style>'
+    # --- 站点标识样式 ---
+    site:
+      name:
+        class: text          # 站点名的展示样式（text 表示纯文字）
+        custom: 喵洛阁Meowloge    # 自定义显示的站名文字（覆盖默认的 title）
+
+    # --- 导航右侧"快捷分组"链接 ---
+    # 显示在页头导航栏右侧的图标链接组
+    nav:
+      group:
+        项目:                # 分组名称
+          - name: Solitude                 # 链接显示名
+            url: https://github.com/everfu/hugo-solitude   # 跳转地址
+            icon: /img/logo.png          # 图标图片（static/img/logo.png）
+          - name: 官方文档
+            url: https://solitude.js.org/
+            icon: /img/logo.png
+
+    # --- 首页顶部 Banner 区域 ---
+    hometop:
+      banner:
+        title: 用 Solitude<br>记录与创造   # 首页大标题（支持 <br> 换行）
+        desc: Hugo 主题演示、配置指南与前端实践   # Banner 下方的描述文字
+      # 首页"推荐文章"卡片列表（不是自动生成的，完全由这里手工指定）
+      recommendList:
+        - title: 开始使用 Solitude Hugo      # 卡片标题
+          url: /p/getting-started.html      # 点击跳转的文章链接
+          cover: /img/demo/cover-getting-started-v2.webp   # 卡片封面图
+          label: 迁移指南                    # 卡片上的角标文字
+          color: "#3b82f6"                  # 角标颜色
+        - title: 配置首页推荐与侧栏组合
+          url: /p/homepage-and-aside.html
+          cover: /img/demo/cover-pagination-v2.webp
+          label: 配置指南
+          color: "#16a34a"
+
+    # --- 侧边栏（aside）模块配置 ---
+    aside:
+      # home/post/page 分别控制首页、文章页、普通页面三种场景的侧栏
+      # noSticky: 不吸顶的模块（随页面滚动） / Sticky: 吸顶的模块（滚动时固定）
+      # 模块名可换顺序、增删，逗号分隔
+      home:
+        noSticky: about                # 首页不吸顶：作者卡片
+        Sticky: newest_comment,allInfo # 首页吸顶：最新评论、站点信息
+      post:
+        noSticky: about
+        Sticky: newestPost,newest_comment,allInfo   # 文章页吸顶：最新文章、最新评论、站点信息
+      page:
+        noSticky: about
+        Sticky: newestPost,newest_comment,allInfo
+      # 作者个人信息卡片（侧栏最上方的名片）
+      my_card:
+        author:
+          img: https://q2.qlogo.cn/headimg_dl?dst_uin=3149261770&spec=0   # 头像图片地址
+          emoji: "😊"                   # 名片上的装饰表情
+        description: 每一段旅行，都有终点。   # 名片签名
+        content: 我在本博客上记录着我的一些文字~<br>如果你在访问的过程中发现问题，优先检查网络，<kbd>CTRL</kbd> + <kbd>F5</kbd> 刷新网页。                    # 打字机效果的前缀文字（支持 HTML，需配合 extends.head 里的样式覆盖）
+        witty_words: [人生如逆旅，我亦是行人。]   # 打字机轮播的句子
+        # 名片上的社交信息图标
+        information:
+          - name: GitHub
+            url: https://github.com/kemiao-moretti/blog
+            icon: fab fa-github
+      # 页脚上方的"站点信息"模块
+      siteinfo:
+        runtime: 2024-11-01 12:00:00   # 建站时间，页脚显示"本站已运行 X 天"从此时间起算
+
+    # --- 文章页配置 ---
+    post:
+      default:
+        copyright:
+          author_background: /img/demo/cover-shortcodes-v2.webp   # 文末版权卡片的作者背景图
+      # 文章顶部 meta 信息展示开关
+      meta:
+        pv: true        # 是否显示文章浏览量
+        comment: true   # 是否显示评论数
+      # 封面主色调提取：让文章头图融入页面背景
+      covercolor:
+        enable: true    # 是否启用
+        mode: local     # 取色方式（local 表示本地处理图片取色）
+      # 文末"赞赏/打赏"模块
+      award:
+        enable: true    # 是否启用打赏
+        list:
+          - name: Demo                     # 打赏方式名称
+            qrcode: /img/demo/reward-qr.svg   # 收款二维码图片
+      # 文章分享按钮
+      share:
+        enable: false   # 是否启用分享
+        list: []        # 分享平台列表（留空表示不展示）
+    # --- 页脚配置 ---
+    footer:
+      information:
+        author: https://openlist.081531.xyz/d/yidong/imgbed/meowloge.webp   # 页脚展示的站点 logo
+        left:                   # 页脚左侧的链接
+          - name: GitHub
+            url: https://github.com/everfu/hugo-solitude
+            icon: fab fa-github
+        right:                  # 页脚右侧的链接
+          - name: 订阅
+            url: /index.xml     # RSS 订阅地址
+            icon: fas fa-rss
+      # 页脚的"链接分组"（多列站点导航）
+      group:
+        探索:                    # 分组标题
+          - name: 文章
+            url: /archives/
+          - name: 分类
+            url: /categories/
+          - name: 标签
+            url: /tags/
+        项目:
+          - name: 官方文档
+            url: https://solitude.js.org/
+          - name: GitHub
+            url: https://github.com/everfu/hugo-solitude
+        关于:
+          - name: 友链
+            url: /links/
+          - name: 关于主题
+            url: /about/
+      # 页脚底部的自定义自定义链接行
+      links:
+        - name: 订阅
+          url: /index.xml
+
+    # --- 评论系统 ---
+    comment:
+      use: valine             # 使用哪个评论系统（valine）
+      commentBarrage: true    # 是否启用"弹幕式评论"（文章页底部滚动飘过的评论）
+      lazyload: false         # 评论组件是否懒加载（滚动到评论区才加载）
+      count: true             # 是否显示评论数
+      sidebar: true           # 是否在侧栏显示评论模块
+      pv: true                # 是否统计页面浏览量
+      avatar: https://weavatar.com   # 评论者头像服务地址
+      hot_tip:
+        enable: false         # 是否显示"热评"提示
+        count: 3              # 热评数量
+      # 侧栏"最新评论"模块
+      newest_comment:
+        enable: true          # 是否启用
+        storage: 0.5          # 本地缓存时间（小时），减少重复请求
+        limit: 5              # 显示的评论条数
+    # --- Valine 评论系统配置（use: valine 时生效） ---
+    valine:
+      appId: lUYWcy5GblLUZOCvcSdDiLP9-gzGzoHsz          # LeanCloud 应用 AppID
+      appKey: nKcAGPsR1ydwQjEFZcMFNGJG                  # LeanCloud 应用 AppKey
+      serverURLs: https://luywcy5g.lc-cn-n1-shared.com  # LeanCloud 服务器地址
+      avatar: https://weavatar.com/avatar/              # 头像服务地址
+      visitor: true           # 是否启用文章阅读量统计
+      style: true             # 是否使用主题定制的评论样式
+      option: {}              # 传给 Valine 的额外配置项
+
+    # --- 控制台（按快捷键呼出的管理面板） ---
+    console:
+      recentComment:
+        enable: true          # 控制台中是否显示最近评论
+        storage: 0.2          # 缓存时间（小时）
+
+    # --- 右键菜单 ---
+    right_menu:
+      commentBarrage: true    # 右键菜单中是否显示"评论弹幕"开关项
+
+    # --- "最近评论"独立页面 ---
+    recent_comments:
+      enable: true            # 是否启用该页面模块
+      limit: 50               # 展示的评论数量
+      cache: 0.2              # 缓存时间（小时）
+      page: /recentcomments/  # 页面路径（需在 content 中有对应页面）
+
+    # --- "即刻/短文"（brevity）页面：发布简短动态 ---
+    brevity:
+      enable: true            # 是否启用
+      page: /brevity/         # 页面路径
+
+    # --- "信封/留言板"动画页面 ---
+    envelope:
+      enable: true            # 是否启用
+      line: 6                 # 信纸行数
+      speed: 20               # 打字动画速度
+      hover: true             # 鼠标悬停时是否暂停动画
+      loop: true              # 是否循环播放
+      page: /message/         # 页面路径
+
+    # --- 底部悬浮音乐播放器 ---
+    capsule:
+      enable: true            # 是否启用
+      id: "8407304077"        # 音乐 ID（网易云歌单 ID）
+      server: netease         # 音乐服务（netease = 网易云音乐）
+      type: playlist          # 类型（playlist = 歌单）
+      volume: 0.8             # 默认音量（0~1）
+    # --- 独立音乐页面配置 ---
+    music:
+      enable: true            # 是否启用
+      id: "8407304077"        # 歌单 ID
+      server: netease         # 音乐服务
+      type: playlist          # 类型
+      mutex: true             # 播放时互斥（同一时间只播一个）
+      volume: 0.8             # 默认音量
+      order: list             # 播放顺序（list = 按列表顺序）
+
+    # --- 键盘快捷键 ---
+    keyboard:
+      enable: true            # 是否启用快捷键功能
+      list:                   # 快捷键列表：modifier 修饰键 + key 主键 + action 动作
+        - modifier: shift
+          key: K
+          action: toggleKeyboard   # 打开/关闭快捷键面板
+        - modifier: shift
+          key: A
+          action: showConsole      # 打开控制台
+        - modifier: shift
+          key: M
+          action: musicToggle      # 切换音乐播放
+        - modifier: shift
+          key: D
+          action: toggleTheme      # 切换深色/浅色主题
+        - modifier: mod
+          key: F
+          action: openSearch       # 打开搜索（mod = Ctrl/⌘）
+        # AI 快捷键需要站点自行注册：
+        # 通过 Solitude.registerShortcutAction("openAi", handler) 注册动作，
+        # 或改用 url: ai/ 指向 AI 页面
+        # - name: 打开AI智能对话
+        #   modifier: shift
+        #   key: C
+        #   action: openAi
+        - modifier: shift
+          key: R
+          action: randomPost       # 随机跳转一篇文章
+        # 以下两条用 url 代替 action：直接跳转到指定路径
+        - name: 返回首页
+          modifier: shift
+          key: H
+          url: ./                  # 跳转到首页
+        - name: 友链页面
+          modifier: shift
+          key: L
+          url: links/              # 跳转到友链页
+
+    # --- 代码高亮 ---
+    highlight:
+      enable: true       # 是否启用代码高亮
+      copy: true         # 代码块是否显示"复制"按钮
+      line_numbers: true # 是否显示行号
+      max_height: 360    # 代码块最大高度（px），超出后滚动/折叠
+      themes:
+        light: github-light   # 浅色模式下的高亮主题
+        dark: github-dark     # 深色模式下的高亮主题
+
+    # --- 图片灯箱（点击图片放大预览） ---
+    lightbox: fancybox   # 使用的灯箱库（fancybox）
+
+    # --- CDN 配置 ---
+    cdn:
+      shiki: https://esm.sh/shiki@4.4.3   # Shiki 语法高亮库的 CDN 地址
+
+    # --- 搜索功能 ---
+    search:
+      enable: true    # 是否启用搜索
+      type: local     # 搜索类型（local = 本地搜索，无需外部服务）
+      local:
+        preload: true # 是否预加载搜索索引（页面打开时就加载 search.xml）
+        CDN: /search.xml   # 搜索索引文件地址（由 outputs.home 里的 Search 输出生成）

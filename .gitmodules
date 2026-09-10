@@ -1,0 +1,4 @@
+[submodule "themes/solitude"]
+	path = themes/solitude
+	url = https://github.com/kemiao-moretti/blog.git
+	branch = main

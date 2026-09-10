@@ -1,0 +1,4 @@
+# Hugo 构建产物与本地运行时文件
+public/
+resources/_gen/
+.hugo_build.lock
