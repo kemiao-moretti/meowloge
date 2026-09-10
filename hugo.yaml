@@ -274,7 +274,7 @@ params:
     # --- Artalk 评论系统配置（use: artalk 时生效，自托管服务端） ---
     artalk:
       server: https://artalk.081531.xyz     # Artalk 服务端地址（需在后台信任域名中加入博客域名）
-      site: 喵洛阁                           # Artalk 后台配置的站点名，需与服务端一致
+      site: 喵洛阁Meowloge                           # Artalk 后台配置的站点名，需与服务端一致
       pv: true                              # 使用 Artalk page_pv 统计文章浏览量
       placeholder:                          # 评论区输入框占位文案（留空用 Artalk 默认）
       option: {}              # 传给 Artalk.init 的额外配置项（覆盖同名默认值）
