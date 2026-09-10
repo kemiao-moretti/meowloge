@@ -1,7 +1,7 @@
 # ============ 站点全局设置 ============
 
 # 博客的访问地址（部署域名），RSS/SEO/分享链接都会基于它生成
-baseURL: https://blog.815339.xyz/
+baseURL: https://blog.518339.xyz/
 # 站点名称，显示在浏览器标签页标题、页头左上角等位置
 title: 喵洛阁
 # 站点区域设置，影响日期格式等本地化表现
@@ -247,13 +247,13 @@ params:
 
     # --- 评论系统 ---
     comment:
-      use: valine             # 使用哪个评论系统（valine）
+      use: artalk            # 使用哪个评论系统（artalk / valine，切回 Valine 改回 valine 即可）
       commentBarrage: true    # 是否启用"弹幕式评论"（文章页底部滚动飘过的评论）
       lazyload: false         # 评论组件是否懒加载（滚动到评论区才加载）
       count: true             # 是否显示评论数
       sidebar: true           # 是否在侧栏显示评论模块
       pv: true                # 是否统计页面浏览量
-      avatar: https://weavatar.com   # 评论者头像服务地址
+      avatar: https://cn.cravatar.com   # 评论者头像服务地址
       hot_tip:
         enable: false         # 是否显示"热评"提示
         count: 3              # 热评数量
@@ -271,6 +271,13 @@ params:
       visitor: true           # 是否启用文章阅读量统计
       style: true             # 是否使用主题定制的评论样式
       option: {}              # 传给 Valine 的额外配置项
+    # --- Artalk 评论系统配置（use: artalk 时生效，自托管服务端） ---
+    artalk:
+      server: https://artalk.081531.xyz     # Artalk 服务端地址（需在后台信任域名中加入博客域名）
+      site: 喵洛阁                           # Artalk 后台配置的站点名，需与服务端一致
+      pv: true                              # 使用 Artalk page_pv 统计文章浏览量
+      placeholder:                          # 评论区输入框占位文案（留空用 Artalk 默认）
+      option: {}              # 传给 Artalk.init 的额外配置项（覆盖同名默认值）
 
     # --- 控制台（按快捷键呼出的管理面板） ---
     console:
@@ -375,6 +382,8 @@ params:
     # --- CDN 配置 ---
     cdn:
       shiki: https://esm.sh/shiki@4.4.3   # Shiki 语法高亮库的 CDN 地址
+      artalk: https://cdn.jsdelivr.net/npm/artalk@2.10.0/dist/Artalk.js      # Artalk 评论 JS SDK（use 含 artalk 时加载）
+      artalk_css: https://cdn.jsdelivr.net/npm/artalk@2.10.0/dist/Artalk.css  # Artalk 评论样式（use 含 artalk 时加载）
 
     # --- 搜索功能 ---
     search:
