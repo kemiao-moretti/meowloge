@@ -1,0 +1,170 @@
+name: Friend Links
+
+on:
+  issues:
+    types: [opened, reopened, closed]
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+  contents: write
+
+concurrency:
+  group: friend-links
+  cancel-in-progress: false
+
+jobs:
+  handle:
+    if: |
+      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, '友链申请')) ||
+      (github.event_name == 'issue_comment' && !github.event.issue.pull_request)
+    runs-on: ubuntu-latest
+    steps:
+      - name: 判定动作
+        id: decide
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const e = context.payload;
+            const actor = e.sender?.login || "";
+            const labels = e.issue.labels.map((l) => l.name);
+            const isBot = actor === "github-actions[bot]";
+            const owner = context.repo.owner;
+            const hasFriend = labels.includes("友链申请");
+            const hasLost = labels.includes("失联");
+            let action = "none";
+            let moveGroup = "";
+            let moveType = "";
+
+            if (isBot || !hasFriend) {
+              core.setOutput("action", "none");
+              return;
+            }
+
+            if (e.event_name === "issues") {
+              if (e.action === "opened") action = "add";
+              else if (e.action === "reopened" && hasLost) action = "remove";
+              else if (e.action === "closed" && !hasLost) action = "add";
+            } else if (e.event_name === "issue_comment" && e.action === "created") {
+              const body = (e.comment.body || "").trim();
+              if (actor === owner && /^\/move\s+\S+\s+(item|discn|card)\s*$/i.test(body)) {
+                const m = body.match(/^\/move\s+(\S+)\s+(item|discn|card)\s*$/i);
+                action = "move";
+                moveGroup = m[1];
+                moveType = m[2].toLowerCase();
+              } else if (actor === e.issue.user.login && body === "/retry") {
+                // 申请人自助重启审核：重新走添加校验
+                action = "add";
+              }
+            }
+
+            // 解析 Issue 表单字段（issue forms 的 body 是 "### 标题\n内容" 格式）
+            function extract(id) {
+              const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+              const m = (e.issue.body || "").match(
+                new RegExp("### " + escaped + "\\s*\\n\\s*([\\s\\S]*?)(?=\\n### |$)")
+              );
+              if (!m) return "";
+              const v = m[1].trim();
+              if (!v || v === "_No response_" || v === "No response") return "";
+              return v.replace(/^`+|`+$/g, "").trim();
+            }
+
+            const fields = {
+              name: extract("网站名称"),
+              link: extract("网站链接"),
+              avatar: extract("头像 URL"),
+              linkpage: extract("友链页面 URL（可选）"),
+              descr: extract("网站描述"),
+              screenshot: extract("网站截图 URL"),
+              mail: extract("联系邮箱"),
+            };
+
+            core.setOutput("action", action);
+            core.setOutput("move_group", moveGroup);
+            core.setOutput("move_type", moveType);
+            core.setOutput("fields_json", JSON.stringify(fields));
+            core.setOutput("issue_number", String(e.issue.number));
+
+      - name: 确保标签存在
+        if: steps.decide.outputs.action != 'none'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            for (const [name, color] of [["友链申请", "0e8a16"], ["失联", "d93f0b"], ["needs-update", "e9969e"]]) {
+              try {
+                await github.rest.issues.getLabel({ ...context.repo, name });
+              } catch {
+                await github.rest.issues.createLabel({ ...context.repo, name, color });
+              }
+            }
+
+      - name: Checkout
+        if: steps.decide.outputs.action != 'none'
+        uses: actions/checkout@v4
+
+      - name: 处理友链数据
+        id: process
+        if: steps.decide.outputs.action != 'none'
+        env:
+          ACTION: ${{ steps.decide.outputs.action }}
+          MOVE_GROUP: ${{ steps.decide.outputs.move_group }}
+          MOVE_TYPE: ${{ steps.decide.outputs.move_type }}
+          FIELDS_JSON: ${{ steps.decide.outputs.fields_json }}
+          ISSUE_NUMBER: ${{ steps.decide.outputs.issue_number }}
+        run: python3 .github/scripts/friend_links.py
+
+      - name: 提交变更
+        if: steps.process.outputs.changed == 'true'
+        env:
+          ACTION: ${{ steps.decide.outputs.action }}
+          ISSUE_NUMBER: ${{ steps.decide.outputs.issue_number }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/links.yaml
+          git commit -m "friends: ${ACTION} link (issue #${ISSUE_NUMBER})"
+          git push
+
+      - name: 回写 Issue
+        if: always() && steps.decide.outputs.action != 'none'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs");
+            if (!fs.existsSync("result.json")) return;
+            const result = JSON.parse(fs.readFileSync("result.json", "utf8"));
+            const e = context.payload;
+            const num = e.issue.number;
+            const isRetry = e.event_name === "issue_comment" &&
+              (e.comment.body || "").trim() === "/retry";
+            const comment = (body) =>
+              github.rest.issues.createComment({ ...context.repo, issue_number: num, body });
+            const setLabels = (names) =>
+              github.rest.issues.setLabels({
+                ...context.repo, issue_number: num,
+                labels: [...new Set([...names, "友链申请"])],
+              });
+            const closeIssue = () =>
+              github.rest.issues.update({
+                ...context.repo, issue_number: num,
+                state: "closed", state_reason: "completed",
+              });
+
+            if (result.status === "added") {
+              // 清掉失联/needs-update 标签，关闭 Issue
+              await setLabels([]);
+              await closeIssue();
+              await comment(`✅ 友链已自动添加到「${result.group}」分组，站点部署后生效。\n\n若未来失联或不再符合要求，本站会移除友链并在此通知；修复问题后可评论 \`/retry\` 重新触发审核。`);
+            } else if (result.status === "rejected") {
+              await setLabels(["needs-update"]);
+              await comment("❌ 自动审核未通过，请修正以下问题后评论 `/retry` 重新触发审核：\n" +
+                result.errors.map((x) => `- ${x}`).join("\n"));
+            } else if (result.status === "removed") {
+              await comment(`⚠️ 友链「${result.name}」已从友链列表移除（失联处理）。修复问题后可评论 \`/retry\` 重新触发审核。`);
+            } else if (result.status === "moved") {
+              await comment(`✅ 友链「${result.name}」已移动到「${result.group}」分组（类型：${result.type}）。`);
+            } else if (result.status === "noop" && isRetry) {
+              await comment("ℹ️ 没有需要变更的内容：友链可能已在列表中。如有疑问请联系站长。");
+            }
