@@ -2,3 +2,7 @@
 public/
 resources/_gen/
 .hugo_build.lock
+
+# Python 缓存（.github/scripts 本地测试时产生）
+__pycache__/
+*.pyc
