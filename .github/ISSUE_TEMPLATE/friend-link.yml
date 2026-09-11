@@ -1,0 +1,90 @@
+name: 🤝 友链申请
+description: 申请与本站交换友链（全自动审核，通过后即刻生效）
+title: "[友链申请] "
+labels: ["友链申请"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🤝 友链申请
+
+        提交后机器人会自动校验并添加，通过后本 Issue 自动关闭、友链即刻生效。
+
+        ### 申请要求
+        1. 网站须符合中国大陆法律法规，不含博彩、NSFW 等违法违规内容；
+        2. 网站需有至少 5 篇文章，且至少每月更新一次；
+        3. 网站广告不应影响正常阅读；
+        4. （非必须）期望你能先把本站加入你的友链。
+
+        > 审核失败时请根据机器人评论的原因修改后，在本 Issue 下评论 `/retry` 重新触发审核。
+        > 失联或违规的友链会被移除并在此通知。
+
+  - type: input
+    id: name
+    attributes:
+      label: 网站名称
+      placeholder: 例如：My Blog
+    validations:
+      required: true
+
+  - type: input
+    id: link
+    attributes:
+      label: 网站链接
+      description: 完整 URL，包含 https://
+      placeholder: "https://example.com"
+    validations:
+      required: true
+
+  - type: input
+    id: avatar
+    attributes:
+      label: 头像 URL
+      description: 正方形图片；留空则自动抓取站点 favicon
+      placeholder: "https://example.com/avatar.png"
+    validations:
+      required: false
+
+  - type: input
+    id: linkpage
+    attributes:
+      label: 友链页面 URL（可选）
+      description: 你网站上展示友链的页面地址
+      placeholder: "https://example.com/links"
+    validations:
+      required: false
+
+  - type: textarea
+    id: descr
+    attributes:
+      label: 网站描述
+      description: 一句话介绍你的网站
+      placeholder: 例如：记录技术与生活的个人博客
+    validations:
+      required: true
+
+  - type: input
+    id: screenshot
+    attributes:
+      label: 网站截图 URL
+      description: 网站截图的图片直链（http/https，机器人会校验可访问性）
+      placeholder: "https://example.com/screenshot.png"
+    validations:
+      required: true
+
+  - type: input
+    id: mail
+    attributes:
+      label: 联系邮箱
+      description: 仅用于失联通知，不会出现在博客数据中
+      placeholder: "you@example.com"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 申请确认
+      options:
+        - label: 我已阅读并同意以上全部申请要求
+          required: true
