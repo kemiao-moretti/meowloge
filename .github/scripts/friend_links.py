@@ -100,7 +100,7 @@ def do_add(fields: dict, issue_number: int) -> None:
     avatar = fields.get("avatar", "").strip()
     linkpage = fields.get("linkpage", "").strip()
     descr = fields.get("descr", "").strip()
-    screenshot = fields.get("screenshot", "").strip()
+    topimg = fields.get("topimg", "").strip()
 
     if not name:
         errors.append("网站名称不能为空")
@@ -108,8 +108,8 @@ def do_add(fields: dict, issue_number: int) -> None:
         errors.append("网站链接需要是 http(s):// 开头的完整 URL")
     if not descr:
         errors.append("网站描述不能为空")
-    if not is_url(screenshot):
-        errors.append("网站截图必须是 http(s):// 开头的图片 URL")
+    if not is_url(topimg):
+        errors.append("网站封面图必须是 http(s):// 开头的图片 URL")
     if avatar and not is_url(avatar):
         errors.append("头像 URL 格式错误")
     if linkpage and not is_url(linkpage):
@@ -126,8 +126,8 @@ def do_add(fields: dict, issue_number: int) -> None:
     if not errors and not reachable(avatar or favicon_for(link)):
         errors.append("头像 URL 无法访问")
 
-    if not errors and not reachable(screenshot):
-        errors.append("网站截图 URL 无法访问")
+    if not errors and not reachable(topimg):
+        errors.append("网站封面图 URL 无法访问")
 
     if errors:
         write_result("rejected", errors=errors)
@@ -139,7 +139,7 @@ def do_add(fields: dict, issue_number: int) -> None:
         entry["linkpage"] = linkpage
     entry["avatar"] = avatar or favicon_for(link)
     entry["descr"] = descr
-    entry["screenshot"] = screenshot
+    entry["topimg"] = topimg
     entry["issue_id"] = issue_number
     group.setdefault("link_list", []).append(entry)
     save_links(data)

@@ -110,7 +110,7 @@ jobs:
               avatar: extract("头像 URL"),
               linkpage: extract("友链页面 URL（可选）"),
               descr: extract("网站描述"),
-              screenshot: extract("网站截图 URL"),
+              topimg: extract("网站封面图 URL"),
               mail: extract("联系邮箱"),
             };
 

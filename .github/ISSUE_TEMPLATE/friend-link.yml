@@ -64,11 +64,11 @@ body:
       required: true
 
   - type: input
-    id: screenshot
+    id: topimg
     attributes:
-      label: 网站截图 URL
-      description: 网站截图的图片直链（http/https，机器人会校验可访问性）
-      placeholder: "https://example.com/screenshot.png"
+      label: 网站封面图 URL
+      description: 展示在友链卡片顶部的封面图（建议 16:9 横图，http/https，机器人会校验可访问性）
+      placeholder: "https://example.com/topimg.png"
     validations:
       required: true
 
