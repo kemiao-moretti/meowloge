@@ -42,15 +42,26 @@ jobs:
         with:
           script: |
             const e = context.payload;
+            const eventName = context.eventName;
             const actor = e.sender?.login || "";
             const labels = e.issue.labels.map((l) => l.name);
             const isBot = actor === "github-actions[bot]";
             const owner = context.repo.owner;
             const hasFriend = labels.includes("友链申请");
             const hasLost = labels.includes("失联");
-            // 仓库主人的另一个账号也可能是 kmoretti，因此用写权限关联判定管理操作
-            const association = e.comment?.author_association || "";
-            const canManage = actor === owner || ["OWNER", "MEMBER", "COLLABORATOR"].includes(association);
+            // 管理操作权限：直接查 API 的写权限（association 字段对组织成员不可靠）
+            let canManage = actor === owner;
+            if (!canManage && actor) {
+              try {
+                const { data } = await github.rest.repos.getCollaboratorPermissionLevel({
+                  ...context.repo,
+                  username: actor,
+                });
+                canManage = ["admin", "write"].includes(data.permission);
+              } catch {
+                canManage = false;
+              }
+            }
             // 标题前缀是 Issue 表单的固定产物，作为不依赖标签的可靠签名
             const isFriendIssue = hasFriend || (e.issue.title || "").includes("友链申请");
             let action = "none";
@@ -62,11 +73,11 @@ jobs:
               return;
             }
 
-            if (e.event_name === "issues") {
+            if (eventName === "issues") {
               if (e.action === "opened") action = "add";
               else if (e.action === "reopened" && hasLost) action = "remove";
               else if (e.action === "closed" && !hasLost) action = "add";
-            } else if (e.event_name === "issue_comment" && e.action === "created") {
+            } else if (eventName === "issue_comment" && e.action === "created") {
               const body = (e.comment.body || "").trim();
               if (canManage && /^\/move\s+\S+\s+(item|discn|card)\s*$/i.test(body)) {
                 const m = body.match(/^\/move\s+(\S+)\s+(item|discn|card)\s*$/i);
@@ -156,7 +167,7 @@ jobs:
             const result = JSON.parse(fs.readFileSync("result.json", "utf8"));
             const e = context.payload;
             const num = e.issue.number;
-            const isRetry = e.event_name === "issue_comment" &&
+            const isRetry = context.eventName === "issue_comment" &&
               (e.comment.body || "").trim() === "/retry";
             const comment = (body) =>
               github.rest.issues.createComment({ ...context.repo, issue_number: num, body });
