@@ -16,11 +16,26 @@ concurrency:
 
 jobs:
   handle:
-    if: |
-      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, '友链申请')) ||
+    # 入口判定不依赖标签：Issue 表单的标签只在仓库已存在该标签时才会被应用，
+    # 标签缺失时事件仍需进入流程（由 bot 补齐标签），否则会形成死锁。
+    if: >-
+      (github.event_name == 'issues' &&
+        (contains(github.event.issue.title, '友链申请') || contains(toJSON(github.event.issue.labels), '友链申请'))) ||
       (github.event_name == 'issue_comment' && !github.event.issue.pull_request)
     runs-on: ubuntu-latest
     steps:
+      - name: 确保标签存在
+        uses: actions/github-script@v7
+        with:
+          script: |
+            for (const [name, color] of [["友链申请", "0e8a16"], ["失联", "d93f0b"], ["needs-update", "e9969e"]]) {
+              try {
+                await github.rest.issues.getLabel({ ...context.repo, name });
+              } catch {
+                await github.rest.issues.createLabel({ ...context.repo, name, color });
+              }
+            }
+
       - name: 判定动作
         id: decide
         uses: actions/github-script@v7
@@ -33,11 +48,16 @@ jobs:
             const owner = context.repo.owner;
             const hasFriend = labels.includes("友链申请");
             const hasLost = labels.includes("失联");
+            // 仓库主人的另一个账号也可能是 kmoretti，因此用写权限关联判定管理操作
+            const association = e.comment?.author_association || "";
+            const canManage = actor === owner || ["OWNER", "MEMBER", "COLLABORATOR"].includes(association);
+            // 标题前缀是 Issue 表单的固定产物，作为不依赖标签的可靠签名
+            const isFriendIssue = hasFriend || (e.issue.title || "").includes("友链申请");
             let action = "none";
             let moveGroup = "";
             let moveType = "";
 
-            if (isBot || !hasFriend) {
+            if (isBot || !isFriendIssue) {
               core.setOutput("action", "none");
               return;
             }
@@ -48,12 +68,12 @@ jobs:
               else if (e.action === "closed" && !hasLost) action = "add";
             } else if (e.event_name === "issue_comment" && e.action === "created") {
               const body = (e.comment.body || "").trim();
-              if (actor === owner && /^\/move\s+\S+\s+(item|discn|card)\s*$/i.test(body)) {
+              if (canManage && /^\/move\s+\S+\s+(item|discn|card)\s*$/i.test(body)) {
                 const m = body.match(/^\/move\s+(\S+)\s+(item|discn|card)\s*$/i);
                 action = "move";
                 moveGroup = m[1];
                 moveType = m[2].toLowerCase();
-              } else if (actor === e.issue.user.login && body === "/retry") {
+              } else if (body === "/retry" && (actor === e.issue.user.login || canManage)) {
                 // 申请人自助重启审核：重新走添加校验
                 action = "add";
               }
@@ -86,19 +106,18 @@ jobs:
             core.setOutput("move_type", moveType);
             core.setOutput("fields_json", JSON.stringify(fields));
             core.setOutput("issue_number", String(e.issue.number));
+            core.setOutput("needs_label", hasFriend ? "false" : "true");
 
-      - name: 确保标签存在
-        if: steps.decide.outputs.action != 'none'
+      - name: 补齐友链申请标签
+        if: steps.decide.outputs.needs_label == 'true'
         uses: actions/github-script@v7
         with:
           script: |
-            for (const [name, color] of [["友链申请", "0e8a16"], ["失联", "d93f0b"], ["needs-update", "e9969e"]]) {
-              try {
-                await github.rest.issues.getLabel({ ...context.repo, name });
-              } catch {
-                await github.rest.issues.createLabel({ ...context.repo, name, color });
-              }
-            }
+            await github.rest.issues.addLabels({
+              ...context.repo,
+              issue_number: context.payload.issue.number,
+              labels: ["友链申请"],
+            });
 
       - name: Checkout
         if: steps.decide.outputs.action != 'none'
