@@ -1,0 +1,68 @@
+name: Friend Links Check
+
+# 每日北京时间 02:00（UTC 18:00）巡检友链可达性；支持手动触发。
+on:
+  schedule:
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: write
+
+concurrency:
+  group: friend-links-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: 安装 PyYAML
+        run: pip install pyyaml --quiet
+
+      - name: 执行巡检
+        id: check
+        env:
+          ACTION: check
+        run: python3 .github/scripts/friend_links.py
+
+      - name: 对死链打失联标签并通知
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs");
+            if (!fs.existsSync("result-check.json")) return;
+            const result = JSON.parse(fs.readFileSync("result-check.json", "utf8"));
+            // 确保失联标签存在
+            try {
+              await github.rest.issues.getLabel({ ...context.repo, name: "失联" });
+            } catch {
+              await github.rest.issues.createLabel({ ...context.repo, name: "失联", color: "d93f0b" });
+            }
+            for (const dead of result.dead_with_issue || []) {
+              if (!dead.issue_id) continue;
+              await github.rest.issues.addLabels({
+                ...context.repo, issue_number: dead.issue_id, labels: ["失联"],
+              });
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: dead.issue_id,
+                body: `⚠️ 每日巡检发现你的站点无法访问（${dead.reason}），已连续 2 天失败，友链「${dead.name}」已暂时移除。\n\n修复后可评论 \`/retry\` 重新触发审核恢复友链。`,
+              });
+            }
+
+      - name: 提交 yaml 变更
+        run: |
+          if git diff --quiet data/links.yaml; then
+            echo "no changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/links.yaml
+          git commit -m "friends: daily reachability check"
+          git push
