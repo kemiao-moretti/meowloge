@@ -2,7 +2,7 @@ name: Friend Links
 
 on:
   issues:
-    types: [opened, reopened, closed]
+    types: [opened, reopened, closed, labeled]
   issue_comment:
     types: [created]
 
@@ -75,6 +75,8 @@ jobs:
 
             if (eventName === "issues") {
               if (e.action === "opened") action = "add";
+              // 失联处理：加「失联」标签即移除（不依赖重新打开，开/关状态都生效）
+              else if (e.action === "labeled" && e.label?.name === "失联") action = "remove";
               else if (e.action === "reopened" && hasLost) action = "remove";
               else if (e.action === "closed" && !hasLost) action = "add";
             } else if (eventName === "issue_comment" && e.action === "created") {
