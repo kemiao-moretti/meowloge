@@ -176,6 +176,147 @@ def do_move(issue_number: int, move_group: str, move_type: str) -> None:
                  name=entry.get("name", ""))
 
 
+# ============ 定时巡检（do_check） ============
+
+PROBE_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/124.0.0.0 Safari/537.36")
+PROBE_TIMEOUT = 15
+PROBE_RETRIES = 2
+PROBE_RETRY_DELAY = 5
+CHECK_RESULT_FILE = "result-check.json"
+
+# Cloudflare 等反爬挑战页面常见特征
+_CHALLENGE_MARKERS = (
+    "just a moment", "attention required", "checking your browser",
+    "cf-chl", "cf-browser-verification", "challenge-platform",
+)
+
+
+def probe(url: str):
+    """发起一次 GET 探测，返回 (status, headers, body前4KB)。异常返回 (None, {}, 异常描述)。"""
+    from urllib.error import HTTPError
+    req = Request(url, headers={
+        "User-Agent": PROBE_UA,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    })
+    try:
+        with urlopen(req, timeout=PROBE_TIMEOUT) as resp:
+            body = resp.read(4096).decode("utf-8", errors="ignore")
+            return resp.status, resp.headers, body
+    except HTTPError as e:
+        body = ""
+        try:
+            body = e.read(4096).decode("utf-8", errors="ignore")
+        except Exception:
+            pass
+        return e.code, e.headers or {}, body
+    except Exception as e:
+        return None, {}, str(e)
+
+
+def classify(url: str):
+    """带重试的可达性分类：ok / dead / blocked。"""
+    for attempt in range(1, PROBE_RETRIES + 1):
+        status, headers, body = probe(url)
+        body_lower = (body or "").lower()
+        has_cf_challenge = any(m in body_lower for m in _CHALLENGE_MARKERS)
+
+        if status is not None and 200 <= status < 400:
+            return "ok", f"HTTP {status}"
+        if status in (403, 429):
+            return "blocked", f"HTTP {status} 反爬拦截"
+        if status == 503 and has_cf_challenge:
+            return "blocked", "HTTP 503 + Cloudflare 挑战页"
+        if status == 404:
+            return "dead", "HTTP 404"
+        if status is not None and status >= 500:
+            if attempt < PROBE_RETRIES:
+                import time as _t
+                _t.sleep(PROBE_RETRY_DELAY)
+                continue
+            return "dead", f"HTTP {status} 持续错误"
+        # None（超时/DNS/SSL）或未知状态
+        if attempt < PROBE_RETRIES:
+            import time as _t
+            _t.sleep(PROBE_RETRY_DELAY)
+    return "dead", "连接失败（超时/DNS/SSL），已重试" + str(PROBE_RETRIES) + " 次"
+
+
+def do_check() -> None:
+    data = load_links()
+    changed = False
+    dead_with_issue = []   # 有 issue_id 的死链，交给工作流打失联标签
+    manual_dead = []       # 无 issue_id 的手工死链，仅记录
+    blocked_new = []       # 本轮新入白名单的
+    stats = {"checked": 0, "ok": 0, "dead": 0, "blocked": 0, "skipped": 0}
+
+    for group in data["links"]:
+        for item in group.get("link_list", [])[:]:
+            link = str(item.get("link", "")).strip()
+            if not link:
+                continue
+            if item.get("skip_check"):
+                stats["skipped"] += 1
+                continue
+            stats["checked"] += 1
+            verdict, reason = classify(link)
+
+            if verdict == "ok":
+                stats["ok"] += 1
+                if "fail_count" in item:
+                    item.pop("fail_count")
+                    changed = True
+            elif verdict == "blocked":
+                stats["blocked"] += 1
+                item["skip_check"] = True
+                item["skip_reason"] = reason
+                if "fail_count" in item:
+                    item.pop("fail_count")
+                blocked_new.append({"name": item.get("name", ""), "reason": reason})
+                changed = True
+            else:  # dead
+                stats["dead"] += 1
+                item["fail_count"] = int(item.get("fail_count", 0)) + 1
+                changed = True
+                if item.get("fail_count", 0) >= 2:
+                    record = {"name": item.get("name", ""), "link": link,
+                              "reason": reason, "issue_id": item.get("issue_id")}
+                    if item.get("issue_id"):
+                        dead_with_issue.append(record)
+                        group["link_list"].remove(item)
+                    else:
+                        manual_dead.append(record)
+
+    if changed:
+        save_links(data)
+
+    result = {"status": "checked", "stats": stats,
+              "dead_with_issue": dead_with_issue,
+              "manual_dead": manual_dead,
+              "blocked_new": blocked_new}
+    with open(CHECK_RESULT_FILE, "w", encoding="utf-8") as f:
+        json.dump(result, f, ensure_ascii=False, indent=2)
+
+    # 工作流摘要（markdown 表格）
+    summary = os.environ.get("GITHUB_STEP_SUMMARY")
+    if summary:
+        with open(summary, "a", encoding="utf-8") as f:
+            f.write("## 友链巡检结果\n\n")
+            f.write(f"检查 {stats['checked']} 条 | 可达 {stats['ok']} | "
+                    f"疑似死链 {stats['dead']} | 拦截 {stats['blocked']} | "
+                    f"白名单跳过 {stats['skipped']}\n\n")
+            for title, rows in (("已移除的死链（有 issue 关联）", dead_with_issue),
+                                ("疑似死链（手工友链，仅记录）", manual_dead),
+                                ("新入白名单", blocked_new)):
+                if rows:
+                    f.write(f"### {title}\n\n")
+                    for r in rows:
+                        extra = f" — {r.get('reason', '')}" if r.get("reason") else ""
+                        f.write(f"- **{r.get('name', '')}** — `{r.get('link', '')}`{extra}\n")
+                    f.write("\n")
+
+
 def main() -> None:
     action = os.environ.get("ACTION", "none")
     issue_number = int(os.environ.get("ISSUE_NUMBER", "0") or 0)
@@ -189,6 +330,8 @@ def main() -> None:
         do_remove(issue_number)
     elif action == "move":
         do_move(issue_number, move_group, move_type)
+    elif action == "check":
+        do_check()
     else:
         write_result("noop")
 
