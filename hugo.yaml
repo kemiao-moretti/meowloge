@@ -57,6 +57,10 @@ menus:
     - name: 项目
       identifier: personal
       weight: 30
+    # "留言"父菜单（说说等内容向互动入口）
+    - name: 留言
+      identifier: message
+      weight: 40
     # ↓ 以下是"文库"下的子菜单
     - name: 全部文章          # 子菜单显示文字
       pageRef: /archives      # 指向归档页（全部文章列表）
@@ -110,6 +114,13 @@ menus:
       weight: 20
       params:
         icon: fas fa-user
+    # ↓ 以下是"留言"下的子菜单
+    - name: 说说
+      pageRef: /shuoshuo      # 指向 Ech0 说说页
+      parent: message
+      weight: 10
+      params:
+        icon: fas fa-comment-dots
 
 # ============ 站点参数（主题相关的所有配置都在 params 下） ============
 params:
@@ -346,6 +357,26 @@ params:
       placeholder:                          # 评论区输入框占位文案（留空用 Artalk 默认）
       option: {}              # 传给 Artalk.init 的额外配置项（覆盖同名默认值）
 
+    # --- 说说页（/shuoshuo/，Ech0 远程数据源） ---
+    shuoshuo:
+      enable: true              # 是否启用该页面渲染
+      api: https://m.081531.xyz # Ech0 自部署地址（代码会自动拼 /api/echo/query）
+      page_size: 30             # 每页条数
+      cache_minutes: 30         # 前端缓存时长（分钟）
+      author:
+        name: 克喵Moretti       # 卡片头部昵称（Ech0 返回的 username 优先）
+        avatar: https://q2.qlogo.cn/headimg_dl?dst_uin=3149261770&spec=0  # 头像
+      like: true                # 是否显示点赞按钮
+      tags:
+        enable: true            # 是否显示标签
+      extensions:               # 扩展卡片开关（按 Ech0 extension.type）
+        github: true            # GITHUBPROJ
+        website: true           # WEBSITE
+        music: true             # MUSIC
+        video: true             # VIDEO
+        tweet: true             # TWEET
+        location: false         # LOCATION（默认关闭，避免暴露精确坐标）
+
     # --- 控制台（按快捷键呼出的管理面板） ---
     console:
       recentComment:
@@ -363,7 +394,7 @@ params:
       cache: 0.2              # 缓存时间（小时）
       page: /recentcomments/  # 页面路径（需在 content 中有对应页面）
 
-    # --- "即刻/短文"（brevity）页面：发布简短动态 ---
+    # --- "即刻/短文"（brevity）页面：本地数据演示（与 Ech0 说说页共存） ---
     brevity:
       enable: true            # 是否启用
       page: /brevity/         # 页面路径
@@ -451,6 +482,8 @@ params:
       shiki: https://esm.sh/shiki@4.4.3   # Shiki 语法高亮库的 CDN 地址
       artalk: https://cdn.jsdelivr.net/npm/artalk@2.10.0/dist/Artalk.js      # Artalk 评论 JS SDK（use 含 artalk 时加载）
       artalk_css: https://cdn.jsdelivr.net/npm/artalk@2.10.0/dist/Artalk.css  # Artalk 评论样式（use 含 artalk 时加载）
+      marked: https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js         # 说说页 Markdown 渲染
+      dompurify: https://cdn.jsdelivr.net/npm/dompurify@3.0.9/dist/purify.min.js  # 说说页 HTML 防 XSS
 
     # --- 搜索功能 ---
     search:
