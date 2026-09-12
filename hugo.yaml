@@ -83,6 +83,13 @@ menus:
       weight: 10
       params:
         icon: fas fa-link
+    # 友链交换页（申请入口，插在友情链接与宝藏博主之间）
+    - name: 友链交换
+      pageRef: /exchange
+      parent: friends
+      weight: 15
+      params:
+        icon: fas fa-handshake
     # "宝藏博主"没有 pageRef，而是用 action: travelling（主题内置的开往/漫游行为）
     - name: 宝藏博主
       parent: friends
@@ -119,6 +126,66 @@ params:
     extends:
       head:
         - '<style>.card-info .description{display:block}.card-info .description kbd{display:inline-block;padding:0 6px;margin:0 2px;border-radius:4px;border:1px solid currentColor;box-shadow:0 2px 0 rgba(0,0,0,.15);font-size:12px;line-height:1.5;vertical-align:middle}</style>'
+    # --- 友链交换页（/exchange/，content/exchange 的 type 需为 exchange） ---
+    page:
+      exchange:
+        title: 友链交换
+        subtitle: 想和喵洛阁交换友链？先看看下面的说明，确认符合要求后提交申请，机器人会自动审核并生效。
+        # 主按钮：跳转 GitHub Issue 申请表单
+        submit:
+          url: https://github.com/kemiao-moretti/meowloge/issues/new?template=friend-link.yml
+          text: 填写申请表单
+          icon: fas fa-paper-plane
+        # 次按钮组
+        links:
+          - name: 查看友链
+            url: /links/
+            icon: fas fa-link
+        # 申请流程（编号步骤，按数组顺序输出）
+        flow:
+          - 确认贵站符合下方的友链要求，并先把本站加入贵站友链。
+          - 准备好站点名称、链接、头像、封面图、描述与联系邮箱。
+          - 点击「填写申请表单」提交，机器人校验通过后友链立即生效。
+        # 友链要求卡片（icon 用 Font Awesome 类名，title + desc 必填）
+        requirements:
+          - title: 合规底线
+            icon: fas fa-scale-balanced
+            desc: 网站须符合中国大陆法律法规，不含博彩、NSFW 等违法违规内容，发现即移除。
+          - title: 内容质量
+            icon: fas fa-pen-nib
+            desc: 至少 5 篇文章，且至少每月更新一次；原创或认真整理的内容优先。
+          - title: 访问体验
+            icon: fas fa-gauge-high
+            desc: 网站需稳定可达，建议启用 HTTPS 并保持证书有效。
+          - title: 广告适度
+            icon: fas fa-rectangle-ad
+            desc: 广告不应遮挡内容或影响正常阅读，拒绝强制跳转与弹窗。
+          - title: 互惠原则
+            icon: fas fa-handshake
+            desc: 期望你先添加本站友链（非强制，但会优先通过审核）。
+          - title: 长期维护
+            icon: fas fa-screwdriver-wrench
+            desc: 本站每日巡检友链状态，连续两天无法访问将暂时移除，修复后可自助恢复。
+        # 域名说明
+        domains:
+          title: 域名说明
+          accepted: 付费域名（.com/.cn/.net/.org 等）与可信免费域名（github.io、eu.org、Cloudflare Pages）均可接受。
+          rejected: 暂不接受访问异常、存在明显安全风险或频繁变更的域名。
+        # 本站信息（对方添加本站在贵站的友链时使用，页面提供可复制代码块）
+        site:
+          title: 本站信息
+          note: 请先在贵站友链页面添加以上信息，再提交申请。
+          items:
+            name: 喵洛阁
+            link: https://blog.518339.xyz/
+            avatar: https://blog.518339.xyz/img/logo.png
+            descr: 每一段旅行，都有终点。
+            linkpage: https://blog.518339.xyz/links/
+        # 申请格式说明
+        format:
+          title: 申请格式
+          desc: 申请表单需填写网站名称、网站链接、头像 URL、网站封面图、网站描述与联系邮箱；头像留空会自动抓取站点 favicon。
+
     # --- 站点标识样式 ---
     site:
       name:
