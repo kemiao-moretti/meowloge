@@ -16,8 +16,9 @@ body:
         3. 网站广告不应影响正常阅读；
         4. （非必须）期望你能先把本站加入你的友链。
 
+        > **关于网站封面图（topimg）**：选填。本站友链若为「封面卡片」样式展示，则需要提供，机器人会校验其可访问性；若为紧凑列表样式展示则可留空。填了就会参与校验。
         > 审核失败时请根据机器人评论的原因修改后，在本 Issue 下评论 `/retry` 重新触发审核。
-        > 失联或违规的友链会被移除并在此通知。
+        > 连续多日无法访问的友链会被移入底部「友链墓碑」分组暂存，站点恢复访问后由机器人自动搬回原分组；违规友链会被移除。
 
   - type: input
     id: name
@@ -67,19 +68,10 @@ body:
     id: topimg
     attributes:
       label: 网站封面图 URL
-      description: 展示在友链卡片顶部的封面图（建议 16:9 横图，http/https，机器人会校验可访问性）
+      description: 展示在友链卡片顶部的封面图（建议 16:9 横图，http/https，机器人会校验可访问性）。仅当本站友链以「封面卡片」样式展示时为必填；若以紧凑列表样式展示则可不填。若不确定，建议填写以保证最佳展示效果。
       placeholder: "https://example.com/topimg.png"
     validations:
-      required: true
-
-  - type: input
-    id: mail
-    attributes:
-      label: 联系邮箱
-      description: 仅用于失联通知，不会出现在博客数据中
-      placeholder: "you@example.com"
-    validations:
-      required: true
+      required: false
 
   - type: checkboxes
     id: terms

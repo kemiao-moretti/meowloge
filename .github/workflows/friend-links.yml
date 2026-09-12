@@ -75,7 +75,7 @@ jobs:
 
             if (eventName === "issues") {
               if (e.action === "opened") action = "add";
-              // 失联处理：加「失联」标签即移除（不依赖重新打开，开/关状态都生效）
+              // 手动移除：加「失联」标签即移除（不依赖重新打开，开/关状态都生效）
               else if (e.action === "labeled" && e.label?.name === "失联") action = "remove";
               else if (e.action === "reopened" && hasLost) action = "remove";
               else if (e.action === "closed" && !hasLost) action = "add";
@@ -111,7 +111,6 @@ jobs:
               linkpage: extract("友链页面 URL（可选）"),
               descr: extract("网站描述"),
               topimg: extract("网站封面图 URL"),
-              mail: extract("联系邮箱"),
             };
 
             core.setOutput("action", action);
@@ -188,13 +187,13 @@ jobs:
               // 清掉失联/needs-update 标签，关闭 Issue
               await setLabels([]);
               await closeIssue();
-              await comment(`✅ 友链已自动添加到「${result.group}」分组，站点部署后生效。\n\n若未来失联或不再符合要求，本站会移除友链并在此通知；修复问题后可评论 \`/retry\` 重新触发审核。`);
+              await comment(`✅ 友链已自动添加到「${result.group}」分组，站点部署后生效。\n\n若未来连续多日无法访问，本站会把友链移入底部「友链墓碑」分组暂存，并在本 Issue 通知；站点恢复访问后会自动搬回原分组。`);
             } else if (result.status === "rejected") {
               await setLabels(["needs-update"]);
               await comment("❌ 自动审核未通过，请修正以下问题后评论 `/retry` 重新触发审核：\n" +
                 result.errors.map((x) => `- ${x}`).join("\n"));
             } else if (result.status === "removed") {
-              await comment(`⚠️ 友链「${result.name}」已从友链列表移除（失联处理）。修复问题后可评论 \`/retry\` 重新触发审核。`);
+              await comment(`⚠️ 友链「${result.name}」已从友链列表移除。修复问题后可评论 \`/retry\` 重新触发审核。`);
             } else if (result.status === "moved") {
               await comment(`✅ 友链「${result.name}」已移动到「${result.group}」分组（类型：${result.type}）。`);
             } else if (result.status === "noop" && isRetry) {

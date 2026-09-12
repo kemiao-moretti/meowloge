@@ -195,7 +195,12 @@ params:
         # 申请格式说明
         format:
           title: 申请格式
-          desc: 申请表单需填写网站名称、网站链接、头像 URL、网站封面图、网站描述与联系邮箱；头像留空会自动抓取站点 favicon。
+          desc: 申请表单需填写网站名称、网站链接、网站描述与联系邮箱；头像 URL 选填，留空会自动抓取站点 favicon；网站封面图选填，仅当本站友链以「封面卡片」样式展示时为必填，填了就会校验可访问性。
+      # --- 友链页（/links/）配置 ---
+      links:
+        # 墓碑说明里「申请恢复」链接指向的地址（GitHub Issues 申请表单）
+        # 留空则回退到友链交换页 /exchange/
+        tombstone_recover_url: https://github.com/kemiao-moretti/meowloge/issues
 
     # --- 站点标识样式 ---
     site:
