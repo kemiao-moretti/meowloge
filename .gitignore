@@ -6,3 +6,6 @@ resources/_gen/
 # Python 缓存（.github/scripts 本地测试时产生）
 __pycache__/
 *.pyc
+
+# 主题备份（不入库）
+backup/

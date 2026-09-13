@@ -94,6 +94,13 @@ menus:
       weight: 15
       params:
         icon: fas fa-handshake
+    # 友链朋友圈（fcircle）：聚合友链站点的最新文章
+    - name: 友链朋友圈
+      pageRef: /fcircle
+      parent: friends
+      weight: 25
+      params:
+        icon: fas fa-circle-nodes
     # "宝藏博主"没有 pageRef，而是用 action: travelling（主题内置的开往/漫游行为）
     - name: 宝藏博主
       parent: friends
@@ -133,6 +140,24 @@ params:
 
   # ===== solitude 主题专属配置 =====
   solitude:
+    # --- 糖果屋魔改 · 主题主色（styles.html 注入为 --solitude-theme-* 变量） ---
+    theme_color:
+      light: "#FFA000"   # 亮色主色（活力橙）
+      dark: "#FFB84D"    # 暗色主色（柔和橙）
+      nav_hover_text:
+        light: "#241A12" # 亮色导航 hover 文字（橙底深字）
+        dark: "#241A12"  # 暗色导航 hover 文字
+
+    # --- 糖果屋魔改 · 画布与几何配置（styles.html 注入为 --solitude-candy-* 变量） ---
+    candy:
+      bg: "#FFF6E5"          # 亮色页面底色（奶油纸）
+      bg_dark: "#241A12"     # 暗色页面底色（深可可）
+      card: "#FFFDF7"        # 亮色卡片背景
+      ink: "#1F1B16"         # 亮色文字主色 / 描边色
+      radius: "6px"          # 圆角
+      border_width: "2px"    # 描边粗细（糖果粗描边）
+      shadow_offset: "4px"   # 硬阴影偏移
+
     # 注入到 <head> 的自定义 HTML/CSS（不改主题文件，随站点配置生效）
     extends:
       head:
@@ -273,7 +298,10 @@ params:
     post:
       default:
         copyright:
-          author_background: /img/demo/cover-shortcodes-v2.webp   # 文末版权卡片的作者背景图
+          # author_background: /img/demo/cover-shortcodes-v2.webp   # 文末版权卡片的作者背景图
+          # ↑ 启用后会触发主题的 layered 分层头像（背景图铺满 + 前景贴纸居中），
+          #   前景需为透明贴纸素材；本站前景是方形 logo，故保持注释，
+          #   让版权卡片只显示单张圆形头像。
       # 文章顶部 meta 信息展示开关
       meta:
         pv: true        # 是否显示文章浏览量
@@ -381,6 +409,18 @@ params:
         video: true             # VIDEO
         tweet: true             # TWEET
         location: false         # LOCATION（默认关闭，避免暴露精确坐标）
+
+    # --- 友链朋友圈（/fcircle/，hexo-circle-of-friends 远程数据源） ---
+    fcircle:
+      enable: true                        # 是否启用该页面渲染
+      api: https://fcircle.518339.xyz     # 自部署后端地址（代码会自动拼 /all）
+      page_size: 24                       # 每次"再来亿点"加载的文章条数
+      cache_minutes: 10                   # 整表缓存时长（分钟），0 表示不缓存
+      random_post: true                   # 是否显示"随机钓鱼"（随机推荐一篇友链文章）
+      author_modal: true                  # 点击作者头像是否弹出 TA 的文章列表
+      sort_toggle: true                   # 是否允许切换"发布时间 / 更新时间"排序
+      limit: 0                            # 最多展示的文章数，0 表示不限制
+      error_img: /img/default_avatar.avif # 头像加载失败时的兜底图片
 
     # --- 控制台（按快捷键呼出的管理面板） ---
     console:
