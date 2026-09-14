@@ -1,8 +1,11 @@
 ---
-title: 反馈与交流
+title: 留言板
 type: message
 comment: true
-description: 分享你对 Solitude Hugo 的问题、建议与使用体验
+description: 欢迎留下你的足迹，留言会以弹幕的形式飘过页面。
 ---
 
-欢迎交流 Solitude Hugo 的配置方法、迁移经验与主题使用体验。
+欢迎来到留言板～
+
+任何想说的都可以留在这里：建议、吐槽、或者随便打个招呼都行。
+点下面的「显示弹幕」，已有留言就会以弹幕的形式飘过页面。

@@ -128,6 +128,12 @@ menus:
       weight: 10
       params:
         icon: fas fa-comment-dots
+    - name: 留言板
+      pageRef: /message       # 指向主题内置的 message 弹幕留言板页
+      parent: message
+      weight: 20
+      params:
+        icon: fas fa-envelope
 
 # ============ 站点参数（主题相关的所有配置都在 params 下） ============
 params:
