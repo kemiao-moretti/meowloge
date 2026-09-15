@@ -86,6 +86,12 @@ menus:
       weight: 40
       params:
         icon: fas fa-images
+    - name: 数据统计
+      pageRef: /stats         # 指向数据统计页（ECharts 图表 + 写作热力图）
+      parent: library
+      weight: 50
+      params:
+        icon: fas fa-chart-simple
     # ↓ 以下是"友链"下的子菜单
     - name: 友情链接
       pageRef: /links         # 指向友链页
@@ -624,6 +630,13 @@ params:
       artalk_css: https://cdn.jsdelivr.net/npm/artalk@2.10.0/dist/Artalk.css  # Artalk 评论样式（use 含 artalk 时加载）
       marked: https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js         # 说说页 Markdown 渲染
       dompurify: https://cdn.jsdelivr.net/npm/dompurify@3.0.9/dist/purify.min.js  # 说说页 HTML 防 XSS
+      echarts: https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js   # 数据统计页图表（仅该页加载）
+
+    # --- 数据统计页（/stats/）---
+    stats:
+      weekday_label: true   # 热力图左侧是否标注星期（关掉可省下左侧留白）
+      week_start: monday    # 一周从哪天开始：sunday/monday/.../saturday，或 0-6（0 = 周日）
+      weekday_names: []     # 自定义星期名（固定 7 项、从周日排到周六）；留空则取 i18n，跟随站点语言
 
     # --- 搜索功能 ---
     search:
