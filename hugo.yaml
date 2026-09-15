@@ -127,6 +127,12 @@ menus:
       weight: 20
       params:
         icon: fas fa-user
+    - name: 更新日志
+      pageRef: /changelog     # 指向更新日志页（changelog 内容集合）
+      parent: personal
+      weight: 30
+      params:
+        icon: fas fa-clock-rotate-left
     # ↓ 以下是"留言"下的子菜单
     - name: 说说
       pageRef: /shuoshuo      # 指向 Ech0 说说页
@@ -283,7 +289,7 @@ params:
       # noSticky: 不吸顶的模块（随页面滚动） / Sticky: 吸顶的模块（滚动时固定）
       # 模块名可换顺序、增删，逗号分隔
       home:
-        noSticky: about,clock          # 首页不吸顶：作者卡片、时钟
+        noSticky: about,ipWelcome,clock   # 首页不吸顶：作者卡片、访客欢迎、时钟
         Sticky: newest_comment,allInfo # 首页吸顶：最新评论、站点信息
       post:
         noSticky: about,clock
@@ -300,6 +306,72 @@ params:
         qweatherHost: https://devapi.qweather.com       # 和风天气 API 主机（免费开发版）
         timezone: Asia/Shanghai         # 时钟时区
         cacheMinutes: 30                # 天气结果缓存分钟数（省额度）
+      # --- 访客欢迎模块（ipWelcome）：放在时钟卡片上方，仅首页显示 ---
+      ipWelcome:
+        enable: true                    # 是否启用侧栏访客欢迎卡片
+        # 站长坐标（用于计算访客与站长的直线距离，默认与时钟城市南京一致）
+        bloggerLat: 32.0603             # 纬度（南京）
+        bloggerLng: 118.7969            # 经度（南京）
+        cacheHours: 24                  # 定位结果缓存小时数（避免每次刷新都请求外部接口）
+        timeoutMs: 6000                 # 单次接口超时毫秒数
+        # 主源：一次返回 ip / 国家 / 省市 / 经纬度，无需 Key
+        primaryApi: https://api.ip.sb/geoip
+        # 备用取 IP 源（主源失败时按顺序尝试，成功即停）
+        ipApis:
+          - https://api.ipify.org?format=json
+          - https://icanhazip.com/
+        # 备用查位置源：%s 会被替换为上一步取得的 IP，无需 Key
+        fallbackApi: https://ipapi.co/%s/json/
+        # 地区 Tip 文案（糖果屋精简版）：key 支持「省-市」「市」「省」「国家」逐级回退
+        tips:
+          default: 带我去你的城市逛逛吧
+          北京: 烤鸭排队的队伍，算我一个
+          上海: 众所周知，中国只有两个城市
+          天津: 来一段相声，边听边喝热茶
+          重庆: 火锅微辣，是对你最大的尊重
+          广东-广州: 看小蛮腰，喝早茶了嘛
+          广东-深圳: 今天你逛商场了嘛
+          广东: 来两斤福建人
+          江苏-南京: 梧桐大道走一走，秋天最好看
+          江苏-苏州: 上有天堂，下有苏杭
+          江苏: 散装是必须要散装的
+          浙江-杭州: 东风渐绿西湖柳，雁已还人未南归
+          浙江: 望海楼明照曙霞，护江堤白蹋晴沙
+          四川-成都: 康康熊猫，再来碗担担面
+          四川: 康康川妹子
+          陕西-西安: 来份臊子面加馍
+          陕西: 长安一片月，万户捣衣声
+          湖北-武汉: 来碗热干面
+          湖北: 黄鹤一去不复返
+          湖南-长沙: 长沙斯塔克，来接你啦
+          湖南: 呷得苦，霸得蛮
+          河南-洛阳: 洛阳牡丹甲天下
+          河南: 可否带我品尝河南烩面啦
+          山东: 遥望齐州九点烟，一泓海水杯中泻
+          福建: 井邑白云间，岩城远带山
+          广西: 桂林山水甲天下
+          云南: 玉龙飞舞云缠绕，万仞冰川直耸天
+          辽宁: 我想吃烤鸡架
+          黑龙江: 很喜欢哈尔滨大剧院
+          海南: 朝观日出逐白浪，夕看云起收霞光
+          新疆: 驼铃古道丝绸路，胡马犹闻唐汉风
+          西藏: 躺在茫茫草原上，仰望蓝天
+          内蒙古: 天苍苍，野茫茫，风吹草低见牛羊
+          甘肃: 羌笛何须怨杨柳，春风不度玉门关
+          青海: 牛肉干和老酸奶都好好吃
+          宁夏: 大漠孤烟直，长河落日圆
+          香港: 维港晚风温柔，一起去太平山顶看夜景吧
+          澳门: 大三巴的光影，藏着澳门的温柔
+          台湾: 我在这头，大陆在那头
+          日本: よろしく，一起去看樱花吗
+          韩国: 같이 가요，一起走吧
+          美国: Let us live in peace!
+          英国: 想同你一起夜乘伦敦眼
+          法国: C'est La Vie
+          德国: Die Zeit verging im Fluge.
+          俄罗斯: 干了这瓶伏特加
+          加拿大: 拾起一片枫叶赠予你
+          澳大利亚: 一起去大堡礁吧
       # 作者个人信息卡片（侧栏最上方的名片）
       my_card:
         author:
