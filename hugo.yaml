@@ -637,6 +637,15 @@ params:
       weekday_label: true   # 热力图左侧是否标注星期（关掉可省下左侧留白）
       week_start: monday    # 一周从哪天开始：sunday/monday/.../saturday，或 0-6（0 = 周日）
       weekday_names: []     # 自定义星期名（固定 7 项、从周日排到周六）；留空则取 i18n，跟随站点语言
+      # Umami 站访数据（公开分享方案，无需 API Key）
+      # share_id：在 Umami 后台「网站 → 分享」中创建分享链接后得到的 ID（与 website_id 不同），
+      #           可安全暴露在前端；未配置时组件显示不可用提示并优雅降级。
+      # website_id：仅作备注保留，公开分享接口以 share_id 为准。
+      umami:
+        enable: true                       # 是否在统计页展示站访数据区块
+        endpoint: https://um.081531.xyz    # Umami 实例地址（不带末尾斜杠）
+        share_id: aEm4tZWjLPsyKHl6         # 公开分享 ID（需在 Umami 后台创建分享链接）
+        website_id: 668e3622-d145-4b4b-a52f-8b41ae8357a8
 
     # --- 搜索功能 ---
     search:
