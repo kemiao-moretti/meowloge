@@ -161,3 +161,4 @@ reward:
     - { name: 海阔蓝, amount: "¥8.8元", date: "2023-03-28" }
     - { name: 失落森林, amount: "¥3.36夸克", date: "2023-04-12" }
     - { name: 在山的那边, amount: "¥10元", date: "2023-04-21" }
+    - {name: 测试申请, amount: '12', date: '2026-09-19', issue_id: 3}
