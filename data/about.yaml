@@ -138,9 +138,10 @@ reward:
   mobile_action_text: 为 TA 充电
   sponsor_notice:
     prefix: 想要加入赞助名单，请
-    label: 邮箱（sponsor@518339.xyz）
+    label: 通过 GitHub Issue 提交申请
+    url: https://github.com/kemiao-moretti/meowloge/issues/new?template=sponsor.yml
     email: sponsor@518339.xyz
-    suffix: 联系我，并附上支付截图和希望展示在名单中的名称。
+    suffix: ，并附上支付截图和希望展示在名单中的名称。
   dialog:
     title: 打赏支持
     tips: 感谢您的支持，您的鼓励是我创作的最大动力！

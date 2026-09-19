@@ -1,4 +1,4 @@
-# 关于页手机端充电按钮 Implementation Plan
+﻿# 关于页手机端充电按钮 Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -19,7 +19,7 @@
 **Files:**
 - Modify: `blog/data/about.yaml`（约第 137 行 `action_text` 之后）
 
-- [ ] **Step 1: 在 `action_text` 下方新增 `mobile_action_text`**
+- [x] **Step 1: 在 `action_text` 下方新增 `mobile_action_text`**
 
 把：
 
@@ -36,7 +36,7 @@
 
 注意：必须与 `action_text` 同缩进（2 空格），插入在 `sponsor_notice` 之前，保持 YAML 合法。
 
-- [ ] **Step 2: 校验 YAML 可解析**
+- [x] **Step 2: 校验 YAML 可解析**
 
 Run:
 ```bash
@@ -51,7 +51,7 @@ Expected 输出：`为TA充电 | 为 TA 充电`
 **Files:**
 - Modify: `themes/solitude/layouts/_partials/pages/about/reward.html`（第 17 行 `</div>` 与第 18 行 `{{- if .donations -}}` 之间）
 
-- [ ] **Step 1: 插入按钮标记**
+- [x] **Step 1: 插入按钮标记**
 
 在 `reward-card-header` 的收尾 `</div>`（第 17 行）之后、`{{- if .donations -}}`（第 18 行）之前插入：
 
@@ -83,7 +83,7 @@ Expected 输出：`为TA充电 | 为 TA 充电`
 - 复用 `about-card-button` 基础类与 `data-reward-open` 属性。
 - **不要**使用 `reward-action-button` / `reward-action-icon` 类名（桌面端 `.reward-card .reward-action-button` 会强制 `width:157px`，`reward-action-icon` 是 38px 超大字号）。
 
-- [ ] **Step 2: 构建确认模板无语法错误**
+- [x] **Step 2: 构建确认模板无语法错误**
 
 Run:
 ```bash
@@ -94,7 +94,7 @@ Expected：退出码 0，无 ERROR。随后删除临时目录：
 Remove-Item -Recurse -Force "e:\kemiao-kmoretti\blog\_reward-mobile-check"
 ```
 
-- [ ] **Step 3: 确认产物含新按钮**
+- [x] **Step 3: 确认产物含新按钮**
 
 Run:
 ```bash
@@ -110,7 +110,7 @@ Expected：至少 1 处匹配 `reward-mobile-button`。
 **Files:**
 - Modify: `themes/solitude/assets/css/solitude/pages/about.css`（新增规则；768px 断点块位于第 1091-1104 行）
 
-- [ ] **Step 1: 新增默认隐藏与按钮基础样式**
+- [x] **Step 1: 新增默认隐藏与按钮基础样式**
 
 在 `#about-page .reward-sponsor-notice .reward-sponsor-mail:focus-visible { ... }` 规则块（约第 671-675 行）之后、`#about-page .about-reward-animation {` （约第 677 行）之前插入：
 
@@ -132,7 +132,7 @@ Expected：至少 1 处匹配 `reward-mobile-button`。
 
 说明：默认 `display: none` 保证桌面端不显示、不占位；图标独立类设定 18px，避免继承桌面端的 38px。
 
-- [ ] **Step 2: 在 768px 断点内启用按钮**
+- [x] **Step 2: 在 768px 断点内启用按钮**
 
 在 `@media (max-width: 768px) { ... }` 块（第 1091-1104 行）内，于 `#about-page .about-reward-animation { display: none; }`（第 1099 行）之后插入：
 
@@ -154,7 +154,7 @@ Expected：至少 1 处匹配 `reward-mobile-button`。
 
 说明：`--efu-theme` / `--efu-theme-op` / `--efu-radius-sm` 与桌面端闪电按钮同一套 token；`display: flex` 与 `.about-card-button` 自带的 `align-items/justify-content: center`、`color: #fff`、`font-weight: 700` 配合，得到通栏居中按钮。
 
-- [ ] **Step 3: 构建确认样式已打包**
+- [x] **Step 3: 构建确认样式已打包**
 
 Run:
 ```bash
@@ -179,7 +179,7 @@ hugo server --bind 127.0.0.1 --port 1313 --disableFastRender
 ```
 若 1313 已被占用，说明服务已在运行，直接复用 `http://127.0.0.1:1313/about/`。
 
-- [ ] **Step 1: 手机视口下按钮可见**
+- [x] **Step 1: 手机视口下按钮可见**
 
 用 Chrome DevTools 打开 `http://127.0.0.1:1313/about/`，将视口宽度设为 390（iPhone 尺寸），执行脚本断言：
 
@@ -204,7 +204,7 @@ hugo server --bind 127.0.0.1 --port 1313 --disableFastRender
 
 Expected：`display = "flex"`、`text = "为 TA 充电"`、`width` 接近 `cardWidth`（通栏，差值约等于卡片左右内边距 ×2）、`afterNotice = true`、`beforeList = true`。
 
-- [ ] **Step 2: 点击打开弹窗**
+- [x] **Step 2: 点击打开弹窗**
 
 在手机视口下执行：
 
@@ -235,7 +235,7 @@ Expected：`opened = true`、`qrCount = 2`（微信 + 支付宝）、`bodyLocked
 
 Expected：`closed = true`。
 
-- [ ] **Step 3: 桌面视口回归（按钮不显示）**
+- [x] **Step 3: 桌面视口回归（按钮不显示）**
 
 将视口宽度恢复为 1280，执行：
 
@@ -254,11 +254,11 @@ Expected：`closed = true`。
 
 Expected：`mobileDisplay = "none"`、`animationDisplay` 为 `block` 或 `absolute` 布局下的正常值（非 `none`）、`desktopButtonVisible = true`。
 
-- [ ] **Step 4: 文案回退验证（可选，需临时改动）**
+- [x] **Step 4: 文案回退验证（可选，需临时改动）**
 
 临时把 `about.yaml` 的 `mobile_action_text` 一行删除，重新加载 `/about/` 并设手机视口，断言按钮 `innerText` 等于 `为TA充电`（即回退到 `action_text`）。验证后**恢复**该行。
 
-- [ ] **Step 5: 停止开发服务**
+- [x] **Step 5: 停止开发服务**
 
 停止第 4 步启动的 `hugo server`（若该服务由用户启动，则不要停止，仅告知）。
 
