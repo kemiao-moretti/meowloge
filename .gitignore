@@ -9,3 +9,6 @@ __pycache__/
 
 # 主题备份（不入库）
 backup/
+
+# 可视化伴侣会话文件（superpowers brainstorming mockup/事件）
+.superpowers/
