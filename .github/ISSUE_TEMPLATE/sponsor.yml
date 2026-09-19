@@ -1,0 +1,52 @@
+name: 🎉 赞助申请
+description: 申请加入赞助名单（人工审核，通过后生效）
+title: "[赞助申请] "
+labels: ["赞助申请"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🎉 赞助申请
+
+        感谢你的支持！提交后进入人工审核，审核通过后会将你的名单名称、赞助金额与赞助日期加入公开赞赏名单。
+
+        ### 审核说明
+        1. 赞助信息需真实可核对，请如实填写；
+        2. **支付截图仅用于审核核对，不会写入公开名单**，请放心提交；
+        3. 公开名单仅展示「名单名称、赞助金额、赞助日期」三项，不包含任何截图、联系方式等隐私信息。
+
+  - type: input
+    id: name
+    attributes:
+      label: 名单名称
+      description: 展示在公开赞赏名单中的昵称或称呼
+      placeholder: 例如：张三
+    validations:
+      required: true
+
+  - type: input
+    id: amount
+    attributes:
+      label: 赞助金额
+      description: 赞助金额（元），用于展示在公开名单中
+      placeholder: 例如：20
+    validations:
+      required: true
+
+  - type: input
+    id: date
+    attributes:
+      label: 赞助日期
+      description: 赞助日期，格式为 YYYY-MM-DD
+      placeholder: "例如：2026-09-19"
+    validations:
+      required: true
+
+  - type: input
+    id: screenshot
+    attributes:
+      label: 支付截图链接
+      description: 支付截图图片的完整 URL（http/https），仅用于人工审核核对，不会写入公开名单
+      placeholder: "https://example.com/screenshot.png"
+    validations:
+      required: true

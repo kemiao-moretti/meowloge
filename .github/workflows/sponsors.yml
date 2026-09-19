@@ -1,0 +1,177 @@
+name: Sponsor Links
+
+on:
+  issues:
+    types: [opened, reopened, closed, labeled]
+
+permissions:
+  issues: write
+  contents: write
+
+concurrency:
+  group: sponsors
+  cancel-in-progress: false
+
+jobs:
+  handle:
+    # 入口判定不依赖标签：Issue 表单的标题前缀 `[赞助申请]` 是固定签名，
+    # 标签缺失时事件仍需进入流程（由 bot 补齐标签），否则会形成死锁。
+    if: >-
+      github.event_name == 'issues' &&
+      (contains(github.event.issue.title, '[赞助申请]') || contains(toJSON(github.event.issue.labels), '赞助申请'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: 确保标签存在
+        uses: actions/github-script@v7
+        with:
+          script: |
+            for (const [name, color] of [["赞助申请", "0e8a16"], ["赞助失败", "d93f0b"]]) {
+              try {
+                await github.rest.issues.getLabel({ ...context.repo, name });
+              } catch {
+                await github.rest.issues.createLabel({ ...context.repo, name, color });
+              }
+            }
+
+      - name: 判定动作
+        id: decide
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const e = context.payload;
+            const actor = e.sender?.login || "";
+            const labels = e.issue.labels.map((l) => l.name);
+            const isBot = actor === "github-actions[bot]";
+            const hasSponsor = labels.includes("赞助申请");
+            const hasFailed = labels.includes("赞助失败");
+            // 标题前缀是 Issue 表单的固定产物，作为不依赖标签的可靠签名
+            const isSponsorIssue = hasSponsor || (e.issue.title || "").includes("[赞助申请]");
+
+            if (isBot || !isSponsorIssue) {
+              core.setOutput("action", "none");
+              core.setOutput("notify", "");
+              return;
+            }
+
+            // 解析 Issue 表单字段（issue forms 的 body 是 "### 标题\n内容" 格式）
+            function extract(id) {
+              const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+              const m = (e.issue.body || "").match(
+                new RegExp("### " + escaped + "\\s*\\n\\s*([\\s\\S]*?)(?=\\n### |$)")
+              );
+              if (!m) return "";
+              const v = m[1].trim();
+              if (!v || v === "_No response_" || v === "No response") return "";
+              return v.replace(/^`+|`+$/g, "").trim();
+            }
+
+            const fields = {
+              name: extract("名单名称"),
+              amount: extract("赞助金额"),
+              date: extract("赞助日期"),
+              screenshot: extract("支付截图链接"),
+            };
+
+            let action = "none";
+            let notify = "";
+            if (e.action === "closed") {
+              // 「赞助失败」优先阻断数据处理
+              if (hasFailed) notify = "declined";
+              else if (hasSponsor) action = "add";
+            } else if (e.action === "labeled") {
+              if (e.label?.name === "赞助失败") notify = "declined_preview";
+              else if (e.label?.name === "赞助申请") notify = "approved_preview";
+            } else {
+              // opened / reopened：未关闭，仅提示审核待关闭生效
+              notify = hasFailed ? "declined_preview" : "pending";
+            }
+
+            core.setOutput("action", action);
+            core.setOutput("notify", notify);
+            core.setOutput("fields_json", JSON.stringify(fields));
+            core.setOutput("issue_number", String(e.issue.number));
+            core.setOutput("needs_label", hasSponsor ? "false" : "true");
+
+      - name: 补齐赞助申请标签
+        if: steps.decide.outputs.needs_label == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.addLabels({
+              ...context.repo,
+              issue_number: context.payload.issue.number,
+              labels: ["赞助申请"],
+            });
+
+      - name: Checkout
+        if: steps.decide.outputs.action == 'add'
+        uses: actions/checkout@v4
+
+      - name: 处理赞助数据
+        id: process
+        if: steps.decide.outputs.action == 'add'
+        env:
+          ACTION: add
+          FIELDS_JSON: ${{ steps.decide.outputs.fields_json }}
+          ISSUE_NUMBER: ${{ steps.decide.outputs.issue_number }}
+        run: python3 .github/scripts/sponsors.py
+
+      - name: 提交变更
+        if: steps.process.outputs.changed == 'true'
+        env:
+          ISSUE_NUMBER: ${{ steps.decide.outputs.issue_number }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/about.yaml
+          git commit -m "sponsors: add sponsor (issue #${ISSUE_NUMBER})"
+          git push
+
+      - name: 回写 Issue
+        if: always() && (steps.decide.outputs.action == 'add' || steps.decide.outputs.notify != '')
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs");
+            const e = context.payload;
+            const num = e.issue.number;
+            const notify = "${{ steps.decide.outputs.notify }}";
+            const comment = (body) =>
+              github.rest.issues.createComment({ ...context.repo, issue_number: num, body });
+            const setLabels = (names) =>
+              github.rest.issues.setLabels({ ...context.repo, issue_number: num, labels: names });
+            const closeIssue = () =>
+              github.rest.issues.update({
+                ...context.repo, issue_number: num,
+                state: "closed", state_reason: "completed",
+              });
+
+            if (!fs.existsSync("result.json")) {
+              // 未进入数据处理路径：仅回写状态提示
+              if (notify === "pending") {
+                await comment("📋 已收到赞助申请，站长审核通过后会添加「赞助申请」标签并关闭议题，届时将自动写入公开「赞赏」名单；如审核不通过则添加「赞助失败」标签，不会写入任何数据。");
+              } else if (notify === "declined_preview") {
+                await comment("⛔ 该议题已标记「赞助失败」，关闭后不会添加任何赞助记录。");
+              } else if (notify === "approved_preview") {
+                await comment("✅ 该议题已标记「赞助申请」，站长关闭议题后将自动写入公开「赞赏」名单。");
+              } else if (notify === "declined") {
+                await comment("❌ 审核未通过，未添加赞助记录。如需更新信息可重新提交赞助申请。");
+              } else if ("${{ steps.decide.outputs.action }}" === "add") {
+                await comment("⚠️ 赞助数据处理失败，请站长查看工作流日志。");
+              }
+              return;
+            }
+
+            const result = JSON.parse(fs.readFileSync("result.json", "utf8"));
+            if (result.status === "added") {
+              await setLabels(["赞助申请"]);
+              await closeIssue();
+              await comment(`✅ 赞助已添加到公开「赞赏」名单${result.name ? `（${result.name}）` : ""}，站点部署后生效。`);
+            } else if (result.status === "rejected") {
+              await comment("❌ 赞助信息校验未通过，请修正以下问题后重新开启并关闭议题以重新触发审核：\n" +
+                result.errors.map((x) => `- ${x}`).join("\n"));
+            } else if (result.status === "noop") {
+              await comment(`ℹ️ 该议题（#${num}）的赞助已存在于名单，未重复添加。`);
+            } else if (result.status === "skipped") {
+              await comment("ℹ️ 未满足赞助数据处理条件，未执行任何变更。");
+            }
