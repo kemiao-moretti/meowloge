@@ -61,10 +61,10 @@ sections:
         start_label: 2024
         end_label: 未来
         track_label: MEOWLOGE
-        aria_label: 喵洛阁从建站到糖果屋主题定制的站点时间轴
+        aria_label: 喵洛阁从建站到纸张手账主题定制的站点时间轴
         events:
           - { label: 建站起步, from: 2024, to: 2025, color: "#425aef" }
-          - { label: 糖果屋主题定制, from: 2025, to: 2026, color: "#ff4088" }
+          - { label: 纸张手账主题定制, from: 2025, to: 2026, color: "#6b9a78" }
           - { label: 持续更新, from: 2026, to: 2027, color: "#16a34a" }
 
   - type: personality_photo

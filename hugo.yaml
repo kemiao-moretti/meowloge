@@ -81,7 +81,7 @@ menus:
       params:
         icon: fas fa-tags
     - name: 相册
-      pageRef: /gallery # 指向相册页（糖果屋相册模板）
+      pageRef: /gallery # 指向相册页（纸张相册模板）
       parent: personal
       weight: 20
       params:
@@ -170,23 +170,13 @@ params:
 
   # ===== solitude 主题专属配置 =====
   solitude:
-    # --- 糖果屋魔改 · 主题主色（styles.html 注入为 --solitude-theme-* 变量） ---
+    # --- 纸张手账主题令牌（styles.html 注入为 --solitude-theme-* 变量） ---
     theme_color:
-      light: "#FFA000" # 亮色主色（活力橙）
-      dark: "#FFB84D" # 暗色主色（柔和橙）
+      light: "#6B9A78" # 亮色强调色（纸张植物绿）
+      dark: "#8FC29A" # 暗色强调色（柔和植物绿）
       nav_hover_text:
-        light: "#241A12" # 亮色导航 hover 文字（橙底深字）
-        dark: "#241A12" # 暗色导航 hover 文字
-
-    # --- 糖果屋魔改 · 画布与几何配置（styles.html 注入为 --solitude-candy-* 变量） ---
-    candy:
-      bg: "#FFF6E5" # 亮色页面底色（奶油纸）
-      bg_dark: "#241A12" # 暗色页面底色（深可可）
-      card: "#FFFDF7" # 亮色卡片背景
-      ink: "#1F1B16" # 亮色文字主色 / 描边色
-      radius: "6px" # 圆角
-      border_width: "2px" # 描边粗细（糖果粗描边）
-      shadow_offset: "4px" # 硬阴影偏移
+        light: "#304A37" # 亮色导航 hover 文字
+        dark: "#1C211F" # 暗色导航 hover 文字
 
     # 注入到 <head> 的自定义 HTML/CSS（不改主题文件，随站点配置生效）
     extends:
@@ -357,7 +347,7 @@ params:
           - https://icanhazip.com/
         # 备用查位置源：%s 会被替换为上一步取得的 IP，无需 Key
         fallbackApi: https://ipapi.co/%s/json/
-        # 地区 Tip 文案（糖果屋精简版）：key 支持「省-市」「市」「省」「国家」逐级回退
+        # 地区 Tip 文案（精简版）：key 支持「省-市」「市」「省」「国家」逐级回退
         tips:
           default: 带我去你的城市逛逛吧
           北京: 烤鸭排队的队伍，算我一个
@@ -442,7 +432,7 @@ params:
         mode: local # 取色方式（local 表示本地处理图片取色）
       # 文末"赞赏/打赏"模块：渲染在正文与版权卡片之后
       # 弹层的几何样式来自主题 pages/post.css 的 .post-reward 区块，
-      # 展开交互（悬停 / 聚焦 / 触屏点击）在 candy-components.css 里补齐。
+      # 展开交互（悬停 / 聚焦 / 触屏点击）由主题的兼容层提供。
       # 文案留空时回落到主题 i18n 的 postReward* 三处默认值。
       award:
         enable: true # 是否启用打赏

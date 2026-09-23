@@ -1,6 +1,6 @@
 # 喵洛阁 Meowloge
 
-基于 Hugo 搭建的个人博客，主题是自改的 Solitude（糖果屋魔改版），部署在 Cloudflare Pages。
+基于 Hugo 搭建的个人博客，主题是自改的 Solitude（纸张手账风格），部署在 Cloudflare Pages。
 
 - 站点地址：https://blog.518339.xyz/
 - 仓库：https://github.com/kemiao-moretti/blog
@@ -212,7 +212,7 @@ award:
 
 - 模板 `layouts/_partials/post-reward.html`，由 `layouts/posts/page.html` 在版权卡片之后引入
 - 弹层几何样式在主题上游的 `assets/css/solitude/pages/post.css`（`.post-reward` 区块，本来就是给这个模块准备的，只是上游一直没写模板）
-- 展开/收起与窄屏收敛在 `assets/css/solitude/foundation/candy-components.css`
+- 展开/收起与窄屏收敛在 `themes/solitude/assets/css/solitude/integrations/paper-reward.css`
 - 触屏点击开关在 `assets/ts/post-reward.ts`，已注册进 `entry.ts`；事件挂在 `document` 上，PJAX 换页不用重新绑定
 
 一个坑：`.reward-main` 带着 `donate_effcet` 动画，而那段动画会改 `transform`，所以窄屏居中只能用 `translate` 属性，写 `transform: translateX(-50%)` 会被动画盖掉。
