@@ -1,3 +1,8 @@
+# 本地密钥配置
+.env
+.env.*
+!.env.example
+
 # Hugo 构建产物与本地运行时文件
 public/
 resources/_gen/
@@ -12,3 +17,5 @@ backup/
 
 # 可视化伴侣会话文件（superpowers brainstorming mockup/事件）
 .superpowers/
+public-verify/
+.workbuddy/

@@ -1,19 +1,19 @@
 title: 关于本站
 author_box:
   enabled: true
-  image: /img/logo.png
+  image: /img/avatar.png
   alt: 克喵Moretti 的头像
   status: online
   tags_left:
-    - 🤖 数码科技爱好者
-    - 🔍 分享与热心帮助
-    - 🏠 智能家居小能手
-    - 🔨 设计开发一条龙
+    - 🤖 博客魔改者
+    - 🔍 资源分享者
+    - 🏠 日常记录者
+    - 🔨 踩坑吐槽者
   tags_right:
-    - 🤝 专修交互与设计
-    - 🏃 脚踏实地行动派
-    - 🧱 团队小组发动机
-    - 💢 社恐人狠话不多
+    - 🤝 网上邻居~
+    - 🏃 自动化专业
+    - 🧱 大四上课中~
+    - 💢 ai编程中~
 sections:
   - type: intro
     greeting: 你好，欢迎来到喵洛阁 👋
@@ -23,7 +23,7 @@ sections:
     pursuit:
       label: 追求
       lines: [记录生活, 分享创造]
-      rotating_words: [折腾, 记录, 分享, 创造]
+      rotating_words: [文字, 记录, 分享, 踩坑]
 
   - type: skills_career
     skills:
@@ -41,16 +41,20 @@ sections:
         - { name: Cloudflare, icon: fas fa-cloud, color: "#f38020" }
         - { name: Git, icon: fab fa-git-alt, color: "#f05032" }
         - { name: Markdown, icon: fab fa-markdown, color: "#111827" }
-        - { name: Accessibility, icon: fas fa-universal-access, color: "#8b5cf6" }
+        - {
+            name: Accessibility,
+            icon: fas fa-universal-access,
+            color: "#8b5cf6",
+          }
         - { name: Performance, icon: fas fa-gauge-high, color: "#059669" }
         - { name: SEO, icon: fas fa-magnifying-glass, color: "#f59e0b" }
     career:
       label: 站点历程
-      title: 从建站到糖果屋
+      title: 从建站到喵洛阁Meowloge
       summary:
         - { name: "2024, 建站起步", color: "#425aef" }
-        - { name: "2025, 糖果屋主题定制", color: "#ff4088" }
-        - { name: "现在, 持续更新", color: "#16a34a" }
+        - { name: "2025, 各个框架博客尝试/魔改", color: "#ff4088" }
+        - { name: "现在, 使用Hugo构建站点", color: "#16a34a" }
       timeline:
         start: 2024
         end: 2027
@@ -66,16 +70,21 @@ sections:
   - type: personality_photo
     personality:
       label: 性格
-      title: 博主档案
-      type: ENFJ-A
+      title: 提倡者
+      type: INFJ-T
       color: "#56ad83"
-      image: /img/logo.png
+      image: /img/about/infj-t.webp
       image_alt: 克喵Moretti 的方形站标
-      link: { text: 了解人格档案, url: "https://www.16personalities.com/enfj-personality", external: true }
+      link:
+        {
+          text: 了解人格档案,
+          url: "https://www.16personalities.com/infj-personality",
+          external: true,
+        }
     photo:
-      image: /img/logo.png
+      image: /img/avatar.png
       alt: 喵洛阁站标
-      badge: /img/logo.png
+      badge: /img/avatar.png
 
   - type: values
     motto:
@@ -85,34 +94,34 @@ sections:
     expertise:
       label: 擅长
       prefix: 专注于
-      specialist: 折腾与分享
+      specialist: 博客魔改/项目完善
       content: 把想法
-      level: 落地成篇
+      level: 逐步落实
 
   - type: interests
     items:
-      - variant: game
-        label: 爱好游戏
-        title: 英雄联盟
-        background: /img/demo/about/game-aram-v2.webp
+      - variant: ai-code
+        label: 爱好ai编程
+        title: 博客/web编程
+        background: /img/about/ai-code.jpg
         mode:
-          name: 大乱斗
-          tooltip: 极地大乱斗模式
-          image: /img/demo/about/mode-aram-v2.webp
+          name: 编程agent
+          tooltip: Proma
+          image: /img/about/proma-blue.png
         heroes:
-          - { name: 老鼠, image: /img/demo/about/hero-twitch-v2.webp }
-          - { name: 妮蔻, image: /img/demo/about/hero-neeko-v2.webp }
-          - { name: 慧, image: /img/demo/about/hero-hwei-v2.webp }
-          - { name: 梅尔, image: /img/demo/about/hero-mel-v2.webp }
-          - { name: 小火龙, image: /img/demo/about/hero-smolder-v2.webp }
-          - { name: 龙王, image: /img/demo/about/hero-aurelion-sol-v2.webp }
-        right_text: 网通一区
-        right_tip: 跨区匹配支持 比尔吉沃特 弗雷尔卓德 扭曲丛林
+          - { name: Deepseek, image: /img/about/ai/deepseek.png }
+          - { name: GLM, image: /img/about/ai/zhipu.png }
+          - { name: Qwen, image: /img/about/ai/qwen.png }
+          - { name: openai, image: /img/about/ai/openai.png }
+          - { name: Kimi, image: /img/about/ai/Kimi.png }
+          - { name: Grok, image: /img/about/ai/grok.png }
+        right_text: GLM 5.3
+        right_tip: 国内目前感觉不错的模型
       - variant: media
         label: 音乐偏好
-        title_lines: ["Rap、民谣、", 华语流行]
+        title_lines: ["国风", 华语流行]
         subtitle: 来听听看我的更多推荐
-        background: /img/demo/about/music-listening-v2.webp
+        background: /img/about/music.webp
         button:
           text: 更多推荐
           url: /music/
@@ -121,13 +130,12 @@ sections:
 
   - type: story
     label: 关于本站
-    title: 为什么搭建喵洛阁？
+    title: 喵洛阁搭建历程/一些须知
     content: |
-      喵洛阁是一块安静的自留地，用来安放我写下的一些文字：有折腾博客主题的配置指南，有前端与服务的实践记录，也有一些生活的碎碎念。页面不必喧闹，但每一篇文章都应该被清楚地组织、舒适地阅读，也能被搜索、分类和长期保存。
+      欢迎来到「喵洛阁」！你可以称呼我克喵~我在这个博客记录我的生活日常、踩坑经历和资源分享。资源和部分教程来自互联网上的公开项目和应用。在使用/借鉴前需要自我评估和测试。如果我的内容影响到了您的合法权益，请及时 **[联系](mailto:contact@518339.xyz)** 我。
 
-      站点基于 Solitude 主题搭建，并定制成现在的糖果屋风格：粗描边、硬阴影与圆角统一，亮色与暗色模式下都保持一致的阅读体验。构建过程依赖 Hugo 原生页面集合、Taxonomies、Go Templates 和资源管线，配置与数据契约清晰，便于长期维护。
+      我自2024年11月开始接触博客项目，最开始是面条大佬的[TG微博客](https://github.com/miantiao-me/BroadcastChannel)给我的启发，我开始接触博客，然后开始接触不同的博客框架，如hexo、hugo、jekyll、VuePress等，我用下来最舒服的是hugo、Astro、Nuxt，目前本博客是everfu基于[张洪heo的博客](https://blog.zheheo.com)，，进行设计的[Hugo项目](https://github.com/everfu/hugo-solitude)，我基于此博客进行了魔改，你可以在此找到[源码](https://github.com/kemiao-moretti/blog)。
 
-      这里展示的不只是主题能力，也是我持续记录、持续折腾的过程。未来的文章会继续围绕技术、生活与兴趣展开，让这些文字始终服务于表达本身。
 reward:
   enabled: true
   tip: 致谢
@@ -147,9 +155,9 @@ reward:
     tips: 感谢您的支持，您的鼓励是我创作的最大动力！
     wechat:
       label: 微信
-      image: /img/spnosor/weixin.png
+      image: /img/sponsor/weixin.png
     alipay:
       label: 支付宝
-      image: /img/spnosor/zhifubao.png
+      image: /img/sponsor/zhifubao.png
   donations:
-    - {name: 测试申请, amount: '12', date: '2026-09-19', issue_id: 3}
+    - { name: 测试申请, amount: "12", date: "2026-09-19", issue_id: 3 }

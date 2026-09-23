@@ -24,10 +24,10 @@ theme: solitude
 # 控制各类页面生成哪些输出：HTML 是页面本身，RSS 是订阅源，
 # Search 和 Links 是 solitude 主题扩展的输出（本地搜索索引 / 链接数据）
 outputs:
-  home: [HTML, RSS, Search, Links]   # 首页额外生成搜索索引和链接数据
-  section: [HTML, RSS]               # 列表页（如分类/标签下的文章列表）
-  taxonomy: [HTML, RSS]              # 分类/标签总览页
-  term: [HTML, RSS]                  # 单个分类/标签页
+  home: [HTML, RSS, Search, Links] # 首页额外生成搜索索引和链接数据
+  section: [HTML, RSS] # 列表页（如分类/标签下的文章列表）
+  taxonomy: [HTML, RSS] # 分类/标签总览页
+  term: [HTML, RSS] # 单个分类/标签页
 
 # ============ 分页 ============
 # 每页显示的文章数量（文章列表页每页 10 篇）
@@ -54,7 +54,7 @@ menus:
       identifier: friends
       weight: 20
     # "项目"父菜单
-    - name: 项目
+    - name: 页面
       identifier: personal
       weight: 30
     # "留言"父菜单（说说等内容向互动入口）
@@ -62,39 +62,45 @@ menus:
       identifier: message
       weight: 40
     # ↓ 以下是"文库"下的子菜单
-    - name: 全部文章          # 子菜单显示文字
-      pageRef: /archives      # 指向归档页（全部文章列表）
-      parent: library         # 归属哪个父菜单（对应上面的 identifier）
-      weight: 10              # 在兄弟子菜单中的排序
+    - name: 全部文章 # 子菜单显示文字
+      pageRef: /archives # 指向归档页（全部文章列表）
+      parent: library # 归属哪个父菜单（对应上面的 identifier）
+      weight: 10 # 在兄弟子菜单中的排序
       params:
-        icon: fas fa-folder-closed   # 菜单项图标（Font Awesome 类名）
+        icon: fas fa-folder-closed # 菜单项图标（Font Awesome 类名）
     - name: 全部分类
-      pageRef: /categories    # 指向分类总览页
+      pageRef: /categories # 指向分类总览页
       parent: library
       weight: 20
       params:
         icon: fas fa-clone
     - name: 全部标签
-      pageRef: /tags          # 指向标签总览页
+      pageRef: /tags # 指向标签总览页
       parent: library
       weight: 30
       params:
         icon: fas fa-tags
     - name: 相册
-      pageRef: /gallery       # 指向相册页（糖果屋相册模板）
-      parent: library
-      weight: 40
+      pageRef: /gallery # 指向相册页（糖果屋相册模板）
+      parent: personal
+      weight: 20
       params:
         icon: fas fa-images
     - name: 数据统计
-      pageRef: /stats         # 指向数据统计页（ECharts 图表 + 写作热力图）
+      pageRef: /stats # 指向数据统计页（ECharts 图表 + 写作热力图）
       parent: library
       weight: 50
       params:
         icon: fas fa-chart-simple
+    - name: AI 日报
+      pageRef: /ai-news
+      parent: personal
+      weight: 10
+      params:
+        icon: fas fa-newspaper
     # ↓ 以下是"友链"下的子菜单
     - name: 友情链接
-      pageRef: /links         # 指向友链页
+      pageRef: /links # 指向友链页
       parent: friends
       weight: 10
       params:
@@ -110,44 +116,44 @@ menus:
     - name: 友链朋友圈
       pageRef: /fcircle
       parent: friends
-      weight: 25
+      weight: 20
       params:
         icon: fas fa-circle-nodes
     # "宝藏博主"没有 pageRef，而是用 action: travelling（主题内置的开往/漫游行为）
     - name: 宝藏博主
       parent: friends
-      weight: 20
+      weight: 25
       params:
         action: travelling
         icon: fas fa-gift
     # ↓ 以下是"项目"下的子菜单
     - name: 我的装备
-      pageRef: /equipment     # 指向装备页
+      pageRef: /equipment # 指向装备页
       parent: personal
-      weight: 10
+      weight: 30
       params:
         icon: fas fa-cogs
-    - name: 关于主题
-      pageRef: /about         # 指向关于页
+    - name: 关于我
+      pageRef: /about # 指向关于页
       parent: personal
       weight: 20
       params:
         icon: fas fa-user
     - name: 更新日志
-      pageRef: /changelog     # 指向更新日志页（changelog 内容集合）
+      pageRef: /changelog # 指向更新日志页（changelog 内容集合）
       parent: personal
-      weight: 30
+      weight: 40
       params:
         icon: fas fa-clock-rotate-left
     # ↓ 以下是"留言"下的子菜单
     - name: 说说
-      pageRef: /shuoshuo      # 指向 Ech0 说说页
+      pageRef: /shuoshuo # 指向 Ech0 说说页
       parent: message
       weight: 10
       params:
         icon: fas fa-comment-dots
     - name: 留言板
-      pageRef: /message       # 指向主题内置的 message 弹幕留言板页
+      pageRef: /message # 指向主题内置的 message 弹幕留言板页
       parent: message
       weight: 20
       params:
@@ -157,8 +163,8 @@ menus:
 params:
   # 作者信息
   author:
-    name: 克喵Moretti          # 作者名，显示在文章页作者栏、页脚等处
-    email: mcy@kemiaosw.top    # 作者邮箱，部分主题位置会展示或用于头像
+    name: 克喵Moretti # 作者名，显示在文章页作者栏、页脚等处
+    email: mcy@kemiaosw.top # 作者邮箱，部分主题位置会展示或用于头像
   # 站点描述（slogan），显示在页脚、SEO meta description 中
   description: 克喵的小站，记录着我的一些文字~
 
@@ -166,26 +172,26 @@ params:
   solitude:
     # --- 糖果屋魔改 · 主题主色（styles.html 注入为 --solitude-theme-* 变量） ---
     theme_color:
-      light: "#FFA000"   # 亮色主色（活力橙）
-      dark: "#FFB84D"    # 暗色主色（柔和橙）
+      light: "#FFA000" # 亮色主色（活力橙）
+      dark: "#FFB84D" # 暗色主色（柔和橙）
       nav_hover_text:
         light: "#241A12" # 亮色导航 hover 文字（橙底深字）
-        dark: "#241A12"  # 暗色导航 hover 文字
+        dark: "#241A12" # 暗色导航 hover 文字
 
     # --- 糖果屋魔改 · 画布与几何配置（styles.html 注入为 --solitude-candy-* 变量） ---
     candy:
-      bg: "#FFF6E5"          # 亮色页面底色（奶油纸）
-      bg_dark: "#241A12"     # 暗色页面底色（深可可）
-      card: "#FFFDF7"        # 亮色卡片背景
-      ink: "#1F1B16"         # 亮色文字主色 / 描边色
-      radius: "6px"          # 圆角
-      border_width: "2px"    # 描边粗细（糖果粗描边）
-      shadow_offset: "4px"   # 硬阴影偏移
+      bg: "#FFF6E5" # 亮色页面底色（奶油纸）
+      bg_dark: "#241A12" # 暗色页面底色（深可可）
+      card: "#FFFDF7" # 亮色卡片背景
+      ink: "#1F1B16" # 亮色文字主色 / 描边色
+      radius: "6px" # 圆角
+      border_width: "2px" # 描边粗细（糖果粗描边）
+      shadow_offset: "4px" # 硬阴影偏移
 
     # 注入到 <head> 的自定义 HTML/CSS（不改主题文件，随站点配置生效）
     extends:
       head:
-        - '<style>.card-info .description{display:block}.card-info .description kbd{display:inline-block;padding:0 6px;margin:0 2px;border-radius:4px;border:1px solid currentColor;box-shadow:0 2px 0 rgba(0,0,0,.15);font-size:12px;line-height:1.5;vertical-align:middle}</style>'
+        - "<style>.card-info .description{display:block}.card-info .description kbd{display:inline-block;padding:0 6px;margin:0 2px;border-radius:4px;border:1px solid currentColor;box-shadow:0 2px 0 rgba(0,0,0,.15);font-size:12px;line-height:1.5;vertical-align:middle}</style>"
         # Umami 站点统计
         - '<script defer src="https://um.081531.xyz/script.js" data-website-id="668e3622-d145-4b4b-a52f-8b41ae8357a8"></script>'
     # --- 友链交换页（/exchange/，content/exchange 的 type 需为 exchange） ---
@@ -240,7 +246,7 @@ params:
           items:
             name: 喵洛阁
             link: https://blog.518339.xyz/
-            avatar: https://blog.518339.xyz/img/logo.png
+            avatar: https://blog.518339.xyz/img/avatar.png
             descr: 每一段旅行，都有终点。
             linkpage: https://blog.518339.xyz/links/
         # 申请格式说明
@@ -253,41 +259,64 @@ params:
         # 留空则回退到友链交换页 /exchange/
         tombstone_recover_url: https://github.com/kemiao-moretti/meowloge/issues
 
+    # --- AI 日报（/ai-news/） ---
+    ai_news:
+      enable: true
+      api: https://60s-api.518339.xyz/v2/ai-news
+      cache_minutes: 60
+      timeout_ms: 8000
+      range_days: 7
+      timezone: Asia/Shanghai
+      group_by_date: true
+      title: AI 日报
+      description: 聚合 AI、大模型与相关行业资讯，关注每天值得知道的新动态。
+      loading: 正在获取今日 AI 资讯…
+      empty: ""
+      error: AI 日报暂时无法更新，将优先展示最近一期内容。
+      error_empty: AI 日报请求失败，暂时没有可展示的内容，请重试或刷新页面。
+      retry: 重试
+      malformed: 今日数据格式异常，请稍后重试或刷新页面。
+      previous: 上一期日报
+      updated: 数据更新时间
+      source: 来源
+      detail: 摘要
+      link: 阅读原文
+      no_link: 暂无原文链接
     # --- 站点标识样式 ---
     site:
       name:
-        class: text          # 站点名的展示样式（text 表示纯文字）
-        custom: 喵洛阁Meowloge    # 自定义显示的站名文字（覆盖默认的 title）
+        class: text # 站点名的展示样式（text 表示纯文字）
+        custom: 喵洛阁Meowloge # 自定义显示的站名文字（覆盖默认的 title）
 
     # --- 导航右侧"快捷分组"链接 ---
     # 显示在页头导航栏右侧的图标链接组
     nav:
       group:
-        项目:                # 分组名称
-          - name: Solitude                 # 链接显示名
-            url: https://github.com/everfu/hugo-solitude   # 跳转地址
-            icon: /img/logo.png          # 图标图片（static/img/logo.png）
-          - name: 官方文档
-            url: https://solitude.js.org/
-            icon: /img/logo.png
+        项目: # 分组名称
+          - name: Memos # 链接显示名
+            url: https://memos.518330.xyz/ # 跳转地址
+            icon: https://a.favicon.im/usememos.com # 图标图片（static/img/avatar.png）
+          # - name: 官方文档
+          #   url: https://solitude.js.org/
+          #   icon: /img/avatar.png
 
     # --- 首页顶部 Banner 区域 ---
     hometop:
       banner:
-        title: 用 Solitude<br>记录与创造   # 首页大标题（支持 <br> 换行）
-        desc: Hugo 主题演示、配置指南与前端实践   # Banner 下方的描述文字
+        title: 喵洛阁Meowloge<br>记录我的一些文字 # 首页大标题（支持 <br> 换行）
+        desc: 博客写作、项目分享、日常记录 # Banner 下方的描述文字
       # 首页"推荐文章"卡片列表（不是自动生成的，完全由这里手工指定）
       recommendList:
-        - title: 开始使用 Solitude Hugo      # 卡片标题
-          url: /p/getting-started.html      # 点击跳转的文章链接
-          cover: /img/demo/cover-getting-started-v2.webp   # 卡片封面图
-          label: 迁移指南                    # 卡片上的角标文字
-          color: "#3b82f6"                  # 角标颜色
-        - title: 配置首页推荐与侧栏组合
-          url: /p/homepage-and-aside.html
-          cover: /img/demo/cover-pagination-v2.webp
-          label: 配置指南
-          color: "#16a34a"
+        # - title: 开始使用 Solitude Hugo      # 卡片标题
+        #   url: /p/getting-started.html      # 点击跳转的文章链接
+        #   cover: /img/demo/cover-getting-started-v2.webp   # 卡片封面图
+        #   label: 迁移指南                    # 卡片上的角标文字
+        #   color: "#3b82f6"                  # 角标颜色
+        # - title: 配置首页推荐与侧栏组合
+        #   url: /p/homepage-and-aside.html
+        #   cover: /img/demo/cover-pagination-v2.webp
+        #   label: 配置指南
+        #   color: "#16a34a"
 
     # --- 侧边栏（aside）模块配置 ---
     aside:
@@ -295,33 +324,33 @@ params:
       # noSticky: 不吸顶的模块（随页面滚动） / Sticky: 吸顶的模块（滚动时固定）
       # 模块名可换顺序、增删，逗号分隔
       home:
-        noSticky: about,ipWelcome,clock   # 首页不吸顶：作者卡片、访客欢迎、时钟
+        noSticky: about,ipWelcome,clock # 首页不吸顶：作者卡片、访客欢迎、时钟
         Sticky: newest_comment,allInfo # 首页吸顶：最新评论、站点信息
       post:
         noSticky: about,clock
-        Sticky: newestPost,newest_comment,allInfo   # 文章页吸顶：最新文章、最新评论、站点信息
+        Sticky: newestPost,newest_comment,allInfo # 文章页吸顶：最新文章、最新评论、站点信息
       page:
         noSticky: about,clock
         Sticky: newestPost,newest_comment,allInfo
       # --- 时钟模块（clock）：移植自 hexo-butterfly-clock-veeink ---
       clock:
-        enable: true                    # 是否启用侧栏时钟卡片
-        city: 南京                       # 卡片上显示的城市名
-        locationId: "101190101"         # 和风天气 LocationID（南京）
-        qweatherKey: a228d00223c6456cb3b4879167e58578   # 和风天气 API Key
-        qweatherHost: https://devapi.qweather.com       # 和风天气 API 主机（免费开发版）
-        timezone: Asia/Shanghai         # 时钟时区
-        cacheMinutes: 30                # 天气结果缓存分钟数（省额度）
+        enable: true # 是否启用侧栏时钟卡片
+        city: 南京 # 卡片上显示的城市名
+        locationId: "101190101" # 和风天气 LocationID（南京）
+        qweatherKey: a228d00223c6456cb3b4879167e58578 # 和风天气 API Key
+        qweatherHost: https://devapi.qweather.com # 和风天气 API 主机（免费开发版）
+        timezone: Asia/Shanghai # 时钟时区
+        cacheMinutes: 30 # 天气结果缓存分钟数（省额度）
       # --- 访客欢迎模块（ipWelcome）：放在时钟卡片上方，仅首页显示 ---
       ipWelcome:
-        enable: true                    # 是否启用侧栏访客欢迎卡片
+        enable: true # 是否启用侧栏访客欢迎卡片
         # 站长坐标（用于计算访客与站长的直线距离，默认与时钟城市南京一致）
-        bloggerLat: 32.0603             # 纬度（南京）
-        bloggerLng: 118.7969            # 经度（南京）
-        cacheHours: 24                  # 定位结果缓存小时数（避免每次刷新都请求外部接口）
-        timeoutMs: 6000                 # 单次接口超时毫秒数
+        bloggerLat: 32.0603 # 纬度（南京）
+        bloggerLng: 118.7969 # 经度（南京）
+        cacheHours: 24 # 定位结果缓存小时数（避免每次刷新都请求外部接口）
+        timeoutMs: 6000 # 单次接口超时毫秒数
         # 主源：一次返回 ip / 国家 / 省市 / 经纬度，无需 Key
-        primaryApi: https://api.ip.sb/geoip
+        primaryApi: https://60s-api.518339.xyz/v2/ip
         # 备用取 IP 源（主源失败时按顺序尝试，成功即停）
         ipApis:
           - https://api.ipify.org?format=json
@@ -381,11 +410,11 @@ params:
       # 作者个人信息卡片（侧栏最上方的名片）
       my_card:
         author:
-          img: https://q2.qlogo.cn/headimg_dl?dst_uin=3149261770&spec=0   # 头像图片地址
-          emoji: "😊"                   # 名片上的装饰表情
-        description: 每一段旅行，都有终点。   # 名片签名
-        content: 我在本博客上记录着我的一些文字~<br>如果你在访问的过程中发现问题，优先检查网络，<kbd>CTRL</kbd> + <kbd>F5</kbd> 刷新网页。                    # 打字机效果的前缀文字（支持 HTML，需配合 extends.head 里的样式覆盖）
-        witty_words: [人生如逆旅，我亦是行人。]   # 打字机轮播的句子
+          img: https://q2.qlogo.cn/headimg_dl?dst_uin=3149261770&spec=0 # 头像图片地址
+          emoji: "😊" # 名片上的装饰表情
+        description: 每一段旅行，都有终点。 # 名片签名
+        content: 我在本博客上记录着我的一些文字~<br>如果你在访问的过程中发现问题，优先检查网络，<kbd>CTRL</kbd> + <kbd>F5</kbd> 刷新网页。 # 打字机效果的前缀文字（支持 HTML，需配合 extends.head 里的样式覆盖）
+        witty_words: [人生如逆旅，我亦是行人。] # 打字机轮播的句子
         # 名片上的社交信息图标
         information:
           - name: GitHub
@@ -393,7 +422,7 @@ params:
             icon: fab fa-github
       # 页脚上方的"站点信息"模块
       siteinfo:
-        runtime: 2024-11-01 12:00:00   # 建站时间，页脚显示"本站已运行 X 天"从此时间起算
+        runtime: 2024-11-01 12:00:00 # 建站时间，页脚显示"本站已运行 X 天"从此时间起算
 
     # --- 文章页配置 ---
     post:
@@ -405,37 +434,53 @@ params:
           #   让版权卡片只显示单张圆形头像。
       # 文章顶部 meta 信息展示开关
       meta:
-        pv: true        # 是否显示文章浏览量
-        comment: true   # 是否显示评论数
+        pv: true # 是否显示文章浏览量
+        comment: true # 是否显示评论数
       # 封面主色调提取：让文章头图融入页面背景
       covercolor:
-        enable: true    # 是否启用
-        mode: local     # 取色方式（local 表示本地处理图片取色）
-      # 文末"赞赏/打赏"模块
+        enable: true # 是否启用
+        mode: local # 取色方式（local 表示本地处理图片取色）
+      # 文末"赞赏/打赏"模块：渲染在正文与版权卡片之后
+      # 弹层的几何样式来自主题 pages/post.css 的 .post-reward 区块，
+      # 展开交互（悬停 / 聚焦 / 触屏点击）在 candy-components.css 里补齐。
+      # 文案留空时回落到主题 i18n 的 postReward* 三处默认值。
       award:
-        enable: true    # 是否启用打赏
+        enable: true # 是否启用打赏
+        button: 赞赏 # 按钮文案
+        title: 喜欢这篇文章，就请我喝杯奶茶吧 # 弹层标题
+        link: https://github.com/kemiao-moretti/meowloge/issues/new?template=sponsor.yml # 弹层底部按钮地址，留空则不渲染按钮
+        link_text: 申请加入赞赏名单 # 按钮主文案
+        link_desc: 审核通过后出现在关于页的公开名单里 # 按钮副文案，留空则不显示
         list:
-          - name: Demo                     # 打赏方式名称
-            qrcode: /img/demo/reward-qr.svg   # 收款二维码图片
+          - name: 支付宝 # 打赏方式名称
+            qrcode: /img/sponsor/zhifubao.png # 收款二维码图片
+          - name: 微信
+            qrcode: /img/sponsor/weixin.png
       # 文章分享按钮
       share:
-        enable: false   # 是否启用分享
-        list: []        # 分享平台列表（留空表示不展示）
+        enable: false # 是否启用分享
+        list: [] # 分享平台列表（留空表示不展示）
+    # --- 文章 AI 摘要 ---
+    ai_summary:
+      enable: true # 是否在文章页展示 ai_summary 字段
+      title: AI 摘要
+      model: AI generated
+      loading: 正在整理文章重点……
     # --- 页脚配置 ---
     footer:
       information:
-        author: https://openlist.081531.xyz/d/yidong/imgbed/meowloge.webp   # 页脚展示的站点 logo
-        left:                   # 页脚左侧的链接
+        author: https://openlist.081531.xyz/d/yidong/imgbed/meowloge.webp # 页脚展示的站点 logo
+        left: # 页脚左侧的链接
           - name: GitHub
-            url: https://github.com/everfu/hugo-solitude
+            url: https://github.com/kmoretti
             icon: fab fa-github
-        right:                  # 页脚右侧的链接
+        right: # 页脚右侧的链接
           - name: 订阅
-            url: /index.xml     # RSS 订阅地址
+            url: /index.xml # RSS 订阅地址
             icon: fas fa-rss
       # 页脚的"链接分组"（多列站点导航）
       group:
-        探索:                    # 分组标题
+        探索: # 分组标题
           - name: 文章
             url: /archives/
           - name: 分类
@@ -450,7 +495,7 @@ params:
         关于:
           - name: 友链
             url: /links/
-          - name: 关于主题
+          - name: 关于我
             url: /about/
       # 页脚底部的自定义自定义链接行
       links:
@@ -459,142 +504,143 @@ params:
 
     # --- 评论系统 ---
     comment:
-      use: artalk            # 使用哪个评论系统（artalk / valine，切回 Valine 改回 valine 即可）
-      commentBarrage: true    # 是否启用"弹幕式评论"（文章页底部滚动飘过的评论）
-      lazyload: false         # 评论组件是否懒加载（滚动到评论区才加载）
-      count: true             # 是否显示评论数
-      sidebar: true           # 是否在侧栏显示评论模块
-      pv: true                # 是否统计页面浏览量
-      avatar: https://cn.cravatar.com   # 评论者头像服务地址
+      use: artalk # 使用哪个评论系统（artalk / valine，切回 Valine 改回 valine 即可）
+      commentBarrage: true # 是否启用"弹幕式评论"（文章页底部滚动飘过的评论）
+      lazyload: false # 评论组件是否懒加载（滚动到评论区才加载）
+      count: true # 是否显示评论数
+      sidebar: true # 是否在侧栏显示评论模块
+      pv: true # 是否统计页面浏览量
+      avatar: https://cn.cravatar.com # 评论者头像服务地址
       hot_tip:
-        enable: false         # 是否显示"热评"提示
-        count: 3              # 热评数量
+        enable: false # 是否显示"热评"提示
+        count: 3 # 热评数量
       # 侧栏"最新评论"模块
       newest_comment:
-        enable: true          # 是否启用
-        storage: 0.5          # 本地缓存时间（小时），减少重复请求
-        limit: 5              # 显示的评论条数
+        enable: true # 是否启用
+        storage: 0.5 # 本地缓存时间（小时），减少重复请求
+        limit: 5 # 显示的评论条数
     # --- Valine 评论系统配置（use: valine 时生效） ---
     valine:
-      appId: lUYWcy5GblLUZOCvcSdDiLP9-gzGzoHsz          # LeanCloud 应用 AppID
-      appKey: nKcAGPsR1ydwQjEFZcMFNGJG                  # LeanCloud 应用 AppKey
-      serverURLs: https://luywcy5g.lc-cn-n1-shared.com  # LeanCloud 服务器地址
-      avatar: https://weavatar.com/avatar/              # 头像服务地址
-      visitor: true           # 是否启用文章阅读量统计
-      style: true             # 是否使用主题定制的评论样式
-      option: {}              # 传给 Valine 的额外配置项
+      appId: lUYWcy5GblLUZOCvcSdDiLP9-gzGzoHsz # LeanCloud 应用 AppID
+      appKey: nKcAGPsR1ydwQjEFZcMFNGJG # LeanCloud 应用 AppKey
+      serverURLs: https://luywcy5g.lc-cn-n1-shared.com # LeanCloud 服务器地址
+      avatar: https://weavatar.com/avatar/ # 头像服务地址
+      visitor: true # 是否启用文章阅读量统计
+      style: true # 是否使用主题定制的评论样式
+      option: {} # 传给 Valine 的额外配置项
     # --- Artalk 评论系统配置（use: artalk 时生效，自托管服务端） ---
     artalk:
-      server: https://artalk.081531.xyz     # Artalk 服务端地址（需在后台信任域名中加入博客域名）
-      site: 喵洛阁Meowloge                           # Artalk 后台配置的站点名，需与服务端一致
-      pv: true                              # 使用 Artalk page_pv 统计文章浏览量
-      placeholder:                          # 评论区输入框占位文案（留空用 Artalk 默认）
-      option: {}              # 传给 Artalk.init 的额外配置项（覆盖同名默认值）
+      server: https://artalk.518339.xyz # Artalk 服务端地址（需在后台信任域名中加入博客域名）
+      site: 喵洛阁Meowloge # Artalk 后台配置的站点名，需与服务端一致
+      pv: true # 使用 Artalk page_pv 统计文章浏览量
+      placeholder: 欢迎留下你的文字~ # 评论区输入框占位文案（留空用 Artalk 默认）
+      option: {} # 传给 Artalk.init 的额外配置项（覆盖同名默认值）
 
     # --- 说说页（/shuoshuo/，Ech0 或 Memos 数据源） ---
     shuoshuo:
-      enable: true              # 是否启用该页面渲染
-      source: memos              # 数据源：ech0 | memos（缺省 ech0，向后兼容）
+      enable: true # 是否启用该页面渲染
+      source: memos # 数据源：ech0 | memos（缺省 ech0，向后兼容）
       api: https://m.081531.xyz # 数据源 API 地址（source=memos 时使用下方 memos.api）
-      page_size: 30             # 每页条数
-      cache_minutes: 30         # 前端缓存时长（分钟）
+      page_size: 30 # 每页条数
+      cache_minutes: 30 # 前端缓存时长（分钟）
       author:
-        name: 克喵Moretti       # 卡片头部昵称（数据源返回的 username 优先）
-        avatar: https://q2.qlogo.cn/headimg_dl?dst_uin=3149261770&spec=0  # 头像
-      like: true                # 是否显示点赞按钮（仅 Ech0 生效）
+        name: 克喵Moretti # 卡片头部昵称（数据源返回的 username 优先）
+        avatar: https://q2.qlogo.cn/headimg_dl?dst_uin=3149261770&spec=0 # 头像
+      like: true # 是否显示点赞按钮（仅 Ech0 生效）
       tags:
-        enable: true            # 是否显示标签
-      extensions:               # 扩展卡片开关（按 source 取对应数据）
-        github: true            # GITHUBPROJ（Ech0）
-        website: true           # WEBSITE（Ech0 / Memos 正文外链自动推导）
-        music: true             # MUSIC（Ech0）
-        video: true             # VIDEO（Ech0）
-        tweet: true             # TWEET（Ech0）
-        location: false         # LOCATION（默认关闭，避免暴露精确坐标）
-      memos:                    # source=memos 时生效
-        api: https://memos.518339.xyz  # Memos 实例地址
-        creator: users/kemiao          # 仅拉取该用户 memos（留空则展示全部公开 memos）
-        public_only: true              # 仅展示 PUBLIC 可见性
+        enable: true # 是否显示标签
+      extensions: # 扩展卡片开关（按 source 取对应数据）
+        github: true # GITHUBPROJ（Ech0）
+        website: true # WEBSITE（Ech0 / Memos 正文外链自动推导）
+        music: true # MUSIC（Ech0）
+        video: true # VIDEO（Ech0）
+        tweet: true # TWEET（Ech0）
+        location: false # LOCATION（默认关闭，避免暴露精确坐标）
+      memos: # source=memos 时生效
+        api: https://memos.518339.xyz # Memos 实例地址
+        creator: users/kemiao # 仅拉取该用户 memos（留空则展示全部公开 memos）
+        public_only: true # 仅展示 PUBLIC 可见性
 
     # --- 友链朋友圈（/fcircle/，hexo-circle-of-friends 远程数据源） ---
     fcircle:
-      enable: true                        # 是否启用该页面渲染
-      api: https://fcircle.518339.xyz     # 自部署后端地址（代码会自动拼 /all）
-      page_size: 24                       # 每次"再来亿点"加载的文章条数
-      cache_minutes: 10                   # 整表缓存时长（分钟），0 表示不缓存
-      random_post: true                   # 是否显示"随机钓鱼"（随机推荐一篇友链文章）
-      author_modal: true                  # 点击作者头像是否弹出 TA 的文章列表
-      sort_toggle: true                   # 是否允许切换"发布时间 / 更新时间"排序
-      limit: 0                            # 最多展示的文章数，0 表示不限制
+      enable: true # 是否启用该页面渲染
+      api: https://fcircle.518339.xyz # 自部署后端地址（代码会自动拼 /all）
+      page_size: 24 # 每次"再来亿点"加载的文章条数
+      cache_minutes: 10 # 整表缓存时长（分钟），0 表示不缓存
+      random_post: true # 是否显示"随机钓鱼"（随机推荐一篇友链文章）
+      author_modal: true # 点击作者头像是否弹出 TA 的文章列表
+      sort_toggle: true # 是否允许切换"发布时间 / 更新时间"排序
+      limit: 0 # 最多展示的文章数，0 表示不限制
       error_img: /img/default_avatar.avif # 头像加载失败时的兜底图片
 
     # --- 控制台（按快捷键呼出的管理面板） ---
     console:
       recentComment:
-        enable: true          # 控制台中是否显示最近评论
-        storage: 0.2          # 缓存时间（小时）
+        enable: true # 控制台中是否显示最近评论
+        storage: 0.2 # 缓存时间（小时）
 
     # --- 右键菜单 ---
     right_menu:
-      commentBarrage: true    # 右键菜单中是否显示"评论弹幕"开关项
+      commentBarrage: true # 右键菜单中是否显示"评论弹幕"开关项
+      ctrlOriginalMenu: true # 按住 Ctrl + 右键时使用浏览器原生菜单
 
     # --- "最近评论"独立页面 ---
     recent_comments:
-      enable: true            # 是否启用该页面模块
-      limit: 50               # 展示的评论数量
-      cache: 0.2              # 缓存时间（小时）
-      page: /recentcomments/  # 页面路径（需在 content 中有对应页面）
+      enable: true # 是否启用该页面模块
+      limit: 50 # 展示的评论数量
+      cache: 0.2 # 缓存时间（小时）
+      page: /recentcomments/ # 页面路径（需在 content 中有对应页面）
 
     # --- "即刻/短文"（brevity）页面：本地数据演示（与 Ech0 说说页共存） ---
     brevity:
-      enable: true            # 是否启用
-      page: /brevity/         # 页面路径
+      enable: true # 是否启用
+      page: /brevity/ # 页面路径
 
     # --- "信封/留言板"动画页面 ---
     envelope:
-      enable: true            # 是否启用
-      line: 6                 # 信纸行数
-      speed: 20               # 打字动画速度
-      hover: true             # 鼠标悬停时是否暂停动画
-      loop: true              # 是否循环播放
-      page: /message/         # 页面路径
+      enable: true # 是否启用
+      line: 6 # 信纸行数
+      speed: 20 # 打字动画速度
+      hover: true # 鼠标悬停时是否暂停动画
+      loop: true # 是否循环播放
+      page: /message/ # 页面路径
 
     # --- 底部悬浮音乐播放器 ---
     capsule:
-      enable: true            # 是否启用
-      id: "8407304077"        # 音乐 ID（网易云歌单 ID）
-      server: netease         # 音乐服务（netease = 网易云音乐）
-      type: playlist          # 类型（playlist = 歌单）
-      volume: 0.8             # 默认音量（0~1）
+      enable: true # 是否启用
+      id: "17970719439" # 音乐 ID（网易云歌单 ID）
+      server: netease # 音乐服务（netease = 网易云音乐）
+      type: playlist # 类型（playlist = 歌单）
+      volume: 0.8 # 默认音量（0~1）
     # --- 独立音乐页面配置 ---
     music:
-      enable: true            # 是否启用
-      id: "8407304077"        # 歌单 ID
-      server: netease         # 音乐服务
-      type: playlist          # 类型
-      mutex: true             # 播放时互斥（同一时间只播一个）
-      volume: 0.8             # 默认音量
-      order: list             # 播放顺序（list = 按列表顺序）
+      enable: true # 是否启用
+      id: "17970719439" # 歌单 ID
+      server: netease # 音乐服务
+      type: playlist # 类型
+      mutex: true # 播放时互斥（同一时间只播一个）
+      volume: 0.8 # 默认音量
+      order: list # 播放顺序（list = 按列表顺序）
 
     # --- 键盘快捷键 ---
     keyboard:
-      enable: true            # 是否启用快捷键功能
-      list:                   # 快捷键列表：modifier 修饰键 + key 主键 + action 动作
+      enable: true # 是否启用快捷键功能
+      list: # 快捷键列表：modifier 修饰键 + key 主键 + action 动作
         - modifier: shift
           key: K
-          action: toggleKeyboard   # 打开/关闭快捷键面板
+          action: toggleKeyboard # 打开/关闭快捷键面板
         - modifier: shift
           key: A
-          action: showConsole      # 打开控制台
+          action: showConsole # 打开控制台
         - modifier: shift
           key: M
-          action: musicToggle      # 切换音乐播放
+          action: musicToggle # 切换音乐播放
         - modifier: shift
           key: D
-          action: toggleTheme      # 切换深色/浅色主题
+          action: toggleTheme # 切换深色/浅色主题
         - modifier: mod
           key: F
-          action: openSearch       # 打开搜索（mod = Ctrl/⌘）
+          action: openSearch # 打开搜索（mod = Ctrl/⌘）
         # AI 快捷键需要站点自行注册：
         # 通过 Solitude.registerShortcutAction("openAi", handler) 注册动作，
         # 或改用 url: ai/ 指向 AI 页面
@@ -604,58 +650,69 @@ params:
         #   action: openAi
         - modifier: shift
           key: R
-          action: randomPost       # 随机跳转一篇文章
+          action: randomPost # 随机跳转一篇文章
         # 以下两条用 url 代替 action：直接跳转到指定路径
         - name: 返回首页
           modifier: shift
           key: H
-          url: ./                  # 跳转到首页
+          url: ./ # 跳转到首页
         - name: 友链页面
           modifier: shift
           key: L
-          url: links/              # 跳转到友链页
+          url: links/ # 跳转到友链页
 
     # --- 代码高亮 ---
     highlight:
-      enable: true       # 是否启用代码高亮
-      copy: true         # 代码块是否显示"复制"按钮
+      enable: true # 是否启用代码高亮
+      copy: true # 代码块是否显示"复制"按钮
       line_numbers: true # 是否显示行号
-      max_height: 360    # 代码块最大高度（px），超出后滚动/折叠
+      max_height: 360 # 代码块最大高度（px），超出后滚动/折叠
       themes:
-        light: github-light   # 浅色模式下的高亮主题
-        dark: github-dark     # 深色模式下的高亮主题
+        light: github-light # 浅色模式下的高亮主题
+        dark: github-dark # 深色模式下的高亮主题
 
     # --- 图片灯箱（点击图片放大预览） ---
-    lightbox: fancybox   # 使用的灯箱库（fancybox）
+    lightbox: fancybox # 使用的灯箱库（fancybox）
 
     # --- CDN 配置 ---
     cdn:
-      shiki: https://esm.sh/shiki@4.4.3   # Shiki 语法高亮库的 CDN 地址
-      artalk: https://cdn.jsdelivr.net/npm/artalk@2.10.0/dist/Artalk.js      # Artalk 评论 JS SDK（use 含 artalk 时加载）
-      artalk_css: https://cdn.jsdelivr.net/npm/artalk@2.10.0/dist/Artalk.css  # Artalk 评论样式（use 含 artalk 时加载）
-      marked: https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js         # 说说页 Markdown 渲染
-      dompurify: https://cdn.jsdelivr.net/npm/dompurify@3.0.9/dist/purify.min.js  # 说说页 HTML 防 XSS
-      echarts: https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js   # 数据统计页图表（仅该页加载）
+      shiki: https://esm.sh/shiki@4.4.3 # Shiki 语法高亮库的 CDN 地址
+      artalk: https://cdn.jsdelivr.net/npm/artalk@2.10.0/dist/Artalk.js # Artalk 评论 JS SDK（use 含 artalk 时加载）
+      artalk_css: https://cdn.jsdelivr.net/npm/artalk@2.10.0/dist/Artalk.css # Artalk 评论样式（use 含 artalk 时加载）
+      marked: https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js # 说说页 Markdown 渲染
+      dompurify: https://cdn.jsdelivr.net/npm/dompurify@3.0.9/dist/purify.min.js # 说说页 HTML 防 XSS
+      echarts: https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js # 数据统计页图表（仅该页加载）
 
     # --- 数据统计页（/stats/）---
     stats:
-      weekday_label: true   # 热力图左侧是否标注星期（关掉可省下左侧留白）
-      week_start: monday    # 一周从哪天开始：sunday/monday/.../saturday，或 0-6（0 = 周日）
-      weekday_names: []     # 自定义星期名（固定 7 项、从周日排到周六）；留空则取 i18n，跟随站点语言
+      weekday_label: true # 热力图左侧是否标注星期（关掉可省下左侧留白）
+      week_start: monday # 一周从哪天开始：sunday/monday/.../saturday，或 0-6（0 = 周日）
+      weekday_names: [] # 自定义星期名（固定 7 项、从周日排到周六）；留空则取 i18n，跟随站点语言
       # Umami 站访数据（公开分享方案，无需 API Key）
       # share_id：在 Umami 后台「网站 → 分享」中创建分享链接后得到的 ID（与 website_id 不同），
       #           可安全暴露在前端；未配置时组件显示不可用提示并优雅降级。
       # website_id：仅作备注保留，公开分享接口以 share_id 为准。
       umami:
-        enable: true                       # 是否在统计页展示站访数据区块
-        endpoint: https://um.081531.xyz    # Umami 实例地址（不带末尾斜杠）
-        share_id: aEm4tZWjLPsyKHl6         # 公开分享 ID（需在 Umami 后台创建分享链接）
+        enable: true # 是否在统计页展示站访数据区块
+        endpoint: https://um.081531.xyz # Umami 实例地址（不带末尾斜杠）
+        share_id: aEm4tZWjLPsyKHl6 # 公开分享 ID（需在 Umami 后台创建分享链接）
         website_id: 668e3622-d145-4b4b-a52f-8b41ae8357a8
 
     # --- 搜索功能 ---
     search:
-      enable: true    # 是否启用搜索
-      type: local     # 搜索类型（local = 本地搜索，无需外部服务）
+      enable: true # 是否启用搜索
+      type: local # 搜索类型（local = 本地搜索，无需外部服务）
       local:
         preload: true # 是否预加载搜索索引（页面打开时就加载 search.xml）
-        CDN: /search.xml   # 搜索索引文件地址（由 outputs.home 里的 Search 输出生成）
+        CDN: /search.xml # 搜索索引文件地址（由 outputs.home 里的 Search 输出生成）
+
+    # --- 404 页面 ---
+    errorpage:
+      # img：旧版 404 图片素材。当前模板改为纯 CSS / 纯文字实现，已不再读取该字段，
+      #      保留仅为兼容与后续回退，不影响页面渲染。
+      img: /img/404.avif
+      eyebrow: "PAGE NOT FOUND" # 主标题上方的小标签，留空则不显示
+      title: 这页走丢了。 # 页面主标题，留空则回退到多语言文案「页面未找到」
+      text: 链接可能已经搬家，或者这颗糖被放进了另一只盒子。 # 主标题下方的说明文案
+      brand: "<K.M/>" # 糖纸贴纸上的品牌标记，留空则使用站点标题
+      recommendList: true # 是否在 404 页面底部展示最近 3 篇文章
