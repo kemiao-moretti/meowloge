@@ -1320,6 +1320,79 @@ select {
   }
 }
 
+/* 留言板弹幕开关：两个按钮的底/字原本完全一致，看不出弹幕当前是开是关，
+   也没有任何 hover / 按下 / 键盘焦点反馈。这里补状态高亮与三态反馈。 */
+.switch_message {
+  /* 弹幕层 #barrage 是 fixed + z-index:1，不抬起来的话飘过的弹幕会挡住按钮点击 */
+  position: relative;
+  z-index: 2;
+}
+
+.switch_message button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 6.4rem;
+  padding: .5rem 1rem;
+  border: 1px solid var(--paper-line);
+  border-radius: 999px;
+  background: var(--paper-surface);
+  color: var(--paper-muted);
+  font-family: inherit;
+  font-size: .9rem;
+  line-height: 1.25;
+  cursor: pointer;
+  box-shadow: var(--paper-shadow-soft);
+  transition:
+    background-color .22s var(--paper-ease),
+    color .22s var(--paper-ease),
+    border-color .22s var(--paper-ease),
+    box-shadow .22s var(--paper-ease),
+    transform .16s var(--paper-ease);
+}
+
+.switch_message button:hover {
+  background: var(--paper-surface-alt);
+  border-color: var(--paper-dash);
+  color: var(--paper-ink);
+}
+
+/* 按下时纸片贴一下桌面：缩放 + 阴影收掉 */
+.switch_message button:active {
+  transform: scale(.965);
+  box-shadow: none;
+}
+
+/* 主题的 button { outline: 0 } 把默认焦点环清了，键盘用户看不见焦点在哪 */
+.switch_message button:focus-visible {
+  outline: 2px solid var(--paper-accent);
+  outline-offset: 2px;
+}
+
+.switch_message button > span {
+  pointer-events: none;
+}
+
+/* 当前状态高亮。弹幕默认是显示的，故「隐藏弹幕」为本态；
+   #barrage 带上 hide 后翻转到「显示弹幕」。写在 :hover 之后，保证选中态不被悬停覆盖。 */
+.switch_message button.close,
+.article-container:has(#barrage.hide) .switch_message button.open {
+  background: var(--paper-accent);
+  border-color: transparent;
+  color: var(--paper-accent-ink);
+  box-shadow: var(--paper-shadow);
+  font-weight: 700;
+}
+
+/* 弹幕已隐藏时复位「隐藏弹幕」 */
+.article-container:has(#barrage.hide) .switch_message button.close {
+  background: var(--paper-surface);
+  border-color: var(--paper-line);
+  color: var(--paper-muted);
+  box-shadow: var(--paper-shadow-soft);
+  font-weight: 400;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
