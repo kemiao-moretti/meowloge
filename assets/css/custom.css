@@ -1059,9 +1059,32 @@ select {
 
 .article-container.post-content table {
   width: 100%;
-  min-width: 560px;
+  min-width: 0;
   border-collapse: collapse;
   color: var(--article-muted);
+}
+
+/* 表格放不下时在自己身上横滑，不要撑破正文容器（正文容器是 overflow: hidden） */
+@media screen and (max-width: 768px) {
+  .article-container.post-content table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+
+  .article-container.post-content table::-webkit-scrollbar {
+    display: block;
+    height: 4px;
+  }
+
+  .article-container.post-content table::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: var(--paper-dash);
+  }
 }
 
 .article-container.post-content :is(th, td) {
@@ -1283,6 +1306,18 @@ select {
   top: calc(var(--bolt-b) * .09);
   left: calc(var(--bolt-b) * .35);
   transform: rotate(180deg);
+}
+
+/* 文章底部：赞赏按钮与文末标签之间的呼吸感。
+   选择器带 :has() 是有意的 —— 没打标签的文章会渲染出空容器，此时不应占位。 */
+#post .post-tools-right:has(.post-meta__tags) {
+  margin-top: 22px;
+}
+
+@media screen and (max-width: 768px) {
+  #post .post-tools-right:has(.post-meta__tags) {
+    margin-top: 18px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
