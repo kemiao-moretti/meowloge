@@ -458,16 +458,29 @@ params:
       loading: 正在整理文章重点……
     # --- 页脚配置 ---
     footer:
+      randomlink: true # 页脚「友链」列：从 data/links.yaml 随机抽 3 条 + 刷新按钮（不足 3 条则全显示）
       information:
         author: https://openlist.081531.xyz/d/yidong/imgbed/meowloge.webp # 页脚展示的站点 logo
         left: # 页脚左侧的链接
           - name: GitHub
             url: https://github.com/kmoretti
             icon: fab fa-github
+          - name: Telegram
+            url: https://s.081531.xyz/telegram
+            icon: fab fa-telegram
+          - name: QQ
+            url: https://s.081531.xyz/qq
+            icon: fab fa-qq
         right: # 页脚右侧的链接
           - name: 订阅
             url: /index.xml # RSS 订阅地址
             icon: fas fa-rss
+          - name: BiliBili
+            url: https://s.081531.xyz/bilibili
+            icon: fab fa-bilibili
+          - name: Mail
+            url: mailto:contact@518339.xyz
+            icon: fas fa-envelope
       # 页脚的"链接分组"（多列站点导航）
       group:
         探索: # 分组标题
@@ -481,7 +494,7 @@ params:
           - name: 官方文档
             url: https://solitude.js.org/
           - name: GitHub
-            url: https://github.com/everfu/hugo-solitude
+            url: https://github.com/kemiao-moretti/meowloge
         关于:
           - name: 友链
             url: /links/

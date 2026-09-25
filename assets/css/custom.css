@@ -1393,6 +1393,75 @@ select {
   font-weight: 400;
 }
 
+/* ===== 页脚「随机友链」列 ===== */
+/* 主题给 .footer-title-group 的 margin 是 .7rem 底，比普通分组标题的 h3(.5rem)
+   多 3.2px，会让这一列的条目比别的列低 4px。拉平到与普通分组一致。 */
+#footer #st-footer .footer-title-group {
+  margin-bottom: .5rem;
+}
+
+/* 刷新按钮做成独立的小纸片按钮：主题原本只给了个 .6 透明度的裸图标，
+   既不像能点的东西，也没有按下反馈。 */
+#footer #st-footer .random-friends-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-left: 6px;
+  padding: 0;
+  border: 1.5px solid var(--paper-dash);
+  border-radius: 999px;
+  background: var(--paper-surface-alt);
+  color: var(--paper-muted);
+  cursor: pointer;
+  transition: background .22s var(--paper-ease), border-color .22s var(--paper-ease),
+    color .22s var(--paper-ease), transform .12s var(--paper-ease);
+}
+
+/* 主题的 .footer-title-group i 是给裸图标写的（.6 透明度），这里恢复实心 */
+#footer #st-footer .random-friends-btn i {
+  font-size: 11px;
+  line-height: 1;
+  color: inherit;
+  opacity: 1;
+}
+
+#footer #st-footer .random-friends-btn:hover {
+  border-color: var(--paper-accent);
+  background: var(--paper-accent-soft);
+  color: var(--paper-accent-strong);
+}
+
+#footer #st-footer .random-friends-btn:active {
+  transform: scale(.9);
+}
+
+#footer #st-footer .random-friends-btn:focus-visible {
+  outline: 2px solid var(--paper-accent);
+  outline-offset: 2px;
+}
+
+/* 点击后 .is-spinning 由 friend_links.ts 挂上，下次点击先摘再挂以重启动画 */
+#footer #st-footer .random-friends-btn.is-spinning i {
+  animation: paper-random-spin .6s var(--paper-ease);
+}
+
+@keyframes paper-random-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 「更多」弱化一档，和随机条目区分开 */
+#friend-links-in-footer .footer-item:last-child {
+  color: var(--paper-muted);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
