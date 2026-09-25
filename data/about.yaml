@@ -134,7 +134,7 @@ sections:
     content: |
       欢迎来到「喵洛阁」！你可以称呼我克喵~我在这个博客记录我的生活日常、踩坑经历和资源分享。资源和部分教程来自互联网上的公开项目和应用。在使用/借鉴前需要自我评估和测试。如果我的内容影响到了您的合法权益，请及时 **[联系](mailto:contact@518339.xyz)** 我。
 
-      我自2024年11月开始接触博客项目，最开始是面条大佬的[TG微博客](https://github.com/miantiao-me/BroadcastChannel)给我的启发，我开始接触博客，然后开始接触不同的博客框架，如hexo、hugo、jekyll、VuePress等，我用下来最舒服的是hugo、Astro、Nuxt，目前本博客是everfu基于[张洪heo的博客](https://blog.zheheo.com)，，进行设计的[Hugo项目](https://github.com/everfu/hugo-solitude)，我基于此博客进行了魔改，你可以在此找到[源码](https://github.com/kemiao-moretti/blog)。
+      我自2024年11月开始接触博客项目，最开始是面条大佬的[TG微博客](https://github.com/miantiao-me/BroadcastChannel)给我的启发，我开始接触博客，然后开始接触不同的博客框架，如hexo、hugo、jekyll、VuePress等，我用下来最舒服的是hugo、Astro、Nuxt，目前本博客是everfu基于[张洪heo的博客](https://blog.zheheo.com)，进行设计的[Hugo项目](https://github.com/everfu/hugo-solitude)，我基于此博客进行了魔改，你可以在此找到[源码](https://github.com/kemiao-moretti/blog)。
 
 reward:
   enabled: true

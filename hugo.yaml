@@ -127,12 +127,12 @@ menus:
         action: travelling
         icon: fas fa-gift
     # ↓ 以下是"项目"下的子菜单
-    - name: 我的装备
-      pageRef: /equipment # 指向装备页
-      parent: personal
-      weight: 30
-      params:
-        icon: fas fa-cogs
+    # - name: 我的装备
+    #   pageRef: /equipment # 指向装备页
+    #   parent: personal
+    #   weight: 30
+    #   params:
+    #     icon: fas fa-cogs
     - name: 关于我
       pageRef: /about # 指向关于页
       parent: personal
@@ -706,3 +706,49 @@ params:
       text: 链接可能已经搬家，或者这颗糖被放进了另一只盒子。 # 主标题下方的说明文案
       brand: "<K.M/>" # 糖纸贴纸上的品牌标记，留空则使用站点标题
       recommendList: true # 是否在 404 页面底部展示最近 3 篇文章
+
+    # --- 外链中转（/go/）：站外链接先经提示页核对目标域名，再前往 ---
+    # 页面模板在主题 layouts/go/，运行时改写逻辑在 assets/ts/external_link.ts，
+    # 这里只放本站在用的取值；中转页这个路由本身由 content/go.md 提供。
+    external_link:
+      enable: true # 是否启用外链中转
+      page: /go/ # 中转页路径，需与 content/go.md 对应
+      param: u # 承载目标地址的查询参数名
+      encode: base64url # 目标地址编码：base64url（默认，不明文暴露）| none（便于排查用）
+      countdown: 4 # 自动前往的秒数；设为负数则只保留手动按钮
+      pause_on_hover: true # 倒计时期间悬停或键盘聚焦时暂停
+      referrer_guard: false # true = 仅当来源为本站时才展示中转页，否则提示来源异常
+      # 生效容器：只有落在这些选择器里的链接会被改写（当前为文章正文 + 友链页）
+      containers:
+        - .post-content # 文章正文
+        - "#banners" # 友链页顶部跑马灯
+        - "#friend-links-list" # 友链页友链列表
+      exclude: [] # 页面路径前缀黑名单，命中则整页不改写
+      ignore_attrs:
+        - data-fancybox # 灯箱图片的锚点，不能当外链跳转
+        - data-no-safego # 需要直连的链接自行加上这个属性即可跳过中转
+      # 视为「站内」直接放行的域名：按主机名后缀匹配，写根域名即可覆盖其子域
+      whitelist:
+        - 518339.xyz # 本站 blog.518339.xyz
+        - 518330.xyz # Memos 说说
+        - 081531.xyz # Artalk / Umami / 60s API / OpenList 图床
+        - kemiaosw.top # 站长邮箱域名
+      appearance:
+        eyebrow: 出站提醒
+        title: "" # 留空则回落到站点标题
+        subtitle: 你要离开本站了，先去下一站看看
+        avatar: "" # 留空则回落到侧栏名片头像
+        leave_text: 即将前往
+        copy_text: 复制链接
+        copied_text: 已复制
+        # {seconds} 是倒计时数字的占位符，删掉它则只显示文字不显示数值
+        countdown_text: 将在 {seconds} 秒后自动前往，请先确认链接安全
+        manual_text: 请确认链接安全后，再点击「继续前往」
+        confirm_text: 继续前往
+        cancel_text: 返回上一页
+        invalid_text: 这个跳转链接不完整或格式不对
+        guard_text: 链接来源异常，本站不代为跳转
+        pause_text: 已暂停自动跳转
+        resume_text: 已继续自动跳转
+        back_home: 回到首页
+        noscript_text: 这个中转页需要 JavaScript 才能解析目标地址，请开启后重试，或直接回到首页。

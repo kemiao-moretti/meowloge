@@ -19,3 +19,5 @@ backup/
 .superpowers/
 public-verify/
 .workbuddy/
+batch-result.json
+docs/

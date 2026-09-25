@@ -108,7 +108,9 @@
   --paper-nav-border: var(--paper-line);
   --paper-nav-surface: var(--paper-surface);
   --paper-nav-hover-surface: var(--paper-accent-soft);
-  --paper-nav-active-text: var(--paper-accent-strong);
+  /* 该令牌在主题里全部用于「实心强调底（--efu-theme）上的文字」，
+     必须取深墨绿 accent-ink；若取 accent-strong，深色下它比 accent 更亮，会糊成一片。 */
+  --paper-nav-active-text: var(--paper-accent-ink);
   --efu-code-inline-bg: var(--paper-accent-soft);
   --efu-code-inline-bar: var(--paper-accent);
   --efu-code-inline-bar-width: 2px;
@@ -503,6 +505,34 @@ html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_swit
   box-shadow: var(--paper-shadow);
 }
 
+/* 手机端展开侧栏与返回菜单共用同一张纸：不透明纸面 + 纸边 + 纸影，
+   取代主题默认的半透明黑纱 + 毛玻璃（深色下会糊成一整片死黑，与纸张风格割裂）。 */
+#sidebar #sidebar-menus {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* 抽屉内的小块改用浅一档纸面，否则与侧栏同色后失去层次。 */
+#sidebar #sidebar-menus .site-data,
+#sidebar #sidebar-menus .card-tag-cloud a,
+#sidebar #sidebar-menus .sidebar-menu-item span.menu-child,
+#sidebar #sidebar-menus .menus_items .menus_item_child .site-page.child,
+#sidebar #sidebar-menus .back-menu-list-groups .back-menu-list .back-menu-item {
+  background: var(--paper-surface-alt);
+}
+
+/* 显示模式按钮在深色下是主题遗留的硬编码橙底，改回纸张强调色；
+   hover 的白字在浅绿上不可读，且触屏点按会粘住，一并换掉。 */
+#sidebar #sidebar-menus .sidebar-menu-item span.darkmode_switchbutton:hover {
+  background: var(--paper-accent);
+  color: var(--paper-accent-ink);
+}
+
+[data-theme="dark"] #sidebar #sidebar-menus .sidebar-menu-item span.darkmode_switchbutton {
+  background: var(--paper-accent-soft);
+  color: var(--paper-accent-strong);
+}
+
 /* 下拉菜单贴近导航项，避免选中展开时整体向下溢出导航容器。 */
 #nav .menus_items .menus_item .menus_item_child {
   top: 31px;
@@ -580,9 +610,40 @@ html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_swit
 
 .recent-post-item,
 #aside-content .card-widget {
-  position: relative;
   overflow: visible;
   transition: transform 220ms var(--paper-ease), box-shadow 220ms var(--paper-ease), border-color 220ms ease;
+}
+
+/* 定位上下文必须按断点分别声明：≤1200px 时主题把 #card-toc 切换为右下角 position:fixed
+   浮层，若无条件写上 position:relative，目录卡片会被按回文档流，撑开 #aside-content
+   并把布局视口顶到 465px，fixed 导航栏据此居中后左右溢出裁切。 */
+@media screen and (min-width: 1201px) {
+  .recent-post-item,
+  #aside-content .card-widget {
+    position: relative;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .recent-post-item,
+  #aside-content .card-widget:not(#card-toc) {
+    position: relative;
+  }
+
+  /* 目录卡片此时是浮层，不挂胶带装饰。 */
+  #aside-content #card-toc::before {
+    display: none;
+  }
+
+  /* 浮层靠 scale(0)/scale(1) 显隐，不能被 hover 抬升规则改写掉。 */
+  #aside-content #card-toc:hover {
+    transform: scale(0);
+  }
+
+  #aside-content #card-toc.open,
+  #aside-content #card-toc.open:hover {
+    transform: scale(1);
+  }
 }
 
 .recent-post-item::before,
@@ -728,6 +789,17 @@ pre {
   box-shadow: var(--paper-shadow-soft);
 }
 
+/* 分类栏容器在**所有断点**都只当排布层：纸面 + 边框 + 阴影会横贯整屏，成了一条突兀的长条。
+   只保留内部独立的纸张按钮（首页 / 分类 / 更多）。
+   限定 .home-category-bar 后代：`#category #category-bar` 那套 sticky 分类栏变体依赖实底遮挡滚动内容，
+   裸写 `#category-bar` 会因 unlayered 优先级压过它（哪怕对方特异性更高）。 */
+.home-category-bar > #category-bar {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
 #category-bar .category-bar-item.select,
 #category-bar .category-bar-item:hover,
 #pagination .page-number.current,
@@ -741,7 +813,7 @@ pre {
 #console .console-card,
 #search-dialog .search-dialog,
 .search-dialog .search-dialog__body,
-#sidebar {
+#sidebar #sidebar-menus {
   border: 1px solid var(--paper-line);
   border-radius: var(--paper-radius);
   background: var(--paper-surface);
@@ -807,7 +879,7 @@ select {
   #nav #site-name,
   #nav #nav-right,
   #nav #page-name,
-  #sidebar,
+  #sidebar #sidebar-menus,
   .recent-post-item,
   #aside-content .card-widget,
   .article-container,
@@ -1159,6 +1231,58 @@ select {
 .gallery-photo__media {
   border-color: var(--paper-line);
   box-shadow: var(--paper-shadow-soft);
+}
+
+/* ===== 关于页「充电」按钮的闪电图标 =====
+   主题模板用的是 ϟ 字形（U+03DF），实际渲染出来是一条细折线，和
+   anheyu-app-frontend 的实心闪电对不上。这里把字形藏掉，改用两个三角形
+   拼出同款实心闪电：几何全部按 --bolt-b（三角形半宽）等比推导，
+   桌面 10px、移动 7px。 */
+#about-page .reward-action-icon,
+#about-page .reward-mobile-icon {
+  --bolt-b: 7px;
+  --bolt-w: calc(var(--bolt-b) * 2.6);
+  --bolt-h: calc(var(--bolt-b) * 2.69);
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: var(--bolt-w);
+  height: var(--bolt-h);
+  font-size: 0;
+  line-height: 0;
+  transform-origin: calc(var(--bolt-b) * 1.45) calc(var(--bolt-b) * 1.39);
+  transform: rotate(-55deg);
+}
+
+#about-page .reward-action-icon {
+  --bolt-b: 10px;
+}
+
+#about-page .reward-action-icon::before,
+#about-page .reward-action-icon::after,
+#about-page .reward-mobile-icon::before,
+#about-page .reward-mobile-icon::after {
+  position: absolute;
+  box-sizing: content-box;
+  width: 0;
+  height: 0;
+  content: "";
+  border: var(--bolt-b) solid transparent;
+  border-top-color: var(--efu-white);
+  border-radius: calc(var(--bolt-b) * .4);
+}
+
+#about-page .reward-action-icon::before,
+#about-page .reward-mobile-icon::before {
+  top: calc(var(--bolt-b) * .39);
+  left: calc(var(--bolt-b) * .45);
+}
+
+#about-page .reward-action-icon::after,
+#about-page .reward-mobile-icon::after {
+  top: calc(var(--bolt-b) * .09);
+  left: calc(var(--bolt-b) * .35);
+  transform: rotate(180deg);
 }
 
 @media (prefers-reduced-motion: reduce) {
