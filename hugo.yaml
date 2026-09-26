@@ -293,6 +293,10 @@ params:
     # 显示在页头导航栏右侧的图标链接组
     nav:
       group:
+        主页: # 分组名称
+          - name: 克喵の主页 # 链接显示名
+            url: https://home.518330.xyz/ # 跳转地址
+            icon: static/img/projects/homepage.png # 图标图片（static/img/avatar.png）
         项目: # 分组名称
           - name: Memos # 链接显示名
             url: https://memos.518330.xyz/ # 跳转地址
