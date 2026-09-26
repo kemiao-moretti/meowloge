@@ -178,6 +178,17 @@ params:
         light: "#304A37" # 亮色导航 hover 文字
         dark: "#1C211F" # 暗色导航 hover 文字
 
+    # --- 字体（朱雀仿宋，TrionesType，OFL-1.1） ---
+    # font_family 经 styles.html 注入为 --solitude-font-family，custom.css 的 --paper-font 直接引用它。
+    # webfont_css 是 cn-font-split 的分片字体表：52 个 @font-face 按 unicode-range 切分，
+    # 浏览器只下载当前页面用到的分片（实测首页 18 片、关于页 22 片）。锁 commit SHA 防上游变动。
+    font:
+      font_size: 16px
+      code_font_size: 16px
+      font_family: '"Zhuque Fangsong (technical preview)", "Noto Serif SC", "Songti SC", "SimSun", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", serif'
+      code_font_family: '"JetBrains Mono", "Cascadia Code", Consolas, monospace'
+      webfont_css: https://cdn.jsdmirror.com/gh/willow-god/Sharding-fonts@31edab303b89f4fc38d17f10e45d81140c510c97/ZhuqueFangsong-Regular/result.min.css
+
     # 注入到 <head> 的自定义 HTML/CSS（不改主题文件，随站点配置生效）
     extends:
       head:

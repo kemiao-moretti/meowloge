@@ -20,8 +20,9 @@
   --paper-radius-small: 5px;
   --paper-grid: rgba(104, 126, 104, .075);
   --paper-rule: rgba(151, 127, 91, .11);
-  --paper-font: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --paper-mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+  /* 字体族统一由 hugo.yaml 的 params.solitude.font 提供（见主题 tokens.css 的 --solitude-font-*） */
+  --paper-font: var(--solitude-font-family, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif);
+  --paper-mono: var(--solitude-code-font-family, "JetBrains Mono", "Cascadia Code", Consolas, monospace);
   --paper-ease: cubic-bezier(.16, 1, .3, 1);
   color-scheme: light;
 }
