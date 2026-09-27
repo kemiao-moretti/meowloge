@@ -295,11 +295,11 @@ params:
       group:
         主页: # 分组名称
           - name: 克喵の主页 # 链接显示名
-            url: https://home.518330.xyz/ # 跳转地址
-            icon: static/img/projects/homepage.png # 图标图片（static/img/avatar.png）
+            url: https://home.518339.xyz/ # 跳转地址
+            icon: /img/projects/homepage.png # 图标图片（static/ 内容挂到站点根，写 /img/xxx.png）
         项目: # 分组名称
           - name: Memos # 链接显示名
-            url: https://memos.518330.xyz/ # 跳转地址
+            url: https://memos.518339.xyz/ # 跳转地址
             icon: https://a.favicon.im/usememos.com # 图标图片（static/img/avatar.png）
           # - name: 官方文档
           #   url: https://solitude.js.org/
@@ -758,7 +758,6 @@ params:
       # 视为「站内」直接放行的域名：按主机名后缀匹配，写根域名即可覆盖其子域
       whitelist:
         - 518339.xyz # 本站 blog.518339.xyz
-        - 518330.xyz # Memos 说说
         - 081531.xyz # Artalk / Umami / 60s API / OpenList 图床
         - kemiaosw.top # 站长邮箱域名
       appearance:

@@ -1473,3 +1473,278 @@ select {
     transition-duration: .01ms !important;
   }
 }
+
+/* ============================================================
+   手机端：独立目录悬浮按钮 + 目录浮层（仅 ≤1200px）
+   面板本体沿用主题 #card-toc 的 scale(0)/scale(1) 显隐机制，
+   这里只改定位、配色与激活态，绝不改写 transform。
+   ============================================================ */
+:root {
+  --toc-fab-right: 18px;
+  --toc-fab-bottom: 16px;
+  --toc-fab-size: 46px;
+  --toc-fab-gap: 14px;
+  --toc-panel-right: 12px;
+  --toc-stack-bottom: calc(var(--toc-fab-bottom) + var(--toc-fab-size) + var(--toc-fab-gap));
+  /* 角落浮层层级：整组压过主题 cookie 同意弹窗（z-index:1200），否则手机端
+     弹窗会盖住悬浮按钮本体、并吃掉面板底部的点击。 */
+  --toc-layer-mask: 1210;
+  --toc-layer-music: 1240;
+  --toc-layer-panel: 1230;
+  --toc-layer-fab: 1240;
+  /* 手机端抽屉是 #menu-mask 1003 / #sidebar-menus 1004，抽屉打开时把按钮与
+     播放器退到它下面，手指落在抽屉上时不会误触到抽屉外的浮层。 */
+  --toc-layer-under-drawer: 1002;
+}
+
+/* 悬浮入口：始终可见，不随滚动显隐 */
+.solitude-toc-fab {
+  position: fixed;
+  right: var(--toc-fab-right);
+  bottom: var(--toc-fab-bottom);
+  z-index: var(--toc-layer-fab);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--toc-fab-size);
+  height: var(--toc-fab-size);
+  padding: 0;
+  border: 1px solid var(--paper-line);
+  border-radius: 4px 7px 5px 6px;
+  background: var(--paper-surface);
+  color: var(--paper-accent-strong);
+  box-shadow: var(--paper-shadow-soft);
+  cursor: pointer;
+  transition: background-color 180ms var(--paper-ease), color 180ms var(--paper-ease), border-color 180ms var(--paper-ease), box-shadow 180ms var(--paper-ease), opacity 180ms var(--paper-ease), transform 140ms var(--paper-ease);
+}
+
+.solitude-toc-fab i {
+  font-size: 19px;
+  pointer-events: none;
+}
+
+.solitude-toc-fab:hover,
+.solitude-toc-fab:focus-visible {
+  border-color: var(--paper-accent);
+  background: var(--paper-accent-soft);
+  color: var(--paper-accent-strong);
+  box-shadow: var(--paper-shadow-hover);
+}
+
+.solitude-toc-fab:focus-visible {
+  outline: 2px solid var(--paper-accent);
+  outline-offset: 2px;
+}
+
+.solitude-toc-fab:active {
+  transform: scale(.94);
+}
+
+/* 面板展开时按钮转为实心强调底，兼作“再点一次收起”的可见开关 */
+html:has(#card-toc.open) .solitude-toc-fab {
+  border-color: transparent;
+  background: var(--paper-accent);
+  color: var(--paper-accent-ink);
+}
+
+/* 遮罩：点空白处收起面板（纯 CSS 显隐 + 主题既有 setTargetClass 动作）
+   纸张手账风不做毛玻璃，沿用站点关掉 backdrop-filter 的既有做法。 */
+.solitude-toc-mask {
+  position: fixed;
+  inset: 0;
+  z-index: var(--toc-layer-mask);
+  display: none;
+  background: color-mix(in srgb, var(--paper-bg) 76%, transparent);
+  /* iOS 兜底：遮罩上的滑动手势不产生滚动（不能写在 html 上，
+     touch-action 受祖先限制，写在根会连带禁掉目录自身的滚动）。 */
+  touch-action: none;
+}
+
+html:has(#card-toc.open) .solitude-toc-mask {
+  display: block;
+}
+
+/* 桌面端完全不参与，保持原有侧栏目录卡外观 */
+@media screen and (min-width: 1201px) {
+  .solitude-toc-fab,
+  .solitude-toc-mask {
+    display: none !important;
+  }
+
+  #aside-content #card-toc .toc-actions {
+    display: none;
+  }
+}
+
+/* 让位只在平板区间需要：≤768px 主题用 `.needEndHide{display:none!important}`
+   已把 #rightside 整个隐藏（手机端右下角只有本 FAB）。 */
+@media screen and (min-width: 769px) and (max-width: 1200px) {
+  body:has(.solitude-toc-fab) #rightside {
+    bottom: var(--toc-stack-bottom);
+  }
+
+  body:has(.solitude-toc-fab) #rightside.hide.needEndHide {
+    bottom: var(--toc-stack-bottom) !important;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  /* 面板开合会切换 html 的滚动能力；先预留滚动条槽位，避免滚动条消失引起
+     重排与滚动锚定跳动（桌面 Chrome 滚动条本就常驻、手机是 overlay，均无视觉变化）。 */
+  html {
+    scrollbar-gutter: stable;
+  }
+
+  /* #card-toc 的祖先 `.sticky_layout` 是 position:sticky，会创建独立堆叠上下文，
+     把面板自己的 z-index 关在里面（对外只算 0 层），于是被遮罩压住。
+     只在面板打开时把侧栏抬到遮罩之上解开（此时遮罩本就拦截一切，不改变交互）；
+     关闭后 z-index 自动回落，首页/其它页面的侧栏完全不受影响。 */
+  html:has(#card-toc.open) #aside-content {
+    position: relative;
+    z-index: var(--toc-layer-panel);
+  }
+
+  /* 音乐播放器与目录按钮同层：cookie 同意弹窗还在场时保持主题原值 z-index:12
+     （手机端播放器宽约 311px，浮上去会把弹窗两个按钮全挡住，实测 elementFromPoint
+     全部命中播放器）。弹窗一旦消失、或目录面板展开（此时弹窗已被遮罩压住、不可交互），
+     音乐就与悬浮按钮、面板同属一组浮层。 */
+  html:has(#card-toc.open) #nav-music,
+  html:not(:has(#cookie-consent.is-visible)) #nav-music {
+    z-index: var(--toc-layer-music);
+  }
+
+  /* 面板展开即模态：锁住页面滚动，手指只能滚目录本身 */
+  html:has(#card-toc.open) {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  html:has(#card-toc.open) body {
+    overflow: hidden;
+  }
+
+  .solitude-toc-fab {
+    display: inline-flex;
+  }
+
+  /* 目录浮层：贴边、开在悬浮按钮上方，宽度一律用 % / dvh，禁用 100vw */
+  #aside-content #card-toc {
+    right: var(--toc-panel-right);
+    left: auto;
+    bottom: var(--toc-stack-bottom);
+    width: min(420px, calc(100% - 24px));
+    max-width: none;
+    max-height: calc(100vh - var(--toc-stack-bottom) - 12px);
+    max-height: calc(100dvh - var(--toc-stack-bottom) - 12px);
+    padding: 10px 12px 12px;
+    z-index: var(--toc-layer-panel);
+    border: 1px solid var(--paper-line);
+    border-radius: var(--paper-radius);
+    background: var(--paper-surface);
+    box-shadow: var(--paper-shadow);
+  }
+
+  /* 目录自身是唯一可滚动区域：滚到两端不再把滚动传给页面 */
+  #aside-content #card-toc .toc-content {
+    max-height: calc(100vh - var(--toc-stack-bottom) - 74px);
+    max-height: calc(100dvh - var(--toc-stack-bottom) - 74px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
+
+  /* 标题行：左标题 + 右上角按钮组 */
+  #aside-content #card-toc .item-headline {
+    margin: 0 0 6px;
+    padding: 0;
+    justify-content: space-between;
+    color: var(--paper-ink);
+  }
+
+  #aside-content #card-toc .toc-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  #aside-content #card-toc .toc-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-width: 32px;
+    height: 28px;
+    padding: 0 9px;
+    border: 1px solid var(--paper-line);
+    border-radius: 999px;
+    background: var(--paper-surface-alt);
+    color: var(--paper-ink);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 160ms var(--paper-ease), color 160ms var(--paper-ease), border-color 160ms var(--paper-ease);
+  }
+
+  #aside-content #card-toc .toc-action:hover,
+  #aside-content #card-toc .toc-action:focus-visible {
+    border-color: var(--paper-accent);
+    background: var(--paper-accent-soft);
+    color: var(--paper-accent-strong);
+  }
+
+  #aside-content #card-toc .toc-action:focus-visible {
+    outline: 2px solid var(--paper-accent);
+    outline-offset: 2px;
+  }
+
+  /* 压过 .item-headline i 的 18px */
+  #aside-content #card-toc .toc-action i {
+    font-size: 12px;
+  }
+
+  #aside-content #card-toc .toc-percent {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* 当前段落：圆角胶囊高亮（覆盖主题那段 font-size:20px 的放大写法） */
+  #card-toc .toc-content .toc-link {
+    min-height: 34px;
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+
+  #card-toc .toc-content .toc-link.active {
+    border-radius: 999px;
+    background: var(--paper-accent-soft);
+    color: var(--paper-accent-strong);
+    font-size: inherit;
+    font-weight: 700;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--paper-accent) 30%, transparent);
+  }
+
+  #card-toc .toc-content .toc-link:not(.active) span {
+    filter: none;
+    opacity: .72;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  :root {
+    --toc-fab-right: 14px;
+    --toc-fab-bottom: 14px;
+    --toc-fab-size: 44px;
+    --toc-panel-right: 10px;
+  }
+
+  /* 抽屉打开时让位：目录按钮与音乐播放器退到 #menu-mask(1003) 之下并收起，
+     点抽屉区域不会穿透到它们（音乐自带的 opacity 过渡正好复用，
+     否则左下角那截封面会从抽屉左边露出来）。关闭抽屉后自动回升。 */
+  html:has(#sidebar-menus.open) .solitude-toc-fab,
+  html:has(#sidebar-menus.open) #nav-music {
+    z-index: var(--toc-layer-under-drawer);
+    opacity: 0;
+    pointer-events: none;
+  }
+}
