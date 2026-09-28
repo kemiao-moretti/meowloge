@@ -1,0 +1,44 @@
+{{- $pages := .Pages -}}
+{{- if eq .Kind "home" -}}
+  {{- $pages = where site.RegularPages "Section" "posts" -}}
+{{- end -}}
+{{- $latest := now -}}
+{{- range first 1 $pages.ByLastmod.Reverse -}}{{ $latest = .Lastmod }}{{- end -}}
+{{- $feedTitle := .Title | default site.Title -}}
+{{- if .IsHome }}{{ $feedTitle = site.Title }}{{ end -}}
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="/atom.xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{ $feedTitle | htmlEscape }}</title>
+  <subtitle>{{ site.Params.description | default site.Title | plainify | htmlEscape }}</subtitle>
+  <link href="{{ .Permalink }}" rel="alternate" />
+  {{- with .OutputFormats.Get "ATOM" }}
+  <link href="{{ .Permalink }}" rel="self" type="application/atom+xml" />
+  {{- end }}
+  <id>{{ .Permalink }}</id>
+  <updated>{{ $latest.Format "2006-01-02T15:04:05Z07:00" }}</updated>
+  <generator uri="https://gohugo.io/">Hugo {{ hugo.Version }}</generator>
+  <author>
+    <name>{{ site.Params.author.name | default site.Title | htmlEscape }}</name>
+    {{- with site.Params.author.email }}<email>{{ . | htmlEscape }}</email>{{ end }}
+  </author>
+  {{- range first 20 $pages.ByDate.Reverse }}
+  <entry>
+    <title>{{ .Title | htmlEscape }}</title>
+    <link href="{{ .Permalink }}" rel="alternate" />
+    {{- with .Params.cover }}<link rel="enclosure" href="{{ . | absURL }}" type="image/{{ path.Ext . | strings.TrimPrefix "." }}" />{{ end }}
+    <id>{{ .Permalink }}</id>
+    <published>{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}</published>
+    <updated>{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}</updated>
+    <author>
+      <name>{{ site.Params.author.name | default site.Title | htmlEscape }}</name>
+      {{- with site.Params.author.email }}<email>{{ . | htmlEscape }}</email>{{ end }}
+    </author>
+    <summary type="text">{{ .Summary | plainify | strings.TrimSpace | truncate 220 | htmlEscape }}</summary>
+    <content type="html"><![CDATA[{{ .Content | safeHTML }}]]></content>
+    {{- range .Params.categories }}<category term="{{ . | htmlEscape }}" scheme="category" />{{ end }}
+    {{- range .Params.series }}<category term="{{ . | htmlEscape }}" scheme="series" />{{ end }}
+    {{- range .Params.tags }}<category term="{{ . | htmlEscape }}" scheme="tag" />{{ end }}
+  </entry>
+  {{- end }}
+</feed>

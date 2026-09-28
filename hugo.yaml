@@ -21,13 +21,25 @@ uglyURLs:
 theme: solitude
 
 # ============ 输出格式 ============
-# 控制各类页面生成哪些输出：HTML 是页面本身，RSS 是订阅源，
+# 控制各类页面生成哪些输出：HTML 是页面本身，ATOM 是 Atom 1.0 订阅源，
 # Search 和 Links 是 solitude 主题扩展的输出（本地搜索索引 / 链接数据）
 outputs:
-  home: [HTML, RSS, Search, Links] # 首页额外生成搜索索引和链接数据
-  section: [HTML, RSS] # 列表页（如分类/标签下的文章列表）
-  taxonomy: [HTML, RSS] # 分类/标签总览页
-  term: [HTML, RSS] # 单个分类/标签页
+  home: [HTML, ATOM, Search, Links] # 首页额外生成搜索索引和链接数据
+  section: [HTML, ATOM] # 列表页（如分类/标签下的文章列表）
+  taxonomy: [HTML, ATOM] # 分类总览页
+  term: [HTML, ATOM] # 单个分类/标签页
+
+# ============ Atom 输出格式 ============
+# 真实输出 Atom 1.0，文件名为 atom.xml。
+mediaTypes:
+  application/atom+xml:
+    suffixes: [xml]
+outputFormats:
+  ATOM:
+    mediaType: application/atom+xml
+    baseName: atom
+    isPlainText: true
+    noUgly: true
 
 # ============ 分页 ============
 # 每页显示的文章数量（文章列表页每页 10 篇）
@@ -250,6 +262,8 @@ params:
             avatar: https://blog.518339.xyz/img/avatar.png
             descr: 每一段旅行，都有终点。
             linkpage: https://blog.518339.xyz/links/
+            snapshot: https://openlist.081531.xyz/d/lsky-git/lsky/2026/09/26/6ab767e613867.webp
+            feed: https://blog.518339.xyz/atom.xml
         # 申请格式说明
         format:
           title: 申请格式
@@ -437,6 +451,8 @@ params:
           # ↑ 启用后会触发主题的 layered 分层头像（背景图铺满 + 前景贴纸居中），
           #   前景需为透明贴纸素材；本站前景是方形 logo，故保持注释，
           #   让版权卡片只显示单张圆形头像。
+      # 文章订阅地址
+      rss: /atom.xml
       # 文章顶部 meta 信息展示开关
       meta:
         pv: true # 是否显示文章浏览量
@@ -488,7 +504,7 @@ params:
             icon: fab fa-qq
         right: # 页脚右侧的链接
           - name: 订阅
-            url: /index.xml # RSS 订阅地址
+            url: /atom.xml # RSS 订阅地址
             icon: fas fa-rss
           - name: BiliBili
             url: https://s.081531.xyz/bilibili
@@ -518,7 +534,7 @@ params:
       # 页脚底部的自定义自定义链接行
       links:
         - name: 订阅
-          url: /index.xml
+          url: /atom.xml
 
     # --- 评论系统 ---
     comment:
