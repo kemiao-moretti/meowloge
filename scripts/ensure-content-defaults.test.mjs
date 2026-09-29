@@ -40,8 +40,8 @@ test("preserves unrelated front matter and is idempotent", () => {
   const result = ensureChangelogBuild(source);
   assert.match(result, /title: Missing build/);
   assert.match(result, /type: feature/);
-  assert.match(result, /version: v9\\.9\\.1/);
-  assert.match(result, /date: 2026-09-28T23:45:00\\+08:00/);
+  assert.match(result, /version: v9\.9\.1/);
+  assert.match(result, /date: 2026-09-28T23:45:00\+08:00/);
   assert.match(result, /description: fixture/);
   assert.equal(ensureChangelogBuild(result), result);
 });
