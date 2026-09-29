@@ -1,0 +1,160 @@
+media:
+  - name: images
+    label: 图片
+    input: static/img
+    output: /img
+    categories: [image]
+    rename: safe
+
+settings:
+  content:
+    merge: true
+
+content:
+  - name: posts
+    label: 文章
+    type: collection
+    path: content/posts
+    format: yaml-frontmatter
+    exclude: [_index.md]
+    filename:
+      template: "{fields.slug}.md"
+      field: false
+    operations:
+      rename: false
+    view:
+      fields: [title, date, description, tags]
+      primary: title
+      sort: [date, title]
+      search: [title, description, tags]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: 标题
+        type: string
+        required: true
+      - name: slug
+        label: Slug
+        type: string
+        required: true
+        pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        description: 新建文章填写英文 slug；已有 slug 不要修改，否则会改变文章 URL。
+      - name: date
+        label: 发布日期
+        type: date
+        required: true
+        options:
+          time: true
+          format: "yyyy-MM-dd'T'HH:mm"
+      - name: lastmod
+        label: 最后修改时间
+        type: string
+        hidden: true
+      - name: description
+        label: 描述
+        type: text
+        required: true
+      - name: cover
+        label: 封面
+        type: string
+        description: 可填写 /img/... 本地路径或外部 HTTPS 图片 URL。
+      - name: categories
+        label: 分类
+        type: string
+        list: true
+      - name: tags
+        label: 标签
+        type: string
+        list: true
+      - name: series
+        label: 系列
+        type: string
+        list: true
+      - name: toc
+        label: 显示目录
+        type: boolean
+        default: false
+      - name: comment
+        label: 开启评论
+        type: boolean
+        default: true
+      - name: locate
+        label: 文章位置
+        type: string
+      - name: recommend
+        label: 推荐文章
+        type: boolean
+        default: false
+      - name: body
+        label: 正文
+        type: rich-text
+        description: 普通 Markdown 可用编辑器；包含 Hugo shortcode、Mermaid、Chart.js JSON、复杂 HTML 或 shortcode 示例时必须切换 Source 模式。
+        options:
+          format: markdown
+          switcher: true
+          media: images
+          path: posts
+          rename: safe
+
+  - name: changelog
+    label: 更新日志
+    type: collection
+    path: content/changelog
+    format: yaml-frontmatter
+    exclude: [_index.md]
+    filename:
+      template: "{fields.version}.md"
+      field: false
+    operations:
+      rename: false
+    view:
+      fields: [title, version, type, date]
+      primary: title
+      sort: [date, version]
+      search: [title, version, description]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: 标题
+        type: string
+        required: true
+      - name: type
+        label: 类型
+        type: select
+        required: true
+        options:
+          values: [feature, improvement, fix]
+      - name: version
+        label: 版本号
+        type: string
+        required: true
+        pattern: "^v\\d+\\.\\d+\\.\\d+$"
+      - name: date
+        label: 日期
+        type: date
+        required: true
+        options:
+          time: true
+          format: "yyyy-MM-dd'T'HH:mm"
+      - name: description
+        label: 描述
+        type: text
+        required: true
+      - name: comment
+        label: 开启评论
+        type: boolean
+        default: false
+      - name: body
+        label: 变更详情
+        type: rich-text
+        description: 普通 Markdown 可用编辑器；包含 Hugo shortcode 或复杂 Markdown 时必须切换 Source 模式。
+        options:
+          format: markdown
+          switcher: true
+          media: images
+          path: posts
+          rename: safe
