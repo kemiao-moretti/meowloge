@@ -2,16 +2,24 @@
 # 前置条件（在 GitHub 仓库 Settings → Secrets and variables → Actions 中配置）：
 #   CLOUDFLARE_API_TOKEN  —— Cloudflare API Token，需 Account / Cloudflare Pages / Edit 权限
 #   CLOUDFLARE_ACCOUNT_ID —— Cloudflare 账户 ID（Dashboard 右侧栏可见）
+#   AI_SUMMARY_API        —— 可选，AI 摘要 API 地址
+#   AI_SUMMARY_API_KEY    —— AI 摘要 API 密钥
 # 说明：wrangler pages deploy 在目标项目不存在时会自动创建（项目名：blog）
 name: Deploy to Cloudflare Pages
 
 on:
   push:
     branches: [main]
-  workflow_dispatch: # 允许在 Actions 页面手动触发，作为备用手段
+  workflow_dispatch:
+    inputs:
+      force_summaries:
+        description: Regenerate all post AI summaries
+        required: false
+        default: false
+        type: boolean
 
 permissions:
-  contents: read
+  contents: write
   deployments: write
 
 concurrency:
@@ -28,6 +36,35 @@ jobs:
           submodules: recursive # 拉取 themes/solitude
           fetch-depth: 0
 
+      - name: 记录构建基线
+        shell: bash
+        run: echo "BASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: 生成缺失 AI 摘要
+        env:
+          AI_SUMMARY_API: ${{ secrets.AI_SUMMARY_API }}
+          AI_SUMMARY_API_KEY: ${{ secrets.AI_SUMMARY_API_KEY }}
+          AI_SUMMARY_MODEL: ${{ vars.AI_SUMMARY_MODEL || 'Qwen/Qwen3-8B' }}
+          AI_SUMMARY_MAX_INPUT: ${{ vars.AI_SUMMARY_MAX_INPUT }}
+          AI_SUMMARY_PROMPT: ${{ vars.AI_SUMMARY_PROMPT }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # GitHub leaves optional vars as an empty environment value; unset the numeric
+          # option so the script falls back to its built-in 12000-character limit.
+          if [ -z "${AI_SUMMARY_MAX_INPUT:-}" ]; then unset AI_SUMMARY_MAX_INPUT; fi
+          args=()
+          if [ "${{ inputs.force_summaries }}" = "true" ]; then args+=(--force); fi
+          node scripts/generate-ai-summary.mjs "${args[@]}"
+
+      - name: 归一化 changelog 构建字段
+        run: node scripts/ensure-content-defaults.mjs
+
       - name: 安装 Hugo（extended）
         uses: peaceiris/actions-hugo@v3
         with:
@@ -36,6 +73,38 @@ jobs:
 
       - name: 构建
         run: hugo --minify
+
+      - name: 检查产物
+        shell: bash
+        run: |
+          test -f public/index.html
+          test -f public/p/shortcode-showcase.html
+
+      - name: 提交自动生成的 front matter
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git status --short -- content/posts content/changelog)"
+          unexpected="$(git status --short | grep -vE '^[ MARC?]{2} (content/posts/|content/changelog/)' || true)"
+          if [ -n "$unexpected" ]; then
+            echo "发现非预期工作树变更："
+            printf '%s\n' "$unexpected"
+            exit 1
+          fi
+          if [ -z "$changed" ]; then
+            echo "没有需要提交的自动生成字段"
+            exit 0
+          fi
+          git fetch origin main
+          if [ "$(git rev-parse origin/main)" != "${BASE_SHA}" ]; then
+            echo "origin/main 在本次构建期间发生变化，拒绝覆盖 CMS 新提交"
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/posts content/changelog
+          git commit -m "ci: generate content metadata" -m "Made-with: Proma"
+          git push origin HEAD:main
 
       - name: 确保 Cloudflare Pages 项目存在（不存在则创建，已存在则跳过）
         run: |
