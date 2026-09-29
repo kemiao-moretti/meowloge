@@ -64,6 +64,20 @@ test("preserves CRLF front matter and a body immediately after the delimiter", (
   assert.equal(result, "---\r\ntitle: CRLF\r\ndescription: test\r\nbuild:\r\n  render: never\r\n  list: local\r\n---\r\nBODY_WITHOUT_EXTRA_NEWLINE\r\n");
 });
 
+test("handles an empty YAML block scalar closing delimiter", () => {
+  const source = "---\ndescription: |\n---\nbody\n";
+  const result = ensureChangelogBuild(source);
+  assert.match(result, /description: \|\nbuild:/);
+  assert.match(result, /---\nbody/);
+});
+
+test("handles explicit YAML scalar indentation without mutating body content", () => {
+  const source = "---\ndescription: |2\n  first line\n  second line\n---\nbody --- keep\n";
+  const result = ensureChangelogBuild(source);
+  assert.match(result, /description: \|2\n  first line\n  second line\nbuild:/);
+  assert.match(result, /---\nbody --- keep\n/);
+});
+
 test("rejects a delimiter-like line inside a YAML block scalar", () => {
   const source = "---\ndescription: |\n  first line\n---\n  still scalar\n---\nbody\n";
   assert.throws(() => ensureChangelogBuild(source), /delimiter inside YAML block scalar/);
