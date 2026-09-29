@@ -4,13 +4,31 @@ import { fileURLToPath } from "node:url";
 
 export const CANONICAL_BUILD = `build:\n  render: never\n  list: local`;
 const CANONICAL_BUILD_LINES = CANONICAL_BUILD.split("\n");
-const FRONT_MATTER_RE = /^---(\r?\n)([\s\S]*?)(\r?\n)---(\r?\n|$)/;
 
 function parseFrontMatter(source) {
-  const match = source.match(FRONT_MATTER_RE);
-  if (!match) return null;
-  const [, openingNewline, frontMatter, closingNewline, afterClosing] = match;
-  return { openingNewline, closingNewline, afterClosing, frontMatter, prefixLength: match[0].length };
+  const opening = source.match(/^---(\r?\n)/);
+  if (!opening) return null;
+  const openingNewline = opening[1];
+  const start = opening[0].length;
+  const chunks = source.slice(start).split(/(?<=\r\n|\n)/);
+  const lines = [];
+  let scalar = false;
+  let offset = start;
+  for (const chunk of chunks) {
+    const newline = chunk.endsWith("\r\n") ? "\r\n" : chunk.endsWith("\n") ? "\n" : "";
+    const line = newline ? chunk.slice(0, -newline.length) : chunk;
+    if (scalar && /^---\s*$/.test(line)) throw new Error("ambiguous front matter: delimiter inside YAML block scalar");
+    if (scalar && line && !/^\s+/.test(line)) scalar = false;
+    if (!scalar && /^\s*[A-Za-z0-9_-]+\s*:\s*[|>][+-]?\d*\s*$/.test(line)) scalar = true;
+    if (!scalar && /^---\s*$/.test(line)) {
+      const frontMatter = source.slice(start, offset).replace(/\r?\n$/, "");
+      const delimiterEnd = offset + line.length;
+      return { openingNewline, closingNewline: newline || openingNewline, afterClosing: source.slice(delimiterEnd), frontMatter, prefixLength: delimiterEnd };
+    }
+    lines.push({ line, newline });
+    offset += chunk.length;
+  }
+  throw new Error("ambiguous front matter: missing closing delimiter");
 }
 
 function buildRange(lines) {
@@ -23,9 +41,8 @@ function buildRange(lines) {
   const start = starts[0];
   let end = start + 1;
   while (end < lines.length && !/^[A-Za-z0-9_-]+\s*:/.test(lines[end])) end += 1;
-  if (lines.slice(start + 1, end).some((line) => line.trim() && !/^\s+/.test(line))) {
-    throw new Error("ambiguous front matter: malformed build block");
-  }
+  if (end === start + 1 && end < lines.length) throw new Error("ambiguous front matter: malformed build block");
+  if (lines.slice(start + 1, end).some((line) => line.trim() && !/^\s+/.test(line))) throw new Error("ambiguous front matter: malformed build block");
   return { start, end };
 }
 
@@ -40,14 +57,11 @@ export function hasCanonicalBuild(source) {
 export function ensureChangelogBuild(source) {
   const parsed = parseFrontMatter(source);
   if (!parsed || hasCanonicalBuild(source)) return source;
-
   const lines = parsed.frontMatter.split(/\r?\n/);
   const range = buildRange(lines);
-  const nextLines = range
-    ? [...lines.slice(0, range.start), ...CANONICAL_BUILD_LINES, ...lines.slice(range.end)]
-    : [...lines, ...CANONICAL_BUILD_LINES];
+  const nextLines = range ? [...lines.slice(0, range.start), ...CANONICAL_BUILD_LINES, ...lines.slice(range.end)] : [...lines, ...CANONICAL_BUILD_LINES];
   const nextFrontMatter = nextLines.join(parsed.openingNewline);
-  const body = source.slice(parsed.prefixLength - parsed.afterClosing.length);
+  const body = source.slice(parsed.prefixLength);
   return `---${parsed.openingNewline}${nextFrontMatter}${parsed.closingNewline}---${body}`;
 }
 

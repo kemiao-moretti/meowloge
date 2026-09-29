@@ -50,3 +50,21 @@ test("ignores files without YAML front matter", () => {
   const source = readFixture("changelog-no-frontmatter.md");
   assert.equal(ensureChangelogBuild(source), source);
 });
+
+test("throws before mutation for duplicate or malformed build blocks", () => {
+  const duplicate = "---\ntitle: Duplicate\nbuild:\n  render: never\nbuild:\n  list: local\n---\nbody\n";
+  const malformed = "---\ntitle: Malformed\nbuild:\nrender: always\n---\nbody\n";
+  assert.throws(() => ensureChangelogBuild(duplicate), /duplicate top-level build keys/);
+  assert.throws(() => ensureChangelogBuild(malformed), /malformed build block/);
+});
+
+test("preserves CRLF front matter and a body immediately after the delimiter", () => {
+  const source = "---\r\ntitle: CRLF\r\ndescription: test\r\n---\r\nBODY_WITHOUT_EXTRA_NEWLINE\r\n";
+  const result = ensureChangelogBuild(source);
+  assert.equal(result, "---\r\ntitle: CRLF\r\ndescription: test\r\nbuild:\r\n  render: never\r\n  list: local\r\n---\r\nBODY_WITHOUT_EXTRA_NEWLINE\r\n");
+});
+
+test("rejects a delimiter-like line inside a YAML block scalar", () => {
+  const source = "---\ndescription: |\n  first line\n---\n  still scalar\n---\nbody\n";
+  assert.throws(() => ensureChangelogBuild(source), /delimiter inside YAML block scalar/);
+});
