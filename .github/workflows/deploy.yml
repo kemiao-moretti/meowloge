@@ -76,7 +76,11 @@ jobs:
         run: |
           set -euo pipefail
           echo "=== 构建前 assets/jsconfig.json ==="
-          sha256sum assets/jsconfig.json
+          if [ -f assets/jsconfig.json ]; then
+            sha256sum assets/jsconfig.json
+          else
+            echo "构建前文件不存在（预期：由 Hugo js.Build 在构建时生成）"
+          fi
           echo "=== 构建前目标文件 diff ==="
           git diff -- assets/jsconfig.json
           echo "=== 构建前工作树 ==="
@@ -90,7 +94,11 @@ jobs:
         run: |
           set -euo pipefail
           echo "=== 构建后 assets/jsconfig.json ==="
-          sha256sum assets/jsconfig.json
+          if [ -f assets/jsconfig.json ]; then
+            sha256sum assets/jsconfig.json
+          else
+            echo "构建后文件仍不存在"
+          fi
           echo "=== 构建后目标文件 diff ==="
           git diff -- assets/jsconfig.json
           echo "=== 构建后工作树 ==="
