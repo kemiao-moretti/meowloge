@@ -6,6 +6,7 @@
 # Hugo 构建产物与本地运行时文件
 public/
 resources/_gen/
+assets/jsconfig.json
 .hugo_build.lock
 
 # Python 缓存（.github/scripts 本地测试时产生）
