@@ -19,5 +19,6 @@ backup/
 .superpowers/
 public-verify/
 .workbuddy/
+.worktrees/
 batch-result.json
 docs/
