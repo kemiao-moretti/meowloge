@@ -1,12 +1,16 @@
 ---
 title: "{{ replace .File.ContentBaseName "-" " " | title }}"
+slug: "{{ .File.ContentBaseName }}"
 date: {{ .Date }}
 lastmod: {{ .Date }}
 description: ""
 cover: /img/default.avif
 categories: []
 tags: []
-comment: true
+series: []
+locate: ""
+recommend: false
 toc: true
+comment: true
 draft: true
 ---
