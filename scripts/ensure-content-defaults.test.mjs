@@ -78,6 +78,15 @@ test("handles explicit YAML scalar indentation without mutating body content", (
   assert.match(result, /---\nbody --- keep\n/);
 });
 
+test("accepts ordinary non-empty YAML block scalars before the closing delimiter", () => {
+  for (const scalar of ["|", "|-", ">"] ) {
+    const source = `---\ndescription: ${scalar}\n  scalar content\n---\nbody\n`;
+    const result = ensureChangelogBuild(source);
+    assert.match(result, new RegExp(`description: \\${scalar}\\n  scalar content\\nbuild:`));
+    assert.match(result, /---\nbody\n/);
+  }
+});
+
 test("rejects a delimiter-like line inside a YAML block scalar", () => {
   const source = "---\ndescription: |\n  first line\n---\n  still scalar\n---\nbody\n";
   assert.throws(() => ensureChangelogBuild(source), /delimiter inside YAML block scalar/);

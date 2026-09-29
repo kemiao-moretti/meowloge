@@ -16,18 +16,27 @@ function parseFrontMatter(source) {
   let scalarExplicit = false;
   let scalarHasContent = false;
   let offset = start;
-  for (const chunk of chunks) {
+  for (let index = 0; index < chunks.length; index += 1) {
+    const chunk = chunks[index];
     const newline = chunk.endsWith("\r\n") ? "\r\n" : chunk.endsWith("\n") ? "\n" : "";
     const line = newline ? chunk.slice(0, -newline.length) : chunk;
     const delimiter = /^---\s*$/.test(line);
     if (scalarIndent !== null) {
       const indent = (line.match(/^\s*/) || [""])[0].length;
       if (delimiter && indent < scalarIndent && scalarExplicit) scalarIndent = null;
-      else if (delimiter && scalarHasContent) throw new Error("ambiguous front matter: delimiter inside YAML block scalar");
+      else if (delimiter && scalarHasContent) {
+        // A delimiter after ordinary scalar content is the valid closing marker.
+        // Reject the known ambiguous shape where another indented scalar-looking
+        // line and a second delimiter follow it; fail closed rather than guessing.
+        const nextLine = chunks[index + 1]?.replace(/\r?\n$/, "") || "";
+        const followingDelimiter = chunks.slice(index + 2).some((candidate) => /^---\s*$/.test(candidate.replace(/\r?\n$/, "")));
+        if (/^\s+\S/.test(nextLine) && followingDelimiter) throw new Error("ambiguous front matter: delimiter inside YAML block scalar");
+        scalarIndent = null;
+      }
       if (delimiter && !scalarHasContent) scalarIndent = null;
       if (!line.trim()) continue;
-      if (indent >= scalarIndent) scalarHasContent = true;
-      else scalarIndent = null;
+      if (scalarIndent !== null && indent >= scalarIndent) scalarHasContent = true;
+      else if (scalarIndent !== null) scalarIndent = null;
     }
     if (scalarIndent === null) {
       const scalar = line.match(/^\s*[A-Za-z0-9_-]+\s*:\s*[|>]([+-]?)(\d*)\s*$/);

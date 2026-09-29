@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
     inputs:
       force_summaries:
-        description: Regenerate all post AI summaries
+        description: Regenerate eligible post AI summaries; keep ai_summary=false opt-outs skipped
         required: false
         default: false
         type: boolean

@@ -116,6 +116,8 @@ const requestSummary = async (article) => {
   }
 };
 
+export const shouldSkipSummary = (current, force) => current === "false" || (!force && Boolean(current));
+
 const withSummary = (source, summary) => {
   const frontMatter = readFrontMatter(source);
   if (!frontMatter) return source;
@@ -136,8 +138,7 @@ const main = async () => {
     const frontMatter = readFrontMatter(source);
     if (!frontMatter) continue;
     const current = frontMatterValue(frontMatter.body, "ai_summary");
-    if (!force && current && current !== "false") continue;
-    if (current === "false") continue;
+    if (shouldSkipSummary(current, force)) continue;
 
     candidates += 1;
     const relative = path.relative(root, file).replaceAll(path.sep, "/");
@@ -171,7 +172,10 @@ const main = async () => {
   if (failed > 0) process.exitCode = 1;
 };
 
-main().catch((error) => {
-  console.error(`[fatal] ${error.message}`);
-  process.exitCode = 1;
-});
+const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (isMain) {
+  main().catch((error) => {
+    console.error(`[fatal] ${error.message}`);
+    process.exitCode = 1;
+  });
+}

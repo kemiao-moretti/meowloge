@@ -251,7 +251,7 @@ award:
 - 可选 variable 或 secret：`AI_SUMMARY_MODEL`
 - 可选配置：`AI_SUMMARY_MAX_INPUT`、`AI_SUMMARY_PROMPT`（按工作流要求作为 variable 或 secret 配置）
 
-CMS 提交到 `main` 后会自动触发发布，不需要点击 CMS 的 deploy 按钮。Actions 手动运行时，日常修复使用 `force_summaries=false`；只有确实要重新生成全部摘要时才使用 `force_summaries=true`。
+CMS 提交到 `main` 后会自动触发发布，不需要点击 CMS 的 deploy 按钮。Actions 手动运行时，日常修复使用 `force_summaries=false`；需要重新生成已有摘要时才使用 `force_summaries=true`。无论是否强制，明确写入 `ai_summary: false` 的文章都是有意停用摘要，始终跳过，不会被覆盖。
 
 AI 摘要生成失败会阻止部署，不应跳过失败继续发布。确认服务商恢复、密钥和配置无误后，重新运行失败的 workflow；成功后才会继续部署。
 
