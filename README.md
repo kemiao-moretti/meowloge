@@ -227,3 +227,41 @@ award:
 - `CLOUDFLARE_ACCOUNT_ID`
 
 友链和赞助两个工作流改的是数据文件，它们自己 commit 并 push，push 又会触发部署，所以 Issue 审核通过之后不用再手动操作。
+
+## Pages CMS 发布文章
+
+### 首次连接与编辑范围
+
+在 Pages CMS 中打开仓库 `kemiao-moretti/meowloge`，连接时选择并确认查看 `main` 分支。CMS 只用于维护 **Posts** 和 **Changelog**，不要在 CMS 中改动其他目录或配置文件。
+
+新文章使用英文 slug；slug 一旦发布就对应公开 URL，新增文章要保持英文、简洁且稳定。已有文章的 slug 和 URL 不得修改；需要改内容时只编辑正文和元数据，避免产生旧链接失效或搜索收录变化。
+
+### 编辑模式与媒体
+
+普通 Markdown 内容使用 Editor mode。包含 Hugo shortcode、Mermaid、Chart.js 或复杂 HTML 时，切换到 **Source mode** 编辑，保留 shortcode 和原始 HTML 结构，不要让可视化编辑器重排或转义它们。
+
+在 CMS 上传的文章图片放入 `static/img/posts`，站点中的引用路径使用 `/img/posts/...`。图片不会上传到 `content`；提交前确认文件名与引用大小写一致。
+
+### Actions 配置与发布规则
+
+在仓库 Settings → Secrets and variables → Actions 配置：
+
+- 必需 secret：`AI_SUMMARY_API_KEY`、`CLOUDFLARE_API_TOKEN`、`CLOUDFLARE_ACCOUNT_ID`
+- 可选 secret：`AI_SUMMARY_API`
+- 可选 variable 或 secret：`AI_SUMMARY_MODEL`
+- 可选配置：`AI_SUMMARY_MAX_INPUT`、`AI_SUMMARY_PROMPT`（按工作流要求作为 variable 或 secret 配置）
+
+CMS 提交到 `main` 后会自动触发发布，不需要点击 CMS 的 deploy 按钮。Actions 手动运行时，日常修复使用 `force_summaries=false`；只有确实要重新生成全部摘要时才使用 `force_summaries=true`。
+
+AI 摘要生成失败会阻止部署，不应跳过失败继续发布。确认服务商恢复、密钥和配置无误后，重新运行失败的 workflow；成功后才会继续部署。
+
+### 本地检查
+
+`.env` 只供本地使用，禁止提交到 Git。提交前可在仓库根目录依次执行：
+
+```bash
+node --test scripts/ensure-content-defaults.test.mjs
+node scripts/generate-ai-summary.mjs --dry-run
+node scripts/ensure-content-defaults.mjs
+hugo --minify
+```
