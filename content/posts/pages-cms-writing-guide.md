@@ -6,7 +6,6 @@ lastmod: 2026-09-29T15:56:00+08:00
 description: 记录这个 Hugo 博客如何接入 Pages CMS，以及如何通过 CMS 写文章、上传图片，并让 GitHub Actions 自动生成 AI 摘要。
 cover: https://openlist.081531.xyz/d/lsky-git/lsky/2026/09/30/6abcb99f8d703.webp
 categories: [博客魔改]
-cover: https://openlist.081531.xyz/d/lsky-git/lsky/2026/09/30/6abcb99f8d703.webp
 tags: [Pages CMS, Hugo, GitHub Actions, AI]
 series: [博客魔改]
 toc: true
