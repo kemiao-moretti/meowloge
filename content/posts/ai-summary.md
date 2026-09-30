@@ -4,12 +4,12 @@ slug: ai-summary
 date: 2026-09-22T18:30:00+08:00
 lastmod: 2026-09-22T18:30:00+08:00
 description: 记录这套 Hugo 博客的 AI 摘要组件怎么接、怎么生成摘要，以及为什么不把 API Key 放进前端。
-categories: [配置指南]
+categories: [博客魔改]
 cover: https://openlist.081531.xyz/d/yidong/imgbed/lsky/2026/09/22/6ab2876c65ce0.webp
-series: [站点维护]
+series: [博客魔改]
 toc: true
 comment: true
-locate: 站点配置
+locate: 江苏苏州
 ai_summary: >-
   本文介绍了如何在 Hugo 博客中添加 AI 摘要卡，以提升用户体验。通过在 front matter 中设置 aisummary 字段，摘要卡会在文章正文前显示，且样式与主题一致，适配明暗模式。摘要生成由本地脚本完成，使用 OpenAI 兼容接口，避免暴露 API 密钥。脚本会清理正文内容并截断至指定长度，支持自定义提示词和接口配置。生成失败时脚本会记录错误并继续处理，确保构建过程可控。最终摘要仅用于展示，不涉及 SEO 或前端依赖 AI 接口，便于后续维护和优化。
 ---
