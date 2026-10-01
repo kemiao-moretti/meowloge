@@ -23,3 +23,4 @@ public-verify/
 .worktrees/
 batch-result.json
 docs/
+node_modules/

@@ -133,30 +133,10 @@ body {
   font-family: var(--paper-font);
 }
 
-body {
-  background-image:
-    linear-gradient(var(--paper-grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--paper-grid) 1px, transparent 1px),
-    radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--paper-accent) 8%, transparent), transparent 34rem);
-  background-size: 28px 28px, 28px 28px, auto;
-  background-attachment: fixed;
-}
-
-body::before {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  content: "";
-  opacity: .22;
-  background-image: repeating-linear-gradient(0deg, transparent 0 4px, var(--paper-rule) 5px, transparent 6px);
-  mix-blend-mode: multiply;
-}
-
-[data-theme="dark"] body::before {
-  opacity: .12;
-  mix-blend-mode: screen;
-}
+/* 根治背景层（2026-10-01）：body 原为三层 background-attachment:fixed 渐变 + 全屏 body::before 装饰层，
+   使每个毛玻璃元素背后画面在滚动时剧烈变化，是掉帧根因。现简化为单一纯色背景（body 上方已有
+   background-color: var(--paper-bg)），无固定层、无 blend，毛玻璃背后画面稳定，回到原主题（hugo-solitude）
+   同等渲染成本。纸张质感由正文容器 .article-container 的纸面承担。 */
 
 ::selection {
   color: var(--paper-ink);
@@ -1633,12 +1613,6 @@ body.is-scrolling #rightside .rs_show,
 body.is-scrolling #rightside .rs_hide {
   background: color-mix(in srgb, var(--efu-card-bg) 88%, transparent);
 }
-/* 滚动中隐藏固定纸纹混合层 body::before（mix-blend-mode 全屏重合成/重绘），省掉每帧混合运算 */
-body.is-scrolling::before {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  mix-blend-mode: normal !important;
-}
 /* 音乐页满屏背景毛玻璃由 blur(200px) 降为 blur(24px)：ht 200px 对 200%×200% 固定层做极端模糊是全站最重单层绘制 */
 #Music-bg::before {
   -webkit-backdrop-filter: blur(24px);
@@ -1648,9 +1622,16 @@ body.is-scrolling::before {
 body.is-scrolling #nav-music.playing {
   animation-play-state: paused;
 }
-@media (prefers-reduced-motion: reduce) {
-  #nav-music.playing,
-  #nav-music.collapsing {
-    animation: none !important;
+
+/* 手机端沿用原主题的按钮布局，仅移除 nav 整体背景遮罩与横向底栏。 */
+@media screen and (max-width: 1024px) {
+  #page-header #nav,
+  #page-header:not(.nav-fixed) #nav,
+  #page-header.not-top-img #nav {
+    background: transparent;
+    border-bottom: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }

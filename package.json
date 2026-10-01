@@ -1,0 +1,14 @@
+{
+  "name": "kmoretti-blog",
+  "private": true,
+  "description": "Hugo + solitude 博客构建工具（静态 shiki 高亮）",
+  "type": "module",
+  "scripts": {
+    "prehighlight": "node scripts/prehighlight.mjs",
+    "build:full": "hugo && node scripts/prehighlight.mjs"
+  },
+  "devDependencies": {
+    "node-html-parser": "^6.1.13",
+    "shiki": "^4.4.3"
+  }
+}

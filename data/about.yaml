@@ -1,7 +1,7 @@
 title: 关于本站
 author_box:
   enabled: true
-  image: /img/avatar.png
+  image: /img/avatar.webp
   alt: 克喵Moretti 的头像
   status: online
   tags_left:
@@ -82,9 +82,9 @@ sections:
           external: true,
         }
     photo:
-      image: /img/avatar.png
+      image: /img/avatar.webp
       alt: 喵洛阁站标
-      badge: /img/avatar.png
+      badge: /img/avatar.webp
 
   - type: values
     motto:

@@ -239,9 +239,8 @@ params:
           var a = e.target && e.target.closest ? e.target.closest("a.unvisited-post") : null;
           if (a) mark(pathOf(a.getAttribute("href") || ""));
           });
-          // 3) 初始加载 + pjax 切页后都重新应用隐藏
+          // 3) 初始加载 + 切页（solitude:afterNavigate）后都重新应用隐藏
           document.addEventListener("DOMContentLoaded", apply);
-          document.addEventListener("pjax:complete", apply);
           document.addEventListener("solitude:afterNavigate", apply);
           })();
           </script>
@@ -297,7 +296,7 @@ params:
           items:
             name: 喵洛阁
             link: https://blog.518339.xyz/
-            avatar: https://blog.518339.xyz/img/avatar.png
+            avatar: https://blog.518339.xyz/img/avatar.webp
             descr: 每一段旅行，都有终点。
             linkpage: https://blog.518339.xyz/links/
             snapshot: https://openlist.081531.xyz/d/lsky-git/lsky/2026/09/26/6ab767e613867.webp
@@ -345,17 +344,22 @@ params:
     # 显示在页头导航栏右侧的图标链接组
     nav:
       group:
-        主页: # 分组名称
+        个人网站: # 分组名称
           - name: 克喵の主页 # 链接显示名
             url: https://home.518339.xyz/ # 跳转地址
             icon: /img/projects/homepage.png # 图标图片（static/ 内容挂到站点根，写 /img/xxx.png）
-        项目: # 分组名称
           - name: Memos # 链接显示名
             url: https://memos.518339.xyz/ # 跳转地址
-            icon: https://a.favicon.im/usememos.com # 图标图片（static/img/avatar.png）
+            icon: https://a.favicon.im/usememos.com # 图标图片（static/img/avatar.webp）
+          - name: 网站检测 # 链接显示名
+            url: https://uptime.081531.xyz/status/web # 跳转地址
+            icon: https://a.favicon.im/uptime.081531.xyz # 图标图片
+          - name: 个人相册 # 链接显示名
+            url: https://xc.518339.xyz/ # 跳转地址
+            icon: https://a.favicon.im/xc.518339.xyz # 图标图片                        
           # - name: 官方文档
           #   url: https://solitude.js.org/
-          #   icon: /img/avatar.png
+          #   icon: /img/avatar.webp
 
     # --- 首页顶部 Banner 区域 ---
     hometop:

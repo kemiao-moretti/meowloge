@@ -147,12 +147,12 @@ Shortcode 名称和参数区分大小写。块级组件还要成对书写结束�
 
 ```go-html-template
 {{</* img src="/img/default.avif" alt="示例图片" caption="主题默认封面" */>}}
-{{</* inlineImg src="/img/avatar.png" alt="Logo" height="24px" */>}}
+{{</* inlineImg src="/img/avatar.webp" alt="Logo" height="24px" */>}}
 ```
 
 {{< img src="/img/demo/cover-shortcodes-v2.webp" alt="Solitude Shortcode 示例封面" caption="本地 Shortcode 示例素材" >}}
 
-Solitude {{< inlineImg src="/img/avatar.png" alt="Solitude Logo" height="24px" >}} 与 Hugo 可以出现在同一行文字中。
+Solitude {{< inlineImg src="/img/avatar.webp" alt="Solitude Logo" height="24px" >}} 与 Hugo 可以出现在同一行文字中。
 
 ### 视频与音频
 
