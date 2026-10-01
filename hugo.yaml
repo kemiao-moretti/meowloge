@@ -210,40 +210,41 @@ params:
         # 文章卡片「未读/已读」：用 localStorage 记录已读文章，替代浏览器原生的 :visited
         # （原实现依赖访问历史，清历史/换设备/隐身模式都会重置；这里点击或进入文章即标记，
         #   同一浏览器下稳定生效）。已读的卡片不再显示「未读」标记。
-        - '<script>
-            (function () {
-              var KEY = "meowloge:read-posts";
-              function getRead() {
-                var r = {};
-                try { r = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
-                return r;
-              }
-              function mark(u) {
-                if (!u) return;
-                try { var r = getRead(); r[u] = 1; localStorage.setItem(KEY, JSON.stringify(r)); } catch (e) {}
-              }
-              function pathOf(href) {
-                try { return new URL(href, location.href).pathname; } catch (e) { return href; }
-              }
-              function apply() {
-                var read = getRead();
-                document.querySelectorAll(".unvisited-post").forEach(function (el) {
-                  if (read[pathOf(el.getAttribute("href") || "")]) el.style.display = "none";
-                });
-              }
-              // 1) 文章页首次加载：记录当前 URL
-              if (/^\/p\//.test(location.pathname)) mark(location.pathname);
-              // 2) 点击任意未读链接：立即记录目标（即使 pjax 切页也有效）
-              document.addEventListener("click", function (e) {
-                var a = e.target && e.target.closest ? e.target.closest("a.unvisited-post") : null;
-                if (a) mark(pathOf(a.getAttribute("href") || ""));
-              });
-              // 3) 初始加载 + pjax 切页后都重新应用隐藏
-              document.addEventListener("DOMContentLoaded", apply);
-              document.addEventListener("pjax:complete", apply);
-              document.addEventListener("solitude:afterNavigate", apply);
-            })();
-          </script>'
+        - |
+          <script>
+          (function () {
+          var KEY = "meowloge:read-posts";
+          function getRead() {
+          var r = {};
+          try { r = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+          return r;
+          }
+          function mark(u) {
+          if (!u) return;
+          try { var r = getRead(); r[u] = 1; localStorage.setItem(KEY, JSON.stringify(r)); } catch (e) {}
+          }
+          function pathOf(href) {
+          try { return new URL(href, location.href).pathname; } catch (e) { return href; }
+          }
+          function apply() {
+          var read = getRead();
+          document.querySelectorAll(".unvisited-post").forEach(function (el) {
+          if (read[pathOf(el.getAttribute("href") || "")]) el.style.display = "none";
+          });
+          }
+          // 1) 文章页首次加载：记录当前 URL
+          if (/^\/p\//.test(location.pathname)) mark(location.pathname);
+          // 2) 点击任意未读链接：立即记录目标（即使 pjax 切页也有效）
+          document.addEventListener("click", function (e) {
+          var a = e.target && e.target.closest ? e.target.closest("a.unvisited-post") : null;
+          if (a) mark(pathOf(a.getAttribute("href") || ""));
+          });
+          // 3) 初始加载 + pjax 切页后都重新应用隐藏
+          document.addEventListener("DOMContentLoaded", apply);
+          document.addEventListener("pjax:complete", apply);
+          document.addEventListener("solitude:afterNavigate", apply);
+          })();
+          </script>
     # --- 友链交换页（/exchange/，content/exchange 的 type 需为 exchange） ---
     page:
       exchange:
