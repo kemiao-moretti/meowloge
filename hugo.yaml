@@ -357,10 +357,10 @@ params:
             icon: /img/projects/homepage.png # 图标图片（static/ 内容挂到站点根，写 /img/xxx.png）
           - name: Memos # 链接显示名
             url: https://memos.518339.xyz/ # 跳转地址
-            icon: https://a.favicon.im/usememos.com # 图标图片（static/img/avatar.webp）
+            icon: https://a.favicon.im/usememos.com # 图标图片（失败时由模板回退到站内头像）
           - name: 网站检测 # 链接显示名
             url: https://uptime.081531.xyz/status/web # 跳转地址
-            icon: https://a.favicon.im/uptime.081531.xyz # 图标图片
+            icon: https://a.favicon.im/uptime.081531.xyz # 图标图片（失败时由模板回退到站内头像）
           - name: 个人相册 # 链接显示名
             url: https://xc.518339.xyz/ # 跳转地址
             icon: https://a.favicon.im/xc.518339.xyz # 图标图片                        
