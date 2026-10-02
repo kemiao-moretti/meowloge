@@ -1,0 +1,24 @@
+{{- $cfg := site.Params.solitude }}
+{{- $vote := $cfg.post.vote }}
+{{- if and $vote.enable $vote.api }}
+<section class="post-vote" aria-label="文章评分"
+  data-post-vote
+  data-post-vote-api="{{ $vote.api }}"
+  data-post-page-id="{{ .RelPermalink }}">
+  <p class="post-vote__title">觉得这篇文章怎么样？</p>
+  <div class="post-vote__field" role="radiogroup" aria-label="选择评分">
+    {{- range seq 5 }}
+      <button class="post-vote__star" type="button" role="radio" aria-checked="false"
+        data-vote-value="{{ . }}" title="{{ . }} 星" aria-label="{{ . }} 星">
+        <i class="solitude fas fa-star" aria-hidden="true"></i>
+      </button>
+    {{- end }}
+  </div>
+  <div class="post-vote__summary">
+    <span class="post-vote__score" data-vote-score>—</span>
+    <span class="post-vote__meter" aria-hidden="true"><span class="post-vote__meter-bar" data-vote-meter></span></span>
+    <span class="post-vote__count" data-vote-count></span>
+  </div>
+</section>
+<script src="{{ "js/vote.js" | relURL }}" defer></script>
+{{- end }}

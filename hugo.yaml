@@ -20,6 +20,13 @@ uglyURLs:
 # 使用的主题，对应 themes/ 目录下的文件夹名（themes/solitude）
 theme: solitude
 
+# ============ Markdown 渲染 ============
+# 保留文章中用于语义化内容和主题组件的 HTML 片段，避免 Goldmark 过滤并告警。
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
 # ============ 输出格式 ============
 # 控制各类页面生成哪些输出：HTML 是页面本身，ATOM 是 Atom 1.0 订阅源，
 # Search 和 Links 是 solitude 主题扩展的输出（本地搜索索引 / 链接数据）
@@ -523,6 +530,10 @@ params:
       share:
         enable: false # 是否启用分享
         list: [] # 分享平台列表（留空表示不展示）
+      # 文末投票评分（1-5 星）：渲染在正文与作者卡片之间，后端为自部署的 star-vote
+      vote:
+        enable: true # 是否启用
+        api: https://vote.518339.xyz # star-vote 服务地址（不要以斜杠结尾）
     # --- 文章 AI 摘要 ---
     ai_summary:
       enable: true # 是否在文章页展示 ai_summary 字段
@@ -612,11 +623,11 @@ params:
       placeholder: 欢迎留下你的文字~ # 评论区输入框占位文案（留空用 Artalk 默认）
       option: {} # 传给 Artalk.init 的额外配置项（覆盖同名默认值）
 
-    # --- 说说页（/shuoshuo/，Ech0 或 Memos 数据源） ---
+    # --- 说说页（/shuoshuo/，Ech0 / Memos / Tg 数据源） ---
     shuoshuo:
       enable: true # 是否启用该页面渲染
-      source: memos # 数据源：ech0 | memos（缺省 ech0，向后兼容）
-      api: https://m.081531.xyz # 数据源 API 地址（source=memos 时使用下方 memos.api）
+      source: tg # 数据源：ech0 | memos | tg（缺省 ech0，向后兼容）
+      api: https://m.081531.xyz # 数据源 API 地址（source=memos 时使用下方 memos.api，source=tg 时使用下方 tg.api）
       page_size: 30 # 每页条数
       cache_minutes: 30 # 前端缓存时长（分钟）
       author:
@@ -636,6 +647,22 @@ params:
         api: https://memos.518339.xyz # Memos 实例地址
         creator: users/kemiao # 仅拉取该用户 memos（留空则展示全部公开 memos）
         public_only: true # 仅展示 PUBLIC 可见性
+      tg: # source=tg 时生效（数据源：koharu-suite 自托管）
+        api: https://tg-api.518339.xyz # koharu-suite 后端地址（自动拼 /api/v1）
+        channel: aa764a3a-f037-45f4-8e04-fea3c5ac4209 # 拉取该频道 UUID（留空则合并全部频道）
+        format: html # 正文渲染格式：html（用 content.html 富文本）| markdown（用 content.text + entities 重建后经 marked 渲染）
+        author:
+          name: 克喵:) # tg 卡片显示名称；留空则回退站点作者名
+        search:
+          enable: true # 是否启用 Telegram 消息搜索
+          placeholder: 搜索 Telegram 说说
+          limit: 20 # 搜索结果条数
+        rss:
+          enable: true # 是否显示 Telegram RSS 订阅入口
+        vote:
+          enable: true # 是否启用 Telegram 说说点赞/踩
+          api: https://vote.518339.xyz # star-vote 服务地址（不要以斜杠结尾）
+        limit: 0 # 最多拉取的条数，0 表示不限
 
     # --- 友链朋友圈（/fcircle/，hexo-circle-of-friends 远程数据源） ---
     fcircle:
