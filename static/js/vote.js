@@ -8,6 +8,11 @@
 (function () {
   'use strict';
 
+  if (window.__solitudeVoteRuntime) {
+    window.__solitudeVoteRuntime.scan();
+    return;
+  }
+
   var STORE_KEY = 'solitude-star-vote';
 
   function getStore() {
@@ -106,6 +111,8 @@
     var nodes = document.querySelectorAll('[data-post-vote]');
     for (var i = 0; i < nodes.length; i++) init(nodes[i]);
   }
+
+  window.__solitudeVoteRuntime = { scan: scan };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', scan);

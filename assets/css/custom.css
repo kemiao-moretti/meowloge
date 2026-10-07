@@ -385,6 +385,13 @@ body {
   box-shadow: var(--paper-shadow-soft);
 }
 
+/* 移动端标签按从左到右排列，避免 flex 居中造成右侧空白。 */
+@media screen and (max-width: 768px) {
+  #page .category-lists .tag-cloud-list {
+    justify-content: flex-start;
+  }
+}
+
 #page .category-lists .tag-cloud-list a,
 #page .category-lists .tag-cloud-list a span.tagsPageCount,
 #sidebar #sidebar-menus .menus_items .menus_item_child .site-page.child,
@@ -755,6 +762,77 @@ pre {
 
 #page-header #nav #nav-right #nav-totop a.totopbtn i {
   color: inherit;
+}
+
+#page-header #nav #nav-right > .nav-button {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+#page-header #nav #nav-right #nav-totop {
+  flex: 0 1 auto;
+  width: 35px;
+  min-width: 35px;
+  height: 35px;
+  margin-left: 0;
+  overflow: visible;
+  transform: none;
+  opacity: 0;
+}
+
+#page-header #nav #nav-right #nav-totop.long {
+  width: clamp(35px, 20vw, 80px);
+}
+
+#page-header:not(.nav-at-top) #nav #nav-right #nav-totop {
+  opacity: 1;
+}
+
+#page-header #nav #nav-right #nav-totop a.totopbtn {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#page-header #nav #nav-right #nav-totop a.totopbtn span {
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#page-header #nav #nav-right #nav-totop a.totopbtn i {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+#page-header #nav #nav-right #nav-totop:hover a.totopbtn i {
+  opacity: 1;
+}
+
+#page-header #nav #nav-right #nav-totop:hover a.totopbtn span {
+  opacity: 0;
+}
+
+@media screen and (max-width: 767px) {
+  #page-header #nav #nav-right #nav-totop {
+    width: 35px;
+    min-width: 35px;
+  }
+
+  #page-header #nav #nav-right #nav-totop.long {
+    width: clamp(55px, 18vw, 80px);
+  }
 }
 
 #page-header #nav #nav-right #nav-totop:hover a.totopbtn,
@@ -1287,6 +1365,97 @@ select {
   top: calc(var(--bolt-b) * .09);
   left: calc(var(--bolt-b) * .35);
   transform: rotate(180deg);
+}
+
+@media screen and (max-width: 767px) {
+  #post .post-reward .reward-main {
+    position: fixed !important;
+    inset: 50% .5rem auto .5rem !important;
+    z-index: 1300;
+    width: auto !important;
+    max-width: none !important;
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+    padding: 0;
+    transform: translateY(-50%) !important;
+    translate: none !important;
+    box-sizing: border-box;
+  }
+
+  #post .post-reward.is-open::before {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    content: "";
+    background: rgb(0 0 0 / 42%);
+  }
+
+  #post .post-reward .reward-main .reward-all {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    padding: .75rem;
+  }
+
+  #post .post-reward .reward-main .reward-group {
+    width: 100%;
+    gap: .25rem;
+    justify-content: center;
+  }
+
+  #post .post-reward .reward-main .reward-group .reward-item {
+    flex: 1 1 0;
+    min-width: 0;
+    padding-inline: .25rem;
+  }
+
+  #post .post-reward .reward-main .reward-group .reward-item img,
+  #post .post-reward .reward-main .reward-group .reward-item .post-qr-code-desc {
+    width: min(130px, 100%);
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+#post .post-meta__tags,
+#post .post-meta__tags .tags-punctuation,
+#sidebar #sidebar-menus .card-tag-cloud a {
+  display: inline-flex;
+  align-items: center;
+  gap: .28rem;
+  white-space: nowrap;
+}
+
+#post .post-meta__tags .tagsPageCount,
+#sidebar #sidebar-menus .card-tag-cloud a sup {
+  flex: 0 0 auto;
+  margin-left: .15rem;
+}
+
+#post .post-meta__tags,
+#sidebar #sidebar-menus .card-tag-cloud a {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#post .post-meta__tags .tags-punctuation {
+  overflow: visible;
+  text-overflow: clip;
+}
+
+/* ===== 文章底部：文末标签 / 标签计数 / 「随机逛逛」统一为矩形（纸张小圆角） =====
+   主题默认这几处是胶囊（--efu-radius-pill / 999px），与本站纸张矩形风格不一致；
+   统一改成 --paper-radius-small。覆盖层在主题样式之后加载，可可靠压过主题规则。 */
+#post .post-tools-right .tag_share .post-meta__tag-list .post-meta__tags,
+#post .post-tools-right .tag_share .post-meta__tag-list .post-meta__tags .tagsPageCount,
+#tag-page-tags .tagsPageCount {
+  border-radius: var(--paper-radius-small);
+}
+
+.relatedPosts-random {
+  border-radius: var(--paper-radius-small);
 }
 
 /* 文章底部：赞赏按钮与文末标签之间的呼吸感。
