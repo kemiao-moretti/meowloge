@@ -110,12 +110,6 @@ jobs:
           test -f public/index.html
           test -f public/p/shortcode-showcase.html
 
-      - name: 安装 Node 依赖并静态高亮代码块
-        shell: bash
-        run: |
-          npm ci
-          node scripts/prehighlight.mjs
-
       - name: 提交自动生成的 front matter
         shell: bash
         run: |
