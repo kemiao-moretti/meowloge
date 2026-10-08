@@ -87,7 +87,9 @@ jobs:
           git status --short --untracked-files=all
 
       - name: 构建
-        run: hugo --minify
+        run: |
+          hugo --minify
+          rm -f public/_worker.js
 
       - name: 记录构建后工作树状态
         shell: bash
