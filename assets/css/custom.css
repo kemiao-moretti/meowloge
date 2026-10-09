@@ -753,11 +753,14 @@ pre {
 /* 返回顶部按钮必须使用当前模式的纸张语义，不能继承主题的深色按钮底。 */
 #page-header #nav #nav-right #nav-totop a.totopbtn,
 #page-header.nav-fixed #nav #nav-right #nav-totop a.totopbtn {
-  border: 1px solid var(--paper-line);
+  /* 按钮嵌在 #nav-right 的 1px 框内（空隙仅 3px），自身再画一层 1px 圆角框
+     会与容器弧线在四角交叠咬合出“缺口”。边框透明占位保尺寸、去阴影，
+     框只留容器一层；hover/focus 态的可见边框由下方 :hover 规则恢复。 */
+  border: 1px solid transparent;
   border-radius: var(--paper-radius-small);
   background: var(--paper-surface);
   color: var(--paper-ink);
-  box-shadow: var(--paper-shadow-soft);
+  box-shadow: none;
 }
 
 #page-header #nav #nav-right #nav-totop a.totopbtn i {
@@ -811,6 +814,8 @@ pre {
   display: flex;
   min-width: 0;
   max-width: 100%;
+  /* 行盒必须给微软雅黑 12px 布局盒（正好 16px）留余量，否则 DPI 取整会削掉文字上下笔画 */
+  line-height: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -840,7 +845,16 @@ pre {
   }
 
   #page-header #nav #nav-right #nav-totop.long {
-    width: clamp(55px, 18vw, 80px);
+    /* 整数宽度：clamp(55px,18vw,80px) 在常见视口下产生 70.1875 这类分数宽度，
+       1px 边框 + 5px 圆角在分数坐标上抗锯齿发毛，四角看着像被咬掉 */
+    width: 70px;
+  }
+
+  /* .long 宽度规则权重 (4,2,0) 高于 nav-at-top 折叠 (4,1,0)，说说等异步短页
+     切页瞬间被误加 long 时会出现隐形占位，这里在媒体块内后置同权重折叠压回去。 */
+  #page-header.nav-at-top #nav #nav-right #nav-totop.long {
+    width: 0;
+    min-width: 0;
   }
 }
 
