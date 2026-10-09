@@ -1,5 +1,15 @@
 @charset "UTF-8";
 
+/* ============================================================
+   custom.css — 站点纸张风格定制层
+   ------------------------------------------------------------
+   本文件经主题 styles.html 以「无 layer」方式引入，优先级高于
+   主题全部 @layer solitude.* 规则（unlayered > layered）；
+   主题内的 !important 需用 !important 对抗，除此之外不加。
+   明暗模式一律走 --paper-* 变量，不在组件处硬编码色值。
+   ============================================================ */
+
+/* ---------- 纸张颜色令牌 ---------- */
 :root {
   --paper-bg: #f4f0e6;
   --paper-surface: #fffdf7;
@@ -20,6 +30,7 @@
   --paper-radius-small: 5px;
   --paper-grid: rgba(104, 126, 104, .075);
   --paper-rule: rgba(151, 127, 91, .11);
+  --paper-mask: rgb(0 0 0 / 42%);
   /* 字体族统一由 hugo.yaml 的 params.solitude.font 提供（见主题 tokens.css 的 --solitude-font-*） */
   --paper-font: var(--solitude-font-family, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif);
   --paper-mono: var(--solitude-code-font-family, "JetBrains Mono", "Cascadia Code", Consolas, monospace);
@@ -48,6 +59,7 @@
   color-scheme: dark;
 }
 
+/* ---------- 主题变量兼容层 ---------- */
 :root,
 [data-theme="light"],
 [data-theme="dark"] {
@@ -126,17 +138,15 @@
   --comment-switch-knob: var(--paper-surface);
 }
 
+/* ---------- 基础 ---------- */
+/* 背景为单一纯色（无固定渐变层、无 blend），保证毛玻璃背后画面稳定、不掉帧；
+   纸张质感由正文容器 .article-container 承担。 */
 html,
 body {
   background-color: var(--paper-bg);
   color: var(--paper-ink);
   font-family: var(--paper-font);
 }
-
-/* 根治背景层（2026-10-01）：body 原为三层 background-attachment:fixed 渐变 + 全屏 body::before 装饰层，
-   使每个毛玻璃元素背后画面在滚动时剧烈变化，是掉帧根因。现简化为单一纯色背景（body 上方已有
-   background-color: var(--paper-bg)），无固定层、无 blend，毛玻璃背后画面稳定，回到原主题（hugo-solitude）
-   同等渲染成本。纸张质感由正文容器 .article-container 的纸面承担。 */
 
 ::selection {
   color: var(--paper-ink);
@@ -156,6 +166,7 @@ body {
   opacity: 0;
 }
 
+/* ---------- 导航纸张卡片 ---------- */
 #nav #blog_name,
 #nav #nav-right,
 #nav #page-name {
@@ -179,154 +190,20 @@ body {
   opacity: 0;
 }
 
-#page-header.nav-fixed #nav #page-name-text,
-#post #pagination .pagination-info,
-#post #pagination .prev_info,
-#post #pagination .next_info {
+#page-header.nav-fixed #nav #page-name-text {
   color: var(--paper-ink);
-}
-
-#post #pagination {
-  border-color: var(--paper-line);
-  background: var(--paper-surface);
-  box-shadow: var(--paper-shadow-soft);
-}
-
-#post #pagination .prev-post,
-#post #pagination .next-post,
-#post #pagination .prev-post a,
-#post #pagination .next-post a {
-  background: var(--paper-surface);
-}
-
-#post #pagination .prev-post a:hover,
-#post #pagination .next-post a:hover {
-  background: var(--paper-accent-soft);
-}
-
-#post #pagination .prev-post a:hover div,
-#post #pagination .next-post a:hover div {
-  color: var(--paper-accent-strong);
-}
-
-/* 个人卡片 hover 时切换为纸张表面，避免浅色模式下白字叠在浅色背景上。 */
-#aside-content .card-widget.card-info {
-  --profile-card-text-color: var(--paper-ink);
-  overflow: visible;
-  background: var(--paper-surface);
-  border-color: var(--paper-line);
-  box-shadow: var(--paper-shadow-soft);
-}
-
-#aside-content .card-widget.card-info::before {
-  z-index: 1;
-  pointer-events: none;
-}
-
-#aside-content .card-widget.card-info::after {
-  position: absolute;
-  top: -8px;
-  right: 22px;
-  z-index: 4;
-  width: 46px;
-  height: 15px;
-  content: "";
-  opacity: .42;
-  pointer-events: none;
-  background: var(--paper-tape);
-  transform: rotate(3deg);
-}
-
-#aside-content .card-widget.card-info .card-content {
-  position: relative;
-  z-index: 3;
-}
-
-#aside-content .card-widget.card-info::before {
-  background: var(--paper-surface);
-  opacity: 1;
-}
-
-#aside-content .card-widget.card-info .sayhi,
-#aside-content .card-widget.card-info .description,
-#aside-content .card-widget.card-info .bottom-group .name,
-#aside-content .card-widget.card-info .bottom-group .desc {
-  color: var(--paper-ink) !important;
-}
-
-#aside-content .card-widget.card-info .sayhi {
-  background: var(--paper-accent-soft);
-  border: 1px solid var(--paper-line);
-}
-
-#aside-content .card-widget.card-info .sayhi:hover {
-  color: var(--paper-accent-strong) !important;
-  background: var(--paper-accent-soft);
-}
-
-#aside-content .card-widget.card-info .bottom-group .social-icons .social-icon i {
-  color: var(--paper-ink);
-  background: var(--paper-accent-soft);
-  border: 1px solid var(--paper-line);
-}
-
-#aside-content .card-widget.card-info .bottom-group .social-icons .social-icon:hover i {
-  color: var(--paper-accent-strong);
-  background: var(--paper-surface);
-}
-
-#body-wrap.post #aside-content .card-widget.card-info .description,
-#body-wrap.post #aside-content .card-widget.card-info .bottom-group .name,
-#body-wrap.post #aside-content .card-widget.card-info .bottom-group .desc {
-  color: var(--paper-ink) !important;
-}
-
-/* 音乐播放器与站点名使用同一张纸，避免深色模式下仍显示原主题的玻璃渐变。 */
-#nav-music,
-#nav-music .aplayer,
-#nav-music .aplayer .aplayer-body,
-#nav-music .music-capsule-hitarea,
-#nav-music #nav-music-hoverTips {
-  border-radius: var(--paper-radius-small);
-}
-
-#nav-music,
-#nav-music .aplayer {
-  color: var(--paper-ink);
-  background: var(--paper-surface);
-  border-color: var(--paper-line);
-  box-shadow: var(--paper-shadow-soft);
-}
-
-#nav-music #nav-music-hoverTips {
-  color: var(--paper-accent-ink);
-  background: var(--paper-accent-soft);
-}
-
-#nav-music #nav-music-hoverTips .music-control-btn,
-#nav-music .music-capsule-hitarea {
-  color: var(--paper-ink);
-}
-
-#nav-music .music-progress-tooltip {
-  color: var(--paper-ink);
-  background: var(--paper-surface);
-  border-color: var(--paper-line);
-  border-radius: var(--paper-radius-small);
 }
 
 #page-header #nav #nav-right .nav-button > a,
 #page-header #nav #toggle-menu > a,
-#page-header.nav-fixed #nav #page-name-text {
-  border-radius: var(--paper-radius-small);
-}
-
+#page-header.nav-fixed #nav #page-name-text,
 #nav #blog_name,
 #nav #site-name,
 #page-header.nav-fixed #nav #page-name {
   border-radius: var(--paper-radius-small);
 }
 
+/* 站点名胶带装饰 */
 #nav #blog_name::after {
   position: absolute;
   top: -7px;
@@ -339,6 +216,7 @@ body {
   transform: rotate(-3deg);
 }
 
+/* 导航菜单胶囊 + 各项基础态 */
 #nav .menus_items {
   gap: 4px;
   padding: 5px 7px;
@@ -357,13 +235,58 @@ body {
   color: var(--paper-ink);
 }
 
-#nav .menus_items .menus_item > .site-page.active,
-#nav .menus_items .menus_item > .site-page[aria-current="page"],
-#nav .menus_items .menus_item > .site-page[aria-current="true"] {
+/* 当前项：强调底 + 下划线条（选中态规则须排在 hover 后，见下方 hover 组） */
+#nav .menus_items .menus_item > .site-page:is(.active, [aria-current="page"], [aria-current="true"]) {
   border-radius: var(--paper-radius-small);
   color: var(--paper-accent-strong);
   background: var(--paper-accent-soft);
   box-shadow: inset 0 -2px 0 var(--paper-accent);
+}
+
+#nav .menus_items .menus_item > .site-page:focus-visible,
+#nav .menus_items .menus_item:hover > .site-page,
+#nav #nav-right .nav-button > a:hover,
+#nav #toggle-menu > a:hover {
+  color: var(--paper-accent-strong);
+  background: var(--paper-accent-soft);
+  box-shadow: none;
+}
+
+/* 中控台按钮：浅色默认与普通按钮同色、打开后强调；深色打开后纸张浅底。
+   主题层内对文章页导航有带 !important 的文字色强规则，此处必须用 !important 对抗。 */
+html[data-theme="light"] #page-header:not(.console-open) #nav #nav-right #nav-console a.console_switchbutton:not(.console-open),
+html[data-theme="light"] #page-header:not(.console-open) #nav #nav-right #nav-console a.console_switchbutton:not(.console-open):is(:hover, :focus-visible) {
+  color: var(--paper-ink) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open,
+html[data-theme="light"] #page-header.console-open #nav #nav-right #nav-console a.console_switchbutton,
+html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton:is(:hover, :focus-visible),
+html[data-theme="light"] #page-header.console-open #nav #nav-right #nav-console a.console_switchbutton:is(:hover, :focus-visible) {
+  color: var(--paper-accent-strong) !important;
+  background: var(--paper-accent-soft) !important;
+  border-color: var(--paper-accent) !important;
+}
+
+html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton,
+html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton:is(:hover, :focus-visible) {
+  color: var(--paper-ink) !important;
+}
+
+html[data-theme="dark"] #page-header.console-open #nav #nav-right #nav-console a.console_switchbutton,
+html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open {
+  background: var(--paper-surface) !important;
+  border-color: var(--paper-line) !important;
+}
+
+/* 图标跟随文字色 */
+html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton label i,
+html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton:is(:hover, :focus-visible) label i,
+html[data-theme="dark"] #page-header.console-open #nav #nav-right #nav-console a.console_switchbutton label i,
+html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open label i {
+  background: currentColor !important;
 }
 
 /* 首页分类栏及标签导航使用矩形项目，不保留主题默认胶囊形。 */
@@ -392,6 +315,7 @@ body {
   }
 }
 
+/* 各处组件的纸张小圆角（矩形风格统一） */
 #page .category-lists .tag-cloud-list a,
 #page .category-lists .tag-cloud-list a span.tagsPageCount,
 #sidebar #sidebar-menus .menus_items .menus_item_child .site-page.child,
@@ -406,119 +330,13 @@ body {
   border-radius: var(--paper-radius-small);
 }
 
-#nav .menus_items .menus_item:hover > .site-page,
-#nav #nav-right .nav-button > a:hover,
-#nav #toggle-menu > a:hover,
-#nav .menus_items .menus_item > .site-page:focus-visible {
-  color: var(--paper-accent-strong);
-  background: var(--paper-accent-soft);
-  box-shadow: none;
-}
-
-/* 中控台打开时反转按钮对比：浅色用强调色底，暗色用纸张浅底，避免 X 图标融入背景。 */
-#page-header.console-open #nav #nav-right #nav-console > a.console_switchbutton {
-  color: var(--paper-accent-strong);
-  background: var(--paper-accent-soft);
-  border-color: var(--paper-accent);
-}
-
-#page-header.console-open[data-theme="dark"] #nav #nav-right #nav-console > a.console_switchbutton,
-[data-theme="dark"] #page-header.console-open #nav #nav-right #nav-console > a.console_switchbutton {
-  color: var(--paper-ink);
-  background: var(--paper-surface);
-  border-color: var(--paper-line);
-}
-
-#page-header.console-open #nav #nav-right #nav-console > a.console_switchbutton,
-#page-header.console-open #nav #nav-right #nav-console > a.console_switchbutton:hover,
-#page-header.console-open #nav #nav-right #nav-console > a.console_switchbutton:focus-visible {
-  color: var(--paper-accent-strong) !important;
-}
-
-#page-header.console-open #nav #nav-right #nav-console > a.console_switchbutton label i,
-#page-header.console-open #nav #nav-right #nav-console > a.console_switchbutton:hover label i,
-#page-header.console-open #nav #nav-right #nav-console > a.console_switchbutton:focus-visible label i {
-  background: currentColor !important;
-}
-
-[data-theme="dark"] #page-header.console-open #nav #nav-right #nav-console > a.console_switchbutton,
-[data-theme="dark"] #page-header.console-open #nav #nav-right #nav-console > a.console_switchbutton:hover,
-[data-theme="dark"] #page-header.console-open #nav #nav-right #nav-console > a.console_switchbutton:focus-visible {
-  color: var(--paper-ink) !important;
-}
-
-/* 跟随 Solitude 原生状态链覆盖中控台：原主题对文章页未固定导航和 hover 会强制白色，
-   必须同时覆盖默认、hover、打开和 focus 状态，不能只覆盖 console-open。 */
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton,
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton:hover,
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton:focus-visible,
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open,
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open:hover,
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open:focus-visible {
-  color: var(--paper-accent-strong) !important;
-}
-
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton label i,
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton:hover label i,
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton:focus-visible label i,
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open label i,
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open:hover label i,
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open:focus-visible label i {
-  background: currentColor !important;
-}
-
-html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton,
-html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton:hover,
-html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton:focus-visible,
-html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open,
-html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open:hover,
-html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open:focus-visible {
-  color: var(--paper-ink) !important;
-}
-
-html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton label i,
-html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton:hover label i,
-html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton:focus-visible label i,
-html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open label i,
-html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open:hover label i,
-html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open:focus-visible label i {
-  background: currentColor !important;
-}
-
+/* ---------- 下拉 / 返回首页菜单 ---------- */
 #nav .menus_items .menus_item .menus_item_child,
 #nav .back-home-button .back-menu-list-groups {
   border: 1px solid var(--paper-line);
   border-radius: var(--paper-radius-small);
   background: var(--paper-surface);
   box-shadow: var(--paper-shadow);
-}
-
-/* 手机端展开侧栏与返回菜单共用同一张纸：不透明纸面 + 纸边 + 纸影，
-   取代主题默认的半透明黑纱 + 毛玻璃（深色下会糊成一整片死黑，与纸张风格割裂）。 */
-#sidebar #sidebar-menus {
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
-
-/* 抽屉内的小块改用浅一档纸面，否则与侧栏同色后失去层次。 */
-#sidebar #sidebar-menus .site-data,
-#sidebar #sidebar-menus .card-tag-cloud a,
-#sidebar #sidebar-menus .sidebar-menu-item span.menu-child,
-#sidebar #sidebar-menus .menus_items .menus_item_child .site-page.child,
-#sidebar #sidebar-menus .back-menu-list-groups .back-menu-list .back-menu-item {
-  background: var(--paper-surface-alt);
-}
-
-/* 显示模式按钮在深色下是主题遗留的硬编码橙底，改回纸张强调色；
-   hover 的白字在浅绿上不可读，且触屏点按会粘住，一并换掉。 */
-#sidebar #sidebar-menus .sidebar-menu-item span.darkmode_switchbutton:hover {
-  background: var(--paper-accent);
-  color: var(--paper-accent-ink);
-}
-
-[data-theme="dark"] #sidebar #sidebar-menus .sidebar-menu-item span.darkmode_switchbutton {
-  background: var(--paper-accent-soft);
-  color: var(--paper-accent-strong);
 }
 
 /* 下拉菜单贴近导航项，避免选中展开时整体向下溢出导航容器。 */
@@ -561,19 +379,121 @@ html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_swit
 }
 
 #nav .back-home-button .back-menu-list .back-menu-item:hover,
-#nav .menus_items .menus_item .menus_item_child li a:hover {
+#nav .menus_items .menus_item .menus_item_child li a:hover,
+#nav .menus_items .menus_item .menus_item_child a:hover {
   background: var(--paper-accent-soft);
   color: var(--paper-accent-strong);
   box-shadow: none;
 }
 
-#nav .menus_items .menus_item .menus_item_child a:hover,
-#nav .back-home-button .back-menu-list .back-menu-item:hover {
-  color: var(--paper-accent-strong);
-  background: var(--paper-accent-soft);
-  box-shadow: none;
+/* ---------- 个人卡片 ---------- */
+#aside-content .card-widget.card-info {
+  --profile-card-text-color: var(--paper-ink);
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+  background: var(--paper-surface);
+  border-color: var(--paper-line);
+  box-shadow: var(--paper-shadow-soft);
 }
 
+#aside-content .card-widget.card-info::before {
+  z-index: 1;
+  pointer-events: none;
+  background: var(--paper-surface);
+  opacity: 1;
+}
+
+/* 胶带装饰 */
+#aside-content .card-widget.card-info::after {
+  position: absolute;
+  top: -8px;
+  right: 22px;
+  z-index: 4;
+  width: 46px;
+  height: 15px;
+  content: "";
+  opacity: .42;
+  pointer-events: none;
+  background: var(--paper-tape);
+  transform: rotate(3deg);
+}
+
+#aside-content .card-widget.card-info .card-content {
+  position: relative;
+  z-index: 3;
+}
+
+#aside-content .card-widget.card-info .sayhi,
+#aside-content .card-widget.card-info .description,
+#aside-content .card-widget.card-info .bottom-group .name,
+#aside-content .card-widget.card-info .bottom-group .desc,
+#body-wrap.post #aside-content .card-widget.card-info .description,
+#body-wrap.post #aside-content .card-widget.card-info .bottom-group .name,
+#body-wrap.post #aside-content .card-widget.card-info .bottom-group .desc {
+  color: var(--paper-ink) !important;
+}
+
+#aside-content .card-widget.card-info .sayhi {
+  background: var(--paper-accent-soft);
+  border: 1px solid var(--paper-line);
+}
+
+#aside-content .card-widget.card-info .sayhi:hover {
+  color: var(--paper-accent-strong) !important;
+  background: var(--paper-accent-soft);
+}
+
+#aside-content .card-widget.card-info .bottom-group .social-icons .social-icon i {
+  color: var(--paper-ink);
+  background: var(--paper-accent-soft);
+  border: 1px solid var(--paper-line);
+}
+
+#aside-content .card-widget.card-info .bottom-group .social-icons .social-icon:hover i {
+  color: var(--paper-accent-strong);
+  background: var(--paper-surface);
+}
+
+/* ---------- 音乐播放器 ---------- */
+/* 播放器与站点名使用同一张纸，避免深色模式下仍显示原主题的玻璃渐变。 */
+#nav-music,
+#nav-music .aplayer,
+#nav-music .aplayer .aplayer-body,
+#nav-music .music-capsule-hitarea,
+#nav-music #nav-music-hoverTips {
+  border-radius: var(--paper-radius-small);
+}
+
+#nav-music,
+#nav-music .aplayer {
+  color: var(--paper-ink);
+  background: var(--paper-surface);
+  border-color: var(--paper-line);
+  box-shadow: var(--paper-shadow-soft);
+}
+
+#nav-music #nav-music-hoverTips {
+  color: var(--paper-accent-ink);
+  background: var(--paper-accent-soft);
+}
+
+#nav-music #nav-music-hoverTips .music-control-btn,
+#nav-music .music-capsule-hitarea {
+  color: var(--paper-ink);
+}
+
+#nav-music .music-progress-tooltip {
+  color: var(--paper-ink);
+  background: var(--paper-surface);
+  border-color: var(--paper-line);
+  border-radius: var(--paper-radius-small);
+}
+
+/* ---------- 主卡片纸张 ---------- */
+/* 定位上下文必须按断点分别声明：≤1200px 时主题把 #card-toc 切换为右下角 position:fixed
+   浮层，若无条件写上 position:relative，目录卡片会被按回文档流，撑开 #aside-content
+   并把布局视口顶到 465px，fixed 导航栏据此居中后左右溢出裁切。 */
 .layout#content-inner {
   position: relative;
 }
@@ -600,38 +520,6 @@ html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_swit
 #aside-content .card-widget {
   overflow: visible;
   transition: transform 220ms var(--paper-ease), box-shadow 220ms var(--paper-ease), border-color 220ms ease;
-}
-
-/* 定位上下文必须按断点分别声明：≤1200px 时主题把 #card-toc 切换为右下角 position:fixed
-   浮层，若无条件写上 position:relative，目录卡片会被按回文档流，撑开 #aside-content
-   并把布局视口顶到 465px，fixed 导航栏据此居中后左右溢出裁切。 */
-@media screen and (min-width: 1201px) {
-  .recent-post-item,
-  #aside-content .card-widget {
-    position: relative;
-  }
-}
-
-@media screen and (max-width: 1200px) {
-  .recent-post-item,
-  #aside-content .card-widget:not(#card-toc) {
-    position: relative;
-  }
-
-  /* 目录卡片此时是浮层，不挂胶带装饰。 */
-  #aside-content #card-toc::before {
-    display: none;
-  }
-
-  /* 浮层靠 scale(0)/scale(1) 显隐，不能被 hover 抬升规则改写掉。 */
-  #aside-content #card-toc:hover {
-    transform: scale(0);
-  }
-
-  #aside-content #card-toc.open,
-  #aside-content #card-toc.open:hover {
-    transform: scale(1);
-  }
 }
 
 .recent-post-item::before,
@@ -662,12 +550,42 @@ html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_swit
   border-radius: 3px 7px 4px 6px;
 }
 
+@media screen and (min-width: 1201px) {
+  .recent-post-item,
+  #aside-content .card-widget {
+    position: relative;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .recent-post-item,
+  #aside-content .card-widget:not(#card-toc) {
+    position: relative;
+  }
+
+  /* 目录卡片此时是浮层，不挂胶带装饰，且靠 scale 显隐，不能被 hover 抬升改写。 */
+  #aside-content #card-toc::before {
+    display: none;
+  }
+
+  #aside-content #card-toc:hover {
+    transform: scale(0);
+  }
+
+  #aside-content #card-toc.open,
+  #aside-content #card-toc.open:hover {
+    transform: scale(1);
+  }
+}
+
+/* ---------- 正文容器（纸面） ---------- */
 .article-container {
   position: relative;
   padding: clamp(1.2rem, 3vw, 3rem);
   background-image: repeating-linear-gradient(0deg, transparent 0 31px, var(--paper-rule) 32px, transparent 33px);
 }
 
+/* 侧边竖线（行格） */
 .article-container::before {
   position: absolute;
   top: 14px;
@@ -734,6 +652,7 @@ pre {
   box-shadow: none;
 }
 
+/* ---------- 右侧浮动按钮 ---------- */
 #rightside > div,
 #rightside a,
 #rightside button {
@@ -750,12 +669,19 @@ pre {
   transform: translateY(-2px);
 }
 
-/* 返回顶部按钮必须使用当前模式的纸张语义，不能继承主题的深色按钮底。 */
-#page-header #nav #nav-right #nav-totop a.totopbtn,
-#page-header.nav-fixed #nav #nav-right #nav-totop a.totopbtn {
-  /* 按钮嵌在 #nav-right 的 1px 框内（空隙仅 3px），自身再画一层 1px 圆角框
-     会与容器弧线在四角交叠咬合出“缺口”。边框透明占位保尺寸、去阴影，
-     框只留容器一层；hover/focus 态的可见边框由下方 :hover 规则恢复。 */
+/* ---------- 返回顶部按钮（可伸缩） ---------- */
+/* 按钮嵌在 #nav-right 的 1px 框内（空隙仅 3px），自身再画一层 1px 圆角框
+   会与容器弧线在四角交叠咬合出“缺口”。边框透明占位保尺寸、去阴影，
+   框只留容器一层；hover/focus 态的可见边框由下方 :hover 规则恢复。
+   .long/.nav-at-top 宽度博弈规则较多，保持声明先后顺序不可打乱。 */
+#page-header #nav #nav-right #nav-totop a.totopbtn {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
   border: 1px solid transparent;
   border-radius: var(--paper-radius-small);
   background: var(--paper-surface);
@@ -763,8 +689,33 @@ pre {
   box-shadow: none;
 }
 
+#page-header #nav #nav-right #nav-totop a.totopbtn span {
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+  /* 行盒必须给微软雅黑 12px 布局盒（正好 16px）留余量，否则 DPI 取整会削掉文字上下笔画 */
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 #page-header #nav #nav-right #nav-totop a.totopbtn i {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
   color: inherit;
+}
+
+#page-header #nav #nav-right #nav-totop:hover a.totopbtn i {
+  opacity: 1;
+}
+
+#page-header #nav #nav-right #nav-totop:hover a.totopbtn span {
+  opacity: 0;
 }
 
 #page-header #nav #nav-right > .nav-button {
@@ -800,42 +751,12 @@ pre {
   visibility: hidden;
 }
 
-#page-header #nav #nav-right #nav-totop a.totopbtn {
-  display: flex;
-  width: 100%;
-  min-width: 0;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-#page-header #nav #nav-right #nav-totop a.totopbtn span {
-  display: flex;
-  min-width: 0;
-  max-width: 100%;
-  /* 行盒必须给微软雅黑 12px 布局盒（正好 16px）留余量，否则 DPI 取整会削掉文字上下笔画 */
-  line-height: 20px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-#page-header #nav #nav-right #nav-totop a.totopbtn i {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-}
-
-#page-header #nav #nav-right #nav-totop:hover a.totopbtn i {
-  opacity: 1;
-}
-
-#page-header #nav #nav-right #nav-totop:hover a.totopbtn span {
-  opacity: 0;
+#page-header #nav #nav-right #nav-totop:hover a.totopbtn,
+#page-header #nav #nav-right #nav-totop a.totopbtn:focus-visible {
+  background: var(--paper-accent-soft);
+  border-color: var(--paper-accent);
+  color: var(--paper-accent-strong);
+  box-shadow: var(--paper-shadow-hover);
 }
 
 @media screen and (max-width: 767px) {
@@ -850,31 +771,23 @@ pre {
     width: 70px;
   }
 
-  /* .long 宽度规则权重 (4,2,0) 高于 nav-at-top 折叠 (4,1,0)，说说等异步短页
-     切页瞬间被误加 long 时会出现隐形占位，这里在媒体块内后置同权重折叠压回去。 */
+  /* .long 宽度规则权重高于 nav-at-top 折叠，说说等异步短页切页瞬间被误加 long
+     时会出现隐形占位，这里在媒体块内后置同权重折叠压回去。 */
   #page-header.nav-at-top #nav #nav-right #nav-totop.long {
     width: 0;
     min-width: 0;
   }
 }
 
-#page-header #nav #nav-right #nav-totop:hover a.totopbtn,
-#page-header #nav #nav-right #nav-totop a.totopbtn:focus-visible {
-  background: var(--paper-accent-soft);
-  border-color: var(--paper-accent);
-  color: var(--paper-accent-strong);
-  box-shadow: var(--paper-shadow-hover);
-}
-
+/* ---------- 分类栏 / 分页选中态 ---------- */
 #category-bar,
 #tag-page-tags {
   box-shadow: var(--paper-shadow-soft);
 }
 
-/* 分类栏容器在**所有断点**都只当排布层：纸面 + 边框 + 阴影会横贯整屏，成了一条突兀的长条。
-   只保留内部独立的纸张按钮（首页 / 分类 / 更多）。
-   限定 .home-category-bar 后代：`#category #category-bar` 那套 sticky 分类栏变体依赖实底遮挡滚动内容，
-   裸写 `#category-bar` 会因 unlayered 优先级压过它（哪怕对方特异性更高）。 */
+/* 分类栏容器在所有断点都只当排布层：纸面 + 边框 + 阴影会横贯整屏，成为突兀长条。
+   限定 .home-category-bar 后代：#category #category-bar 那套 sticky 变体依赖实底遮挡滚动内容，
+   裸写 #category-bar 会因 unlayered 优先级压过它（哪怕对方特异性更高）。 */
 .home-category-bar > #category-bar {
   border: 0;
   border-radius: 0;
@@ -902,6 +815,22 @@ pre {
   box-shadow: var(--paper-shadow);
 }
 
+/* 手机端展开侧栏与返回菜单共用同一张纸：不透明纸面 + 纸边 + 纸影，
+   取代主题默认的半透明黑纱 + 毛玻璃（深色下会糊成一整片死黑）。 */
+#sidebar #sidebar-menus {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* 抽屉内的小块改用浅一档纸面，否则与侧栏同色后失去层次。 */
+#sidebar #sidebar-menus .site-data,
+#sidebar #sidebar-menus .card-tag-cloud a,
+#sidebar #sidebar-menus .sidebar-menu-item span.menu-child,
+#sidebar #sidebar-menus .menus_items .menus_item_child .site-page.child,
+#sidebar #sidebar-menus .back-menu-list-groups .back-menu-list .back-menu-item {
+  background: var(--paper-surface-alt);
+}
+
 #sidebar #sidebar-menus .menus_items li .site-page:hover,
 #sidebar #sidebar-menus .card-tag-cloud a:hover {
   background: var(--paper-accent-soft);
@@ -909,6 +838,49 @@ pre {
   box-shadow: none;
 }
 
+/* 显示模式按钮在深色下是主题遗留的硬编码橙底，改回纸张强调色；
+   hover 的白字在浅绿上不可读，且触屏点按会粘住，一并换掉。 */
+#sidebar #sidebar-menus .sidebar-menu-item span.darkmode_switchbutton:hover {
+  background: var(--paper-accent);
+  color: var(--paper-accent-ink);
+}
+
+[data-theme="dark"] #sidebar #sidebar-menus .sidebar-menu-item span.darkmode_switchbutton {
+  background: var(--paper-accent-soft);
+  color: var(--paper-accent-strong);
+}
+
+/* 分页链接色彩 */
+#post #pagination .pagination-info,
+#post #pagination .prev_info,
+#post #pagination .next_info {
+  color: var(--paper-ink);
+}
+
+#post #pagination {
+  border-color: var(--paper-line);
+  background: var(--paper-surface);
+  box-shadow: var(--paper-shadow-soft);
+}
+
+#post #pagination .prev-post,
+#post #pagination .next-post,
+#post #pagination .prev-post a,
+#post #pagination .next-post a {
+  background: var(--paper-surface);
+}
+
+#post #pagination .prev-post a:hover,
+#post #pagination .next-post a:hover {
+  background: var(--paper-accent-soft);
+}
+
+#post #pagination .prev-post a:hover div,
+#post #pagination .next-post a:hover div {
+  color: var(--paper-accent-strong);
+}
+
+/* ---------- 页脚 ---------- */
 #footer {
   position: relative;
   margin-top: 3rem;
@@ -928,6 +900,7 @@ pre {
   transform: rotate(-2deg);
 }
 
+/* ---------- 焦点可见性 ---------- */
 button,
 a,
 input,
@@ -952,11 +925,8 @@ select {
   }
 }
 
+/* ---------- 移动端（≤768px） ---------- */
 @media screen and (max-width: 768px) {
-  body {
-    background-size: 24px 24px, 24px 24px, auto;
-  }
-
   #nav #blog_name,
   #nav #site-name,
   #nav #nav-right,
@@ -998,7 +968,7 @@ select {
   }
 }
 
-/* FlatPaper demo 对齐：正文像一张可长期阅读的纸，而不是普通面板。 */
+/* ---------- 正文长文排版（FlatPaper 对齐） ---------- */
 .article-container.post-content {
   --article-ink: var(--paper-ink);
   --article-muted: var(--paper-muted);
@@ -1037,6 +1007,7 @@ select {
   letter-spacing: .01em;
 }
 
+/* 标题改用波形下划线装饰（覆盖主容器 h2/h3 的竖条） */
 .article-container.post-content :is(h2, h3)::before {
   display: none;
 }
@@ -1100,7 +1071,8 @@ select {
   height: 19px;
   content: "";
   opacity: .58;
-  background: repeating-linear-gradient(45deg, rgba(255,255,255,.18) 0 2px, transparent 2px 7px), var(--paper-tape);
+  /* 白色高光叠加在 --paper-tape 上，深浅模式下胶带本体颜色跟随变量，高光不随主题 */
+  background: repeating-linear-gradient(45deg, rgba(255, 255, 255, .18) 0 2px, transparent 2px 7px), var(--paper-tape);
   transform: translateX(-50%) rotate(-1deg);
 }
 
@@ -1146,7 +1118,7 @@ select {
   color: var(--article-muted);
 }
 
-/* 表格放不下时在自己身上横滑，不要撑破正文容器（正文容器是 overflow: hidden） */
+/* 表格放不下时在自己身上横滑，不要撑破正文容器 */
 @media screen and (max-width: 768px) {
   .article-container.post-content table {
     display: block;
@@ -1273,6 +1245,7 @@ select {
   background: var(--article-soft);
 }
 
+/* ---------- 特殊页面组件 ---------- */
 /* 特殊页面的旧组件也统一回到纸张卡片语义，避免遗留硬阴影和粗描边。 */
 .cl-search input,
 .cl-pill,
@@ -1339,9 +1312,8 @@ select {
 }
 
 /* ===== 关于页「充电」按钮的闪电图标 =====
-   主题模板用的是 ϟ 字形（U+03DF），实际渲染出来是一条细折线，和
-   anheyu-app-frontend 的实心闪电对不上。这里把字形藏掉，改用两个三角形
-   拼出同款实心闪电：几何全部按 --bolt-b（三角形半宽）等比推导，
+   主题模板用 ϟ 字形（U+03DF），渲染成细折线，和 anheyu-app-frontend 的实心闪电对不上。
+   这里藏掉字形，用两个三角形拼出实心闪电：几何按 --bolt-b（三角形半宽）等比推导，
    桌面 10px、移动 7px。 */
 #about-page .reward-action-icon,
 #about-page .reward-mobile-icon {
@@ -1390,6 +1362,7 @@ select {
   transform: rotate(180deg);
 }
 
+/* ---------- 移动端赞赏弹层 ---------- */
 @media screen and (max-width: 767px) {
   #post .post-reward .reward-main {
     position: fixed !important;
@@ -1410,7 +1383,7 @@ select {
     inset: 0;
     z-index: -1;
     content: "";
-    background: rgb(0 0 0 / 42%);
+    background: var(--paper-mask);
   }
 
   #post .post-reward .reward-main .reward-all {
@@ -1440,6 +1413,7 @@ select {
   }
 }
 
+/* ---------- 文章底部：文末标签 ---------- */
 #post .post-meta__tags,
 #post .post-meta__tags .tags-punctuation,
 #sidebar #sidebar-menus .card-tag-cloud a {
@@ -1468,9 +1442,7 @@ select {
   text-overflow: clip;
 }
 
-/* ===== 文章底部：文末标签 / 标签计数 / 「随机逛逛」统一为矩形（纸张小圆角） =====
-   主题默认这几处是胶囊（--efu-radius-pill / 999px），与本站纸张矩形风格不一致；
-   统一改成 --paper-radius-small。覆盖层在主题样式之后加载，可可靠压过主题规则。 */
+/* 主题默认文末标签是胶囊（999px），统一改成纸张小圆角；覆盖层在主题样式之后加载，可可靠压过主题规则。 */
 #post .post-tools-right .tag_share .post-meta__tag-list .post-meta__tags,
 #post .post-tools-right .tag_share .post-meta__tag-list .post-meta__tags .tagsPageCount,
 #tag-page-tags .tagsPageCount {
@@ -1481,7 +1453,7 @@ select {
   border-radius: var(--paper-radius-small);
 }
 
-/* 文章底部：赞赏按钮与文末标签之间的呼吸感。
+/* 赞赏按钮与文末标签之间的呼吸感。
    选择器带 :has() 是有意的 —— 没打标签的文章会渲染出空容器，此时不应占位。 */
 #post .post-tools-right:has(.post-meta__tags) {
   margin-top: 22px;
@@ -1493,8 +1465,9 @@ select {
   }
 }
 
-/* 留言板弹幕开关：两个按钮的底/字原本完全一致，看不出弹幕当前是开是关，
-   也没有任何 hover / 按下 / 键盘焦点反馈。这里补状态高亮与三态反馈。 */
+/* ---------- 留言板弹幕开关 ---------- */
+/* 原本两个按钮的底/字完全一致，看不出弹幕开关状态，也没有反馈。
+   这里补状态高亮与三态反馈。 */
 .switch_message {
   /* 弹幕层 #barrage 是 fixed + z-index:1，不抬起来的话飘过的弹幕会挡住按钮点击 */
   position: relative;
@@ -1536,7 +1509,6 @@ select {
   box-shadow: none;
 }
 
-/* 主题的 button { outline: 0 } 把默认焦点环清了，键盘用户看不见焦点在哪 */
 .switch_message button:focus-visible {
   outline: 2px solid var(--paper-accent);
   outline-offset: 2px;
@@ -1546,7 +1518,7 @@ select {
   pointer-events: none;
 }
 
-/* 当前状态高亮。弹幕默认是显示的，故「隐藏弹幕」为本态；
+/* 当前状态高亮。弹幕默认显示，故「隐藏弹幕」为本态；
    #barrage 带上 hide 后翻转到「显示弹幕」。写在 :hover 之后，保证选中态不被悬停覆盖。 */
 .switch_message button.close,
 .article-container:has(#barrage.hide) .switch_message button.open {
@@ -1566,7 +1538,7 @@ select {
   font-weight: 400;
 }
 
-/* ===== 页脚「随机友链」列 ===== */
+/* ---------- 页脚「随机友链」列 ---------- */
 /* 主题给 .footer-title-group 的 margin 是 .7rem 底，比普通分组标题的 h3(.5rem)
    多 3.2px，会让这一列的条目比别的列低 4px。拉平到与普通分组一致。 */
 #footer #st-footer .footer-title-group {
@@ -1646,10 +1618,8 @@ select {
   }
 }
 
-/* ============================================================
-   移动端目录浮层（≤1200px）
-   目录入口已经迁移到顶栏；这里保留 #card-toc 的浮层、遮罩和滚动行为。
-   ============================================================ */
+/* ---------- 移动端目录浮层（≤1200px） ---------- */
+/* 目录入口已迁移到顶栏；这里保留 #card-toc 的浮层、遮罩和滚动行为。 */
 :root {
   --toc-panel-right: 12px;
   --toc-panel-bottom: 16px;
@@ -1667,18 +1637,38 @@ select {
   touch-action: none;
 }
 
-html:has(#card-toc.open) .solitude-toc-mask { display: block; }
+html:has(#card-toc.open) .solitude-toc-mask {
+  display: block;
+}
 
 @media screen and (min-width: 1201px) {
-  .solitude-toc-mask { display: none !important; }
-  #aside-content #card-toc .toc-actions { display: none; }
+  .solitude-toc-mask {
+    display: none !important;
+  }
+
+  #aside-content #card-toc .toc-actions {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 1200px) {
-  html { scrollbar-gutter: stable; }
-  html:has(#card-toc.open) #aside-content { position: relative; z-index: var(--toc-layer-panel); }
-  html:has(#card-toc.open) { overflow: hidden; overscroll-behavior: none; }
-  html:has(#card-toc.open) body { overflow: hidden; }
+  html {
+    scrollbar-gutter: stable;
+  }
+
+  html:has(#card-toc.open) #aside-content {
+    position: relative;
+    z-index: var(--toc-layer-panel);
+  }
+
+  html:has(#card-toc.open) {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  html:has(#card-toc.open) body {
+    overflow: hidden;
+  }
 
   #aside-content #card-toc {
     top: 68px;
@@ -1706,117 +1696,120 @@ html:has(#card-toc.open) .solitude-toc-mask { display: block; }
     touch-action: pan-y;
   }
 
-  #aside-content #card-toc .item-headline { margin: 0 0 6px; padding: 0; justify-content: space-between; color: var(--paper-ink); }
-  #aside-content #card-toc .toc-actions { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; }
+  #aside-content #card-toc .item-headline {
+    margin: 0 0 6px;
+    padding: 0;
+    justify-content: space-between;
+    color: var(--paper-ink);
+  }
+
+  #aside-content #card-toc .toc-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+  }
+
   #aside-content #card-toc .toc-action {
-    display: inline-flex; align-items: center; justify-content: center; gap: 3px;
-    min-width: 32px; height: 28px; padding: 0 9px;
-    border: 1px solid var(--paper-line); border-radius: 999px;
-    background: var(--paper-surface-alt); color: var(--paper-ink);
-    font-size: 12px; font-weight: 600; line-height: 1; cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-width: 32px;
+    height: 28px;
+    padding: 0 9px;
+    border: 1px solid var(--paper-line);
+    border-radius: 999px;
+    background: var(--paper-surface-alt);
+    color: var(--paper-ink);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
     transition: background-color 160ms var(--paper-ease), color 160ms var(--paper-ease), border-color 160ms var(--paper-ease);
   }
+
   #aside-content #card-toc .toc-action:hover,
-  #aside-content #card-toc .toc-action:focus-visible { border-color: var(--paper-accent); background: var(--paper-accent-soft); color: var(--paper-accent-strong); }
-  #aside-content #card-toc .toc-action:focus-visible { outline: 2px solid var(--paper-accent); outline-offset: 2px; }
-  #aside-content #card-toc .toc-action i { font-size: 12px; }
-  #aside-content #card-toc .toc-percent { font-variant-numeric: tabular-nums; }
-  #card-toc .toc-content .toc-link { min-height: 34px; padding: 6px 12px; border-radius: 999px; }
-  #card-toc .toc-content .toc-link.active { border-radius: 999px; background: var(--paper-accent-soft); color: var(--paper-accent-strong); font-size: inherit; font-weight: 700; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--paper-accent) 30%, transparent); }
-  #card-toc .toc-content .toc-link:not(.active) span { filter: none; opacity: .72; }
+  #aside-content #card-toc .toc-action:focus-visible {
+    border-color: var(--paper-accent);
+    background: var(--paper-accent-soft);
+    color: var(--paper-accent-strong);
+  }
+
+  #aside-content #card-toc .toc-action:focus-visible {
+    outline: 2px solid var(--paper-accent);
+    outline-offset: 2px;
+  }
+
+  #aside-content #card-toc .toc-action i {
+    font-size: 12px;
+  }
+
+  #aside-content #card-toc .toc-percent {
+    font-variant-numeric: tabular-nums;
+  }
+
+  #card-toc .toc-content .toc-link {
+    min-height: 34px;
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+
+  #card-toc .toc-content .toc-link.active {
+    border-radius: 999px;
+    background: var(--paper-accent-soft);
+    color: var(--paper-accent-strong);
+    font-size: inherit;
+    font-weight: 700;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--paper-accent) 30%, transparent);
+  }
+
+  #card-toc .toc-content .toc-link:not(.active) span {
+    filter: none;
+    opacity: .72;
+  }
 }
 
 @media screen and (max-width: 768px) {
-  :root { --toc-panel-right: 10px; --toc-panel-bottom: 14px; }
+  :root {
+    --toc-panel-right: 10px;
+    --toc-panel-bottom: 14px;
+  }
 }
 
+/* ---------- 移动端遮罩联动（≤1024px） ---------- */
 @media screen and (max-width: 1024px) {
-  #nav #blog_name::after { display: none; }
+  #nav #blog_name::after {
+    display: none;
+  }
+
+  /* 导航音乐 dock 在遮罩层级下隐藏，避免叠在最上层 */
   html:has(#sidebar-menus.open) #nav-music,
   html:has(#nav-group-panel.open) #nav-music,
   html:has(#card-toc.open) #nav-music,
   html:has(#console.show) #nav-music,
-  html.search-open #nav-music { z-index: var(--toc-layer-under-drawer); opacity: 0; pointer-events: none; }
-}
+  html.search-open #nav-music {
+    z-index: var(--toc-layer-under-drawer);
+    opacity: 0;
+    pointer-events: none;
+  }
 
-/* 移动端紧凑导航抽屉状态覆盖：custom.css 位于主题样式之后，确保打开态不被层叠层级压回隐藏状态。 */
-@media screen and (max-width: 1024px) {
-  #nav-group-panel { display: flex; }
-  #nav-group-panel.open { opacity: 1; pointer-events: auto; transform: translateX(0); }
-  #nav-group-mask.show { display: block; }
-}
+  /* 移动端紧凑导航抽屉：本文件位于主题样式后，确保打开态不被层叠层级压回隐藏。 */
+  #nav-group-panel {
+    display: flex;
+  }
 
-/* 浅色模式下中控台默认与其它导航按钮保持同色，仅打开后进入强调状态。 */
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton:not(.console-open),
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton:not(.console-open):hover,
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton:not(.console-open):focus-visible {
-  color: var(--paper-ink) !important;
-  background: transparent !important;
-  border-color: transparent !important;
-}
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton:not(.console-open) label i,
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton:not(.console-open):hover label i,
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton:not(.console-open):focus-visible label i { background: currentColor !important; }
-html[data-theme="light"] #page-header.console-open #nav #nav-right #nav-console a.console_switchbutton,
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open,
-html[data-theme="light"] #page-header.console-open #nav #nav-right #nav-console a.console_switchbutton:hover,
-html[data-theme="light"] #page-header.console-open #nav #nav-right #nav-console a.console_switchbutton:focus-visible {
-  color: var(--paper-accent-strong) !important;
-  background: var(--paper-accent-soft) !important;
-  border-color: var(--paper-accent) !important;
-}
-html[data-theme="light"] #page-header.console-open #nav #nav-right #nav-console a.console_switchbutton label i,
-html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open label i,
-html[data-theme="light"] #page-header.console-open #nav #nav-right #nav-console a.console_switchbutton:hover label i,
-html[data-theme="light"] #page-header.console-open #nav #nav-right #nav-console a.console_switchbutton:focus-visible label i { background: currentColor !important; }
+  #nav-group-panel.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+  }
 
-/* ===== 滚动性能优化 v2：滚动中降级毛玻璃 backdrop-filter =====
-   backdrop-filter 施加在固定定位元素上时，滚动过程中会对背后不断
-   变化的内容做每帧重采样（blur），这是滚动掉帧的主因，在低端 GPU、
-   高 DPI 屏和移动端上尤为明显。这里在滚动进行中（body.is-scrolling）
-   关闭毛玻璃，并用半透明背景兜底保持观感；滚动停止 150ms 后恢复。
-   覆盖范围已补齐：导航菜单胶囊(.menus_items)、#page-name、移动端
-   固定导航、音乐 dock 内层(.aplayer)、首页轮播遮罩(.home-center-mask)。
-   静止状态下的毛玻璃效果不受影响。 */
-body.is-scrolling #page-header.nav-fixed #nav #blog_name,
-body.is-scrolling #page-header.nav-fixed #nav #nav-right,
-body.is-scrolling #page-header.nav-fixed #nav .menus_items,
-body.is-scrolling #page-header.nav-fixed #nav #page-name,
-body.is-scrolling #page-header.not-top-img #nav,
-body.is-scrolling #nav .menus_items,
-body.is-scrolling #nav-music,
-body.is-scrolling #nav-music .aplayer,
-body.is-scrolling .home-center-mask,
-body.is-scrolling #rightside .rs_show,
-body.is-scrolling #rightside .rs_hide {
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-}
-body.is-scrolling #page-header.nav-fixed #nav #blog_name,
-body.is-scrolling #page-header.nav-fixed #nav #nav-right,
-body.is-scrolling #page-header.nav-fixed #nav .menus_items,
-body.is-scrolling #page-header.nav-fixed #nav #page-name,
-body.is-scrolling #nav .menus_items,
-body.is-scrolling #nav-music,
-body.is-scrolling #nav-music .aplayer {
-  background: color-mix(in srgb, var(--efu-card-bg) 88%, transparent);
-}
-body.is-scrolling #rightside .rs_show,
-body.is-scrolling #rightside .rs_hide {
-  background: color-mix(in srgb, var(--efu-card-bg) 88%, transparent);
-}
-/* 音乐页满屏背景毛玻璃由 blur(200px) 降为 blur(24px)：ht 200px 对 200%×200% 固定层做极端模糊是全站最重单层绘制 */
-#Music-bg::before {
-  -webkit-backdrop-filter: blur(24px);
-  backdrop-filter: blur(24px);
-}
-/* 播放态胶囊 box-shadow 动画在滚动中暂停，避免每帧重绘；并尊重系统"减弱动画"偏好 */
-body.is-scrolling #nav-music.playing {
-  animation-play-state: paused;
-}
+  #nav-group-mask.show {
+    display: block;
+  }
 
-/* 手机端沿用原主题的按钮布局，仅移除 nav 整体背景遮罩与横向底栏。 */
-@media screen and (max-width: 1024px) {
+  /* 手机端沿用原主题的按钮布局，仅移除 nav 整体背景遮罩与横向底栏。 */
   #page-header #nav,
   #page-header:not(.nav-fixed) #nav,
   #page-header.not-top-img #nav {
@@ -1828,7 +1821,8 @@ body.is-scrolling #nav-music.playing {
   }
 }
 
-/* 手机端文章元数据：分类文字与胶囊保持在同一个 flex 项内，避免原主题的 width:100%
+/* ---------- 移动端文章元数据 ---------- */
+/* 分类文字与胶囊保持在同一个 flex 项内，避免原主题的 width:100%
    在 meta-firstline 换行时把链接背景和文字拆成两块。 */
 @media screen and (max-width: 768px) {
   .post #post-info #post-firstinfo .meta-firstline {
@@ -1859,10 +1853,51 @@ body.is-scrolling #nav-music.playing {
   }
 }
 
-/* ============================================================
-   文章底部投票评分（正文与作者卡片之间，1-5 星，后端 star-vote）
-   全部走 --paper-* 纸张变量，随明暗/断点自动适配，无硬编码色值。
-   ============================================================ */
+/* ---------- 滚动性能优化：滚动中降级毛玻璃 ---------- */
+/* backdrop-filter 施加在固定定位元素上时，滚动过程中会对背后不断变化的内容做
+   每帧重采样（blur），这是滚动掉帧的主因。滚动中（body.is-scrolling）关闭毛玻璃，
+   用半透明背景兜底保持观感；滚动停止 150ms 后恢复。静止状态效果不受影响。 */
+body.is-scrolling #page-header.nav-fixed #nav #blog_name,
+body.is-scrolling #page-header.nav-fixed #nav #nav-right,
+body.is-scrolling #page-header.nav-fixed #nav .menus_items,
+body.is-scrolling #page-header.nav-fixed #nav #page-name,
+body.is-scrolling #page-header.not-top-img #nav,
+body.is-scrolling #nav .menus_items,
+body.is-scrolling #nav-music,
+body.is-scrolling #nav-music .aplayer,
+body.is-scrolling .home-center-mask,
+body.is-scrolling #rightside .rs_show,
+body.is-scrolling #rightside .rs_hide {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+body.is-scrolling #page-header.nav-fixed #nav #blog_name,
+body.is-scrolling #page-header.nav-fixed #nav #nav-right,
+body.is-scrolling #page-header.nav-fixed #nav .menus_items,
+body.is-scrolling #page-header.nav-fixed #nav #page-name,
+body.is-scrolling #nav .menus_items,
+body.is-scrolling #nav-music,
+body.is-scrolling #nav-music .aplayer,
+body.is-scrolling #rightside .rs_show,
+body.is-scrolling #rightside .rs_hide {
+  background: color-mix(in srgb, var(--efu-card-bg) 88%, transparent);
+}
+
+/* 音乐页满屏背景毛玻璃由 blur(200px) 降为 blur(24px)：200px 对 200%×200% 固定层
+   做极端模糊是全站最重单层绘制 */
+#Music-bg::before {
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+}
+
+/* 播放态胶囊 box-shadow 动画在滚动中暂停，避免每帧重绘；并尊重系统减弱动画偏好 */
+body.is-scrolling #nav-music.playing {
+  animation-play-state: paused;
+}
+
+/* ---------- 文章底部投票评分 ---------- */
+/* 1-5 星，后端 star-vote；全部走 --paper-* 变量，随明暗/断点自动适配，无硬编码色值。 */
 #post .post-vote {
   display: flex;
   flex-direction: column;
@@ -1919,7 +1954,6 @@ body.is-scrolling #nav-music.playing {
   color: var(--paper-accent-strong);
 }
 
-/* 键盘可访问的焦点环 */
 #post .post-vote__star:focus-visible {
   outline: 2px solid var(--paper-accent);
   outline-offset: 2px;

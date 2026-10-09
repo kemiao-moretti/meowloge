@@ -120,7 +120,7 @@ sections:
       - variant: media
         label: 音乐偏好
         title_lines: ["国风", 华语流行]
-        subtitle: 来听听看我的更多推荐
+        subtitle: 来听听看我的歌单
         background: /img/about/music.webp
         button:
           text: 更多推荐
