@@ -1,0 +1,325 @@
+{
+  "generatedAt": "2026-10-10T11:45:13.759Z",
+  "pages": [
+    {
+      "page": "404.html",
+      "blockingCssBytes": 267463,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 61468
+    },
+    {
+      "page": "about/index.html",
+      "blockingCssBytes": 297080,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 88224
+    },
+    {
+      "page": "ai-news/index.html",
+      "blockingCssBytes": 265123,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 63693
+    },
+    {
+      "page": "archives/index.html",
+      "blockingCssBytes": 272328,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 69787
+    },
+    {
+      "page": "brevity/index.html",
+      "blockingCssBytes": 261219,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 69052
+    },
+    {
+      "page": "categories/index.html",
+      "blockingCssBytes": 272328,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 62634
+    },
+    {
+      "page": "categories/内容组件/index.html",
+      "blockingCssBytes": 261219,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 67574
+    },
+    {
+      "page": "categories/博客魔改/index.html",
+      "blockingCssBytes": 261219,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 68143
+    },
+    {
+      "page": "changelog/index.html",
+      "blockingCssBytes": 268027,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 137640
+    },
+    {
+      "page": "equipment/index.html",
+      "blockingCssBytes": 287434,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 66153
+    },
+    {
+      "page": "exchange/index.html",
+      "blockingCssBytes": 265828,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 67783
+    },
+    {
+      "page": "fcircle/index.html",
+      "blockingCssBytes": 269495,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 64893
+    },
+    {
+      "page": "gallery/bizhi/index.html",
+      "blockingCssBytes": 267139,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 68622
+    },
+    {
+      "page": "gallery/index.html",
+      "blockingCssBytes": 267139,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 64486
+    },
+    {
+      "page": "gallery/jiamio/index.html",
+      "blockingCssBytes": 267139,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 66176
+    },
+    {
+      "page": "go/index.html",
+      "blockingCssBytes": 266804,
+      "blockingJsBytes": 3357,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 0,
+      "htmlBytes": 4403
+    },
+    {
+      "page": "index.html",
+      "blockingCssBytes": 271789,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 78624
+    },
+    {
+      "page": "kit/index.html",
+      "blockingCssBytes": 0,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 0,
+      "htmlBytes": 252
+    },
+    {
+      "page": "links/index.html",
+      "blockingCssBytes": 287434,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 79247
+    },
+    {
+      "page": "message/index.html",
+      "blockingCssBytes": 262548,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 68150
+    },
+    {
+      "page": "music/index.html",
+      "blockingCssBytes": 275450,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 66567
+    },
+    {
+      "page": "p/ai-summary.html",
+      "blockingCssBytes": 291807,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 95725
+    },
+    {
+      "page": "p/pages-cms-writing-guide.html",
+      "blockingCssBytes": 291807,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 103434
+    },
+    {
+      "page": "p/shortcode-showcase.html",
+      "blockingCssBytes": 291807,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 121401
+    },
+    {
+      "page": "page/1/index.html",
+      "blockingCssBytes": 0,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 0,
+      "htmlBytes": 222
+    },
+    {
+      "page": "posts/index.html",
+      "blockingCssBytes": 261219,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 68618
+    },
+    {
+      "page": "privacy/index.html",
+      "blockingCssBytes": 273297,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 73624
+    },
+    {
+      "page": "recentcomments/index.html",
+      "blockingCssBytes": 287434,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 62611
+    },
+    {
+      "page": "shuoshuo/index.html",
+      "blockingCssBytes": 270492,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 64386
+    },
+    {
+      "page": "stats/index.html",
+      "blockingCssBytes": 268625,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 67803
+    },
+    {
+      "page": "tags/ai/index.html",
+      "blockingCssBytes": 261219,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 67560
+    },
+    {
+      "page": "tags/github-actions/index.html",
+      "blockingCssBytes": 261219,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 67644
+    },
+    {
+      "page": "tags/hugo/index.html",
+      "blockingCssBytes": 261219,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 68200
+    },
+    {
+      "page": "tags/index.html",
+      "blockingCssBytes": 272328,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 63775
+    },
+    {
+      "page": "tags/markdown/index.html",
+      "blockingCssBytes": 261219,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 67456
+    },
+    {
+      "page": "tags/pages-cms/index.html",
+      "blockingCssBytes": 261219,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 67609
+    },
+    {
+      "page": "tags/shortcode/index.html",
+      "blockingCssBytes": 261219,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 67463
+    },
+    {
+      "page": "tags/壁纸/index.html",
+      "blockingCssBytes": 261219,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 67353
+    },
+    {
+      "page": "tags/日常/index.html",
+      "blockingCssBytes": 261219,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 67426
+    },
+    {
+      "page": "tags/随拍/index.html",
+      "blockingCssBytes": 261219,
+      "blockingJsBytes": 0,
+      "externalBlockingJs": 0,
+      "moduleJsBytes": 249198,
+      "htmlBytes": 67426
+    }
+  ]
+}
