@@ -1,0 +1,66 @@
+/* ---------- 特殊页面组件 ---------- */
+/* 特殊页面的旧组件也统一回到纸张卡片语义，避免遗留硬阴影和粗描边。 */
+.cl-search input,
+.cl-pill,
+.cl-entry-card,
+.gallery-album-card__link,
+.gallery-album-back a,
+.gallery-page-title,
+.gallery-month__title,
+.error-kicker,
+.error-btn,
+.error-recommend-card,
+.privacy-status-card,
+.privacy-nav,
+.privacy-section,
+.ai-news-card,
+.changelog-card,
+.stats-card {
+  border-color: var(--paper-line);
+  border-width: 1px;
+  border-radius: var(--paper-radius-small);
+  box-shadow: var(--paper-shadow-soft);
+}
+
+.cl-search input:focus,
+.cl-pill:hover,
+.cl-pill[data-active],
+.cl-entry-card:hover,
+.gallery-album-back a:hover,
+.error-btn:hover,
+.error-recommend-card:hover,
+.privacy-contact-card:hover,
+.ai-news-card:hover,
+.changelog-card:hover,
+.stats-card:hover {
+  border-color: var(--paper-accent);
+  box-shadow: var(--paper-shadow-hover);
+  transform: translateY(-2px);
+}
+
+.error-hero-visual,
+.error-sticker {
+  border-color: var(--paper-line) !important;
+  background: var(--paper-surface-alt) !important;
+  box-shadow: var(--paper-shadow) !important;
+}
+
+.error-sticker {
+  color: var(--paper-ink) !important;
+  transform: rotate(-2deg) !important;
+}
+
+.gallery-page-title,
+.gallery-month__title,
+.error-btn--primary,
+.cl-entry-type {
+  color: var(--paper-accent-strong);
+  background: var(--paper-accent-soft);
+}
+
+.gallery-album-card__cover,
+.gallery-photo__media {
+  border-color: var(--paper-line);
+  box-shadow: var(--paper-shadow-soft);
+}
+

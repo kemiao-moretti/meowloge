@@ -1,0 +1,28 @@
+/* ---------- 标签云 / 标签页标签（全站） ----------
+   这一组原先被并进「文章底部：文末标签」那个分片里（三条规则的选择器列表把
+   `#post .post-meta__tags …` 与 `#sidebar #sidebar-menus .card-tag-cloud …` 写在一起），
+   但移动端侧栏的标签云在**每个页面**都存在、`#tag-page-tags` 在 /tags/ 上存在，
+   都不是文章页专属 —— 因此按选择器拆开，全局部分独立成这个全站分片。
+
+   注：原 A / C 两条规则同时命中侧栏那个 `a`，两条的声明互不重叠
+   （A 管 display/align-items/gap/white-space，C 管 min-width/max-width/overflow/text-overflow），
+   合并成一条是等价的。 */
+#sidebar #sidebar-menus .card-tag-cloud a {
+  display: inline-flex;
+  align-items: center;
+  gap: .28rem;
+  white-space: nowrap;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#sidebar #sidebar-menus .card-tag-cloud a sup {
+  flex: 0 0 auto;
+  margin-left: .15rem;
+}
+
+#tag-page-tags .tagsPageCount {
+  border-radius: var(--paper-radius-small);
+}

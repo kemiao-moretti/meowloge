@@ -1,0 +1,69 @@
+/* ---------- 个人卡片 ---------- */
+#aside-content .card-widget.card-info {
+  --profile-card-text-color: var(--paper-ink);
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+  background: var(--paper-surface);
+  border-color: var(--paper-line);
+  box-shadow: var(--paper-shadow-soft);
+}
+
+#aside-content .card-widget.card-info::before {
+  z-index: 1;
+  pointer-events: none;
+  background: var(--paper-surface);
+  opacity: 1;
+}
+
+/* 胶带装饰 */
+#aside-content .card-widget.card-info::after {
+  position: absolute;
+  top: -8px;
+  right: 22px;
+  z-index: 4;
+  width: 46px;
+  height: 15px;
+  content: "";
+  opacity: .42;
+  pointer-events: none;
+  background: var(--paper-tape);
+  transform: rotate(3deg);
+}
+
+#aside-content .card-widget.card-info .card-content {
+  position: relative;
+  z-index: 3;
+}
+
+#aside-content .card-widget.card-info .sayhi,
+#aside-content .card-widget.card-info .description,
+#aside-content .card-widget.card-info .bottom-group .name,
+#aside-content .card-widget.card-info .bottom-group .desc,
+#body-wrap.post #aside-content .card-widget.card-info .description,
+#body-wrap.post #aside-content .card-widget.card-info .bottom-group .name,
+#body-wrap.post #aside-content .card-widget.card-info .bottom-group .desc {
+  color: var(--paper-ink) !important;
+}
+
+#aside-content .card-widget.card-info .sayhi {
+  background: var(--paper-accent-soft);
+  border: 1px solid var(--paper-line);
+}
+
+#aside-content .card-widget.card-info .sayhi:hover {
+  color: var(--paper-accent-strong) !important;
+  background: var(--paper-accent-soft);
+}
+
+#aside-content .card-widget.card-info .bottom-group .social-icons .social-icon i {
+  color: var(--paper-ink);
+  background: var(--paper-accent-soft);
+  border: 1px solid var(--paper-line);
+}
+
+#aside-content .card-widget.card-info .bottom-group .social-icons .social-icon:hover i {
+  color: var(--paper-accent-strong);
+  background: var(--paper-surface);
+}
+

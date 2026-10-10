@@ -1,0 +1,43 @@
+/* ---------- 移动端（≤768px） ---------- */
+@media screen and (max-width: 768px) {
+  #nav #blog_name,
+  #nav #site-name,
+  #nav #nav-right,
+  #nav #page-name,
+  #sidebar #sidebar-menus,
+  .recent-post-item,
+  #aside-content .card-widget,
+  .article-container,
+  #post .post-copyright,
+  #pagination,
+  .pagination-post,
+  #category-bar,
+  #tag-page-tags,
+  #archive,
+  #category,
+  #tag,
+  .page:not(.page-type-404) .page-content {
+    border-radius: 4px 7px 5px 6px;
+    box-shadow: var(--paper-shadow-soft);
+  }
+
+  .recent-post-item::before,
+  #aside-content .card-widget::before {
+    right: 14px;
+  }
+
+  .article-container {
+    padding: 1.1rem 1rem 1.5rem 1.4rem;
+  }
+
+  .article-container::before {
+    left: 9px;
+  }
+
+  #nav .menus_items {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+}
+

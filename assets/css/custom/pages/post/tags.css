@@ -1,0 +1,47 @@
+/* ---------- 文章底部：文末标签 ---------- */
+#post .post-meta__tags,
+#post .post-meta__tags .tags-punctuation {
+  display: inline-flex;
+  align-items: center;
+  gap: .28rem;
+  white-space: nowrap;
+}
+
+#post .post-meta__tags .tagsPageCount {
+  flex: 0 0 auto;
+  margin-left: .15rem;
+}
+
+#post .post-meta__tags {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#post .post-meta__tags .tags-punctuation {
+  overflow: visible;
+  text-overflow: clip;
+}
+
+/* 主题默认文末标签是胶囊（999px），统一改成纸张小圆角；覆盖层在主题样式之后加载，可可靠压过主题规则。 */
+#post .post-tools-right .tag_share .post-meta__tag-list .post-meta__tags,
+#post .post-tools-right .tag_share .post-meta__tag-list .post-meta__tags .tagsPageCount {
+  border-radius: var(--paper-radius-small);
+}
+
+.relatedPosts-random {
+  border-radius: var(--paper-radius-small);
+}
+
+/* 赞赏按钮与文末标签之间的呼吸感。
+   选择器带 :has() 是有意的 —— 没打标签的文章会渲染出空容器，此时不应占位。 */
+#post .post-tools-right:has(.post-meta__tags) {
+  margin-top: 22px;
+}
+
+@media screen and (max-width: 768px) {
+  #post .post-tools-right:has(.post-meta__tags) {
+    margin-top: 18px;
+  }
+}

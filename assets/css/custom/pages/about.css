@@ -1,0 +1,51 @@
+/* ===== 关于页「充电」按钮的闪电图标 =====
+   主题模板用 ϟ 字形（U+03DF），渲染成细折线，和 anheyu-app-frontend 的实心闪电对不上。
+   这里藏掉字形，用两个三角形拼出实心闪电：几何按 --bolt-b（三角形半宽）等比推导，
+   桌面 10px、移动 7px。 */
+#about-page .reward-action-icon,
+#about-page .reward-mobile-icon {
+  --bolt-b: 7px;
+  --bolt-w: calc(var(--bolt-b) * 2.6);
+  --bolt-h: calc(var(--bolt-b) * 2.69);
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: var(--bolt-w);
+  height: var(--bolt-h);
+  font-size: 0;
+  line-height: 0;
+  transform-origin: calc(var(--bolt-b) * 1.45) calc(var(--bolt-b) * 1.39);
+  transform: rotate(-55deg);
+}
+
+#about-page .reward-action-icon {
+  --bolt-b: 10px;
+}
+
+#about-page .reward-action-icon::before,
+#about-page .reward-action-icon::after,
+#about-page .reward-mobile-icon::before,
+#about-page .reward-mobile-icon::after {
+  position: absolute;
+  box-sizing: content-box;
+  width: 0;
+  height: 0;
+  content: "";
+  border: var(--bolt-b) solid transparent;
+  border-top-color: var(--efu-white);
+  border-radius: calc(var(--bolt-b) * .4);
+}
+
+#about-page .reward-action-icon::before,
+#about-page .reward-mobile-icon::before {
+  top: calc(var(--bolt-b) * .39);
+  left: calc(var(--bolt-b) * .45);
+}
+
+#about-page .reward-action-icon::after,
+#about-page .reward-mobile-icon::after {
+  top: calc(var(--bolt-b) * .09);
+  left: calc(var(--bolt-b) * .35);
+  transform: rotate(180deg);
+}
+

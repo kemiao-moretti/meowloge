@@ -1,0 +1,88 @@
+/* ---------- 主卡片纸张 ---------- */
+/* 定位上下文必须按断点分别声明：≤1200px 时主题把 #card-toc 切换为右下角 position:fixed
+   浮层，若无条件写上 position:relative，目录卡片会被按回文档流，撑开 #aside-content
+   并把布局视口顶到 465px，fixed 导航栏据此居中后左右溢出裁切。 */
+.layout#content-inner {
+  position: relative;
+}
+
+.recent-post-item,
+#aside-content .card-widget,
+.article-container,
+#post .post-copyright,
+#pagination,
+.pagination-post,
+#category-bar,
+#tag-page-tags,
+#archive,
+#category,
+#tag,
+.page:not(.page-type-404) .page-content {
+  border: 1px solid var(--paper-line);
+  border-radius: 4px 9px 6px 8px;
+  background: var(--paper-surface);
+  box-shadow: var(--paper-shadow);
+}
+
+.recent-post-item,
+#aside-content .card-widget {
+  overflow: visible;
+  transition: transform 220ms var(--paper-ease), box-shadow 220ms var(--paper-ease), border-color 220ms ease;
+}
+
+.recent-post-item::before,
+#aside-content .card-widget::before {
+  position: absolute;
+  top: -8px;
+  right: 22px;
+  width: 46px;
+  height: 15px;
+  content: "";
+  opacity: .42;
+  background: var(--paper-tape);
+  transform: rotate(3deg);
+}
+
+.recent-post-item:nth-child(3n + 2) {
+  border-radius: 8px 5px 9px 4px;
+}
+
+.recent-post-item:hover,
+#aside-content .card-widget:hover {
+  border-color: color-mix(in srgb, var(--paper-accent) 55%, var(--paper-line));
+  box-shadow: var(--paper-shadow-hover);
+  transform: translateY(-3px) rotate(-.15deg);
+}
+
+.recent-post-item .post_cover img.post_bg {
+  border-radius: 3px 7px 4px 6px;
+}
+
+@media screen and (min-width: 1201px) {
+  .recent-post-item,
+  #aside-content .card-widget {
+    position: relative;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .recent-post-item,
+  #aside-content .card-widget:not(#card-toc) {
+    position: relative;
+  }
+
+  /* 目录卡片此时是浮层，不挂胶带装饰，且靠 scale 显隐，不能被 hover 抬升改写。 */
+  #aside-content #card-toc::before {
+    display: none;
+  }
+
+  #aside-content #card-toc:hover {
+    transform: scale(0);
+  }
+
+  #aside-content #card-toc.open,
+  #aside-content #card-toc.open:hover {
+    transform: scale(1);
+  }
+}
+

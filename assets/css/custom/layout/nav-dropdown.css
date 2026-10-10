@@ -1,0 +1,56 @@
+/* ---------- 下拉 / 返回首页菜单 ---------- */
+#nav .menus_items .menus_item .menus_item_child,
+#nav .back-home-button .back-menu-list-groups {
+  border: 1px solid var(--paper-line);
+  border-radius: var(--paper-radius-small);
+  background: var(--paper-surface);
+  box-shadow: var(--paper-shadow);
+}
+
+/* 下拉菜单贴近导航项，避免选中展开时整体向下溢出导航容器。 */
+#nav .menus_items .menus_item .menus_item_child {
+  top: 31px;
+  margin-top: 4px;
+  padding: 5px 3px;
+}
+
+#nav .menus_items .menus_item .menus_item_child li a {
+  padding: .25rem .75rem;
+}
+
+/* 返回首页菜单和导航子菜单统一使用矩形纸张卡片，不使用胶囊圆角。 */
+#nav .back-home-button,
+#nav .back-home-button .back-menu-list-groups,
+#nav .back-home-button .back-menu-list .back-menu-item,
+#nav .menus_items .menus_item .menus_item_child,
+#nav .menus_items .menus_item .menus_item_child li,
+#nav .menus_items .menus_item .menus_item_child li a {
+  border-radius: var(--paper-radius-small);
+}
+
+#nav .back-home-button {
+  border: 1px solid var(--paper-line);
+  background: var(--paper-surface);
+  color: var(--paper-ink);
+  box-shadow: var(--paper-shadow-soft);
+}
+
+#nav .back-home-button:hover,
+#nav .back-home-button:focus-within {
+  background: var(--paper-accent-soft);
+  color: var(--paper-accent-strong);
+}
+
+#nav .back-home-button .back-menu-list-groups {
+  background: var(--paper-surface);
+  color: var(--paper-ink);
+}
+
+#nav .back-home-button .back-menu-list .back-menu-item:hover,
+#nav .menus_items .menus_item .menus_item_child li a:hover,
+#nav .menus_items .menus_item .menus_item_child a:hover {
+  background: var(--paper-accent-soft);
+  color: var(--paper-accent-strong);
+  box-shadow: none;
+}
+

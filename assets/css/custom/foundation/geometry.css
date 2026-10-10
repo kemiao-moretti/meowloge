@@ -1,0 +1,15 @@
+/* 各处组件的纸张小圆角（矩形风格统一） */
+#page .category-lists .tag-cloud-list a,
+#page .category-lists .tag-cloud-list a span.tagsPageCount,
+#sidebar #sidebar-menus .menus_items .menus_item_child .site-page.child,
+#sidebar #sidebar-menus .back-menu-list-groups .back-menu-list .back-menu-item,
+.post #post-info #post-meta .meta-secondline > span:not(.post-meta-separator),
+.post #post-info #post-meta .meta-secondline > a.post-meta-pv,
+.post #post-info #post-firstinfo .meta-firstline .post-meta-original,
+.post #post-info #post-firstinfo .meta-firstline span.post-meta-categories,
+.post #post-info #post-firstinfo .meta-firstline .tag_share .post-meta__tag-list .post-meta__tags,
+.ai-news-retry,
+.ai-news-day-count {
+  border-radius: var(--paper-radius-small);
+}
+

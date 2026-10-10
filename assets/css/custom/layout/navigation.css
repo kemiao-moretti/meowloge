@@ -1,0 +1,123 @@
+/* ---------- 导航纸张卡片 ---------- */
+#nav #blog_name,
+#nav #nav-right,
+#nav #page-name {
+  border: 0;
+  background: var(--paper-surface);
+  box-shadow: var(--paper-shadow-soft);
+}
+
+/* 导航右侧是方形图标组，容器和按钮统一使用纸张小圆角，避免胶囊与图标形状冲突。 */
+#page-header #nav #nav-right,
+#page-header.nav-fixed #nav #nav-right,
+#page-header.nav-fixed #nav #page-name {
+  border: 1px solid var(--paper-line);
+  border-radius: var(--paper-radius-small);
+  background: var(--paper-surface);
+  box-shadow: var(--paper-shadow-soft);
+}
+
+#page-header.nav-fixed #nav #nav-right::before,
+#page-header.nav-fixed #nav #page-name::before {
+  opacity: 0;
+}
+
+#page-header.nav-fixed #nav #page-name-text {
+  color: var(--paper-ink);
+}
+
+#page-header #nav #nav-right .nav-button > a,
+#page-header #nav #toggle-menu > a,
+#page-header.nav-fixed #nav #page-name-text,
+#nav #blog_name,
+#nav #site-name,
+#page-header.nav-fixed #nav #page-name {
+  border-radius: var(--paper-radius-small);
+}
+
+/* 站点名胶带装饰 */
+#nav #blog_name::after {
+  position: absolute;
+  top: -7px;
+  left: 18%;
+  width: 58px;
+  height: 18px;
+  content: "";
+  opacity: .52;
+  background: var(--paper-tape);
+  transform: rotate(-3deg);
+}
+
+/* 导航菜单胶囊 + 各项基础态 */
+#nav .menus_items {
+  gap: 4px;
+  padding: 5px 7px;
+  border: 1px solid var(--paper-line);
+  border-radius: var(--paper-radius-small);
+  background: color-mix(in srgb, var(--paper-surface) 92%, transparent);
+  box-shadow: var(--paper-shadow-soft);
+  backdrop-filter: blur(10px);
+}
+
+#nav .menus_items .menus_item > .site-page,
+#nav #nav-right .nav-button > a,
+#nav #toggle-menu > a {
+  min-height: 40px;
+  border-radius: var(--paper-radius-small);
+  color: var(--paper-ink);
+}
+
+/* 当前项：强调底 + 下划线条（选中态规则须排在 hover 后，见下方 hover 组） */
+#nav .menus_items .menus_item > .site-page:is(.active, [aria-current="page"], [aria-current="true"]) {
+  border-radius: var(--paper-radius-small);
+  color: var(--paper-accent-strong);
+  background: var(--paper-accent-soft);
+  box-shadow: inset 0 -2px 0 var(--paper-accent);
+}
+
+#nav .menus_items .menus_item > .site-page:focus-visible,
+#nav .menus_items .menus_item:hover > .site-page,
+#nav #nav-right .nav-button > a:hover,
+#nav #toggle-menu > a:hover {
+  color: var(--paper-accent-strong);
+  background: var(--paper-accent-soft);
+  box-shadow: none;
+}
+
+/* 中控台按钮：浅色默认与普通按钮同色、打开后强调；深色打开后纸张浅底。
+   主题层内对文章页导航有带 !important 的文字色强规则，此处必须用 !important 对抗。 */
+html[data-theme="light"] #page-header:not(.console-open) #nav #nav-right #nav-console a.console_switchbutton:not(.console-open),
+html[data-theme="light"] #page-header:not(.console-open) #nav #nav-right #nav-console a.console_switchbutton:not(.console-open):is(:hover, :focus-visible) {
+  color: var(--paper-ink) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open,
+html[data-theme="light"] #page-header.console-open #nav #nav-right #nav-console a.console_switchbutton,
+html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton:is(:hover, :focus-visible),
+html[data-theme="light"] #page-header.console-open #nav #nav-right #nav-console a.console_switchbutton:is(:hover, :focus-visible) {
+  color: var(--paper-accent-strong) !important;
+  background: var(--paper-accent-soft) !important;
+  border-color: var(--paper-accent) !important;
+}
+
+html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton,
+html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton:is(:hover, :focus-visible) {
+  color: var(--paper-ink) !important;
+}
+
+html[data-theme="dark"] #page-header.console-open #nav #nav-right #nav-console a.console_switchbutton,
+html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open {
+  background: var(--paper-surface) !important;
+  border-color: var(--paper-line) !important;
+}
+
+/* 图标跟随文字色 */
+html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton label i,
+html[data-theme="light"] #page-header #nav #nav-right #nav-console a.console_switchbutton:is(:hover, :focus-visible) label i,
+html[data-theme="dark"] #page-header.console-open #nav #nav-right #nav-console a.console_switchbutton label i,
+html[data-theme="dark"] #page-header #nav #nav-right #nav-console a.console_switchbutton.console-open label i {
+  background: currentColor !important;
+}
+

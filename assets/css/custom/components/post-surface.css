@@ -1,0 +1,74 @@
+/* ---------- 正文容器（纸面） ---------- */
+.article-container {
+  position: relative;
+  padding: clamp(1.2rem, 3vw, 3rem);
+  background-image: repeating-linear-gradient(0deg, transparent 0 31px, var(--paper-rule) 32px, transparent 33px);
+}
+
+/* 侧边竖线（行格） */
+.article-container::before {
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  left: 20px;
+  width: 1px;
+  content: "";
+  background: color-mix(in srgb, var(--paper-accent) 22%, transparent);
+}
+
+.article-container h1,
+.article-container h2,
+.article-container h3,
+.article-container h4 {
+  color: var(--paper-ink);
+}
+
+.article-container h2,
+.article-container h3 {
+  position: relative;
+  padding-left: 15px;
+}
+
+.article-container h2::before,
+.article-container h3::before {
+  position: absolute;
+  top: .35em;
+  left: 0;
+  width: 5px;
+  height: 1.1em;
+  content: "";
+  border-radius: 2px;
+  background: var(--paper-accent);
+  transform: rotate(3deg);
+}
+
+.article-container a,
+#post .post-meta__tags a,
+#pagination a:hover,
+#aside-content a:hover {
+  color: var(--paper-accent-strong);
+}
+
+blockquote {
+  border-left: 3px solid var(--paper-accent);
+  border-radius: 0 var(--paper-radius-small) var(--paper-radius-small) 0;
+  background: var(--paper-accent-soft);
+}
+
+figure.highlight,
+.code-block,
+pre {
+  border: 1px solid var(--paper-line);
+  border-radius: var(--paper-radius-small);
+  background: var(--paper-surface-alt);
+  box-shadow: var(--paper-shadow-soft);
+}
+
+.cl-entry-md :not(pre) > code {
+  border: 1px solid var(--paper-line);
+  border-radius: 3px;
+  background: var(--paper-accent-soft);
+  color: var(--paper-accent-strong);
+  box-shadow: none;
+}
+

@@ -1,0 +1,79 @@
+/* ---------- 主题变量兼容层 ---------- */
+:root,
+[data-theme="light"],
+[data-theme="dark"] {
+  --efu-theme: var(--paper-accent);
+  --efu-theme-op: color-mix(in srgb, var(--paper-accent) 16%, transparent);
+  --efu-theme-op-deep: color-mix(in srgb, var(--paper-accent) 84%, transparent);
+  --efu-theme-op-light: color-mix(in srgb, var(--paper-accent) 7%, transparent);
+  --efu-theme-none: transparent;
+  --efu-main: var(--paper-accent);
+  --efu-main-op: var(--efu-theme-op);
+  --efu-fontcolor: var(--paper-ink);
+  --efu-secondtext: var(--paper-muted);
+  --efu-card-bg: var(--paper-surface);
+  --efu-card-bg-none: transparent;
+  --efu-card-btn-bg: var(--paper-surface-alt);
+  --efu-secondbg: var(--paper-surface-alt);
+  --efu-secondbg-bg: var(--paper-bg);
+  --efu-background: var(--paper-bg);
+  --efu-ahoverbg: var(--paper-accent-soft);
+  --efu-hovertext: var(--paper-accent-strong);
+  --efu-lighttext: var(--paper-accent);
+  --efu-accent-ink: var(--paper-accent-ink);
+  --efu-card-border: var(--paper-line);
+  --style-border: 1px solid var(--paper-line);
+  --style-border-always: 1px solid var(--paper-line);
+  --style-border-hover: 1px solid var(--paper-accent);
+  --style-border-hover-always: 1px solid var(--paper-accent);
+  --style-border-dashed: 1px dashed var(--paper-dash);
+  --style-border-forever: 2px solid var(--paper-accent);
+  --card-box-shadow: var(--paper-shadow);
+  --card-hover-box-shadow: var(--paper-shadow-hover);
+  --efu-shadow-main: 0 8px 18px color-mix(in srgb, var(--paper-accent) 22%, transparent);
+  --efu-shadow-black: var(--paper-shadow-soft);
+  --efu-shadow-blackdeep: var(--paper-shadow);
+  --efu-shadow-lightblack: var(--paper-shadow-soft);
+  --efu-shadow-light2black: 0 2px 8px color-mix(in srgb, var(--paper-ink) 8%, transparent);
+  --efu-shadow-nav: var(--paper-shadow-soft);
+  --efu-shadow-border: var(--paper-shadow-soft);
+  --efu-hl-bg: var(--paper-surface-alt);
+  --efu-hltools-bg: var(--paper-line);
+  --efu-post-blockquote-bg: color-mix(in srgb, var(--paper-accent) 9%, var(--paper-surface));
+  --efu-post-tabs-bg: var(--paper-surface-alt);
+  --radius: var(--paper-radius);
+  --efu-radius-sm: var(--paper-radius-small);
+  --efu-radius-md: var(--paper-radius);
+  --efu-radius-lg: 12px;
+  --efu-focus-ring: 0 0 0 3px color-mix(in srgb, var(--paper-accent) 28%, transparent);
+  --efu-font-family: var(--paper-font);
+  --efu-code-font-family: var(--paper-mono);
+
+  /* 兼容主题特殊页面的纸张几何令牌 */
+  --paper-border-width: 1px;
+  --paper-shadow-offset: 0px;
+  --paper-radius-sm: 5px;
+  --paper-radius-lg: 12px;
+  --paper-code-shadow: var(--paper-shadow-soft);
+  --paper-code-surface: var(--paper-surface-alt);
+  --paper-nav-active-surface: var(--paper-accent-soft);
+  --paper-nav-border: var(--paper-line);
+  --paper-nav-surface: var(--paper-surface);
+  --paper-nav-hover-surface: var(--paper-accent-soft);
+  /* 该令牌在主题里全部用于「实心强调底（--efu-theme）上的文字」，
+     必须取深墨绿 accent-ink；若取 accent-strong，深色下它比 accent 更亮，会糊成一片。 */
+  --paper-nav-active-text: var(--paper-accent-ink);
+  --efu-code-inline-bg: var(--paper-accent-soft);
+  --efu-code-inline-bar: var(--paper-accent);
+  --efu-code-inline-bar-width: 2px;
+  --right-menu-accent: var(--paper-accent);
+  --right-menu-surface: var(--paper-surface);
+  --right-menu-foreground: var(--paper-ink);
+  --right-menu-border: var(--paper-line);
+  --right-menu-accent-ink: var(--paper-accent-ink);
+  --comment-switch-surface: var(--paper-surface-alt);
+  --comment-switch-first: var(--paper-accent-strong);
+  --comment-switch-second: var(--paper-accent-strong);
+  --comment-switch-knob: var(--paper-surface);
+}
+

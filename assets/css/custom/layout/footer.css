@@ -1,0 +1,20 @@
+/* ---------- 页脚 ---------- */
+#footer {
+  position: relative;
+  margin-top: 3rem;
+  border-top: 1px dashed var(--paper-dash);
+  background: transparent;
+}
+
+#footer::before {
+  position: absolute;
+  top: -8px;
+  left: 42%;
+  width: 72px;
+  height: 15px;
+  content: "";
+  opacity: .36;
+  background: var(--paper-tape);
+  transform: rotate(-2deg);
+}
+

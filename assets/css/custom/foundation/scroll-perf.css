@@ -1,0 +1,43 @@
+/* ---------- 滚动性能优化：滚动中降级毛玻璃 ---------- */
+/* backdrop-filter 施加在固定定位元素上时，滚动过程中会对背后不断变化的内容做
+   每帧重采样（blur），这是滚动掉帧的主因。滚动中（body.is-scrolling）关闭毛玻璃，
+   用半透明背景兜底保持观感；滚动停止 150ms 后恢复。静止状态效果不受影响。 */
+body.is-scrolling #page-header.nav-fixed #nav #blog_name,
+body.is-scrolling #page-header.nav-fixed #nav #nav-right,
+body.is-scrolling #page-header.nav-fixed #nav .menus_items,
+body.is-scrolling #page-header.nav-fixed #nav #page-name,
+body.is-scrolling #page-header.not-top-img #nav,
+body.is-scrolling #nav .menus_items,
+body.is-scrolling #nav-music,
+body.is-scrolling #nav-music .aplayer,
+body.is-scrolling .home-center-mask,
+body.is-scrolling #rightside .rs_show,
+body.is-scrolling #rightside .rs_hide {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+body.is-scrolling #page-header.nav-fixed #nav #blog_name,
+body.is-scrolling #page-header.nav-fixed #nav #nav-right,
+body.is-scrolling #page-header.nav-fixed #nav .menus_items,
+body.is-scrolling #page-header.nav-fixed #nav #page-name,
+body.is-scrolling #nav .menus_items,
+body.is-scrolling #nav-music,
+body.is-scrolling #nav-music .aplayer,
+body.is-scrolling #rightside .rs_show,
+body.is-scrolling #rightside .rs_hide {
+  background: color-mix(in srgb, var(--efu-card-bg) 88%, transparent);
+}
+
+/* 音乐页满屏背景毛玻璃由 blur(200px) 降为 blur(24px)：200px 对 200%×200% 固定层
+   做极端模糊是全站最重单层绘制 */
+#Music-bg::before {
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+}
+
+/* 播放态胶囊 box-shadow 动画在滚动中暂停，避免每帧重绘；并尊重系统减弱动画偏好 */
+body.is-scrolling #nav-music.playing {
+  animation-play-state: paused;
+}
+

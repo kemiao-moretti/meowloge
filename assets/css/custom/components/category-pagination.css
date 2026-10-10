@@ -1,0 +1,101 @@
+/* ---------- 分类栏 / 分页选中态 ---------- */
+#category-bar,
+#tag-page-tags {
+  box-shadow: var(--paper-shadow-soft);
+}
+
+/* 分类栏容器在所有断点都只当排布层：纸面 + 边框 + 阴影会横贯整屏，成为突兀长条。
+   限定 .home-category-bar 后代：#category #category-bar 那套 sticky 变体依赖实底遮挡滚动内容，
+   裸写 #category-bar 会因 unlayered 优先级压过它（哪怕对方特异性更高）。 */
+.home-category-bar > #category-bar {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+#category-bar .category-bar-item.select,
+#category-bar .category-bar-item:hover,
+#pagination .page-number.current,
+#pagination .extend:hover {
+  border-radius: 3px 6px 4px 5px;
+  background: var(--paper-accent-soft);
+  color: var(--paper-accent-strong);
+  box-shadow: none;
+}
+
+#console .console-card,
+#search-dialog .search-dialog,
+.search-dialog .search-dialog__body,
+#sidebar #sidebar-menus {
+  border: 1px solid var(--paper-line);
+  border-radius: var(--paper-radius);
+  background: var(--paper-surface);
+  box-shadow: var(--paper-shadow);
+}
+
+/* 手机端展开侧栏与返回菜单共用同一张纸：不透明纸面 + 纸边 + 纸影，
+   取代主题默认的半透明黑纱 + 毛玻璃（深色下会糊成一整片死黑）。 */
+#sidebar #sidebar-menus {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* 抽屉内的小块改用浅一档纸面，否则与侧栏同色后失去层次。 */
+#sidebar #sidebar-menus .site-data,
+#sidebar #sidebar-menus .card-tag-cloud a,
+#sidebar #sidebar-menus .sidebar-menu-item span.menu-child,
+#sidebar #sidebar-menus .menus_items .menus_item_child .site-page.child,
+#sidebar #sidebar-menus .back-menu-list-groups .back-menu-list .back-menu-item {
+  background: var(--paper-surface-alt);
+}
+
+#sidebar #sidebar-menus .menus_items li .site-page:hover,
+#sidebar #sidebar-menus .card-tag-cloud a:hover {
+  background: var(--paper-accent-soft);
+  color: var(--paper-accent-strong);
+  box-shadow: none;
+}
+
+/* 显示模式按钮在深色下是主题遗留的硬编码橙底，改回纸张强调色；
+   hover 的白字在浅绿上不可读，且触屏点按会粘住，一并换掉。 */
+#sidebar #sidebar-menus .sidebar-menu-item span.darkmode_switchbutton:hover {
+  background: var(--paper-accent);
+  color: var(--paper-accent-ink);
+}
+
+[data-theme="dark"] #sidebar #sidebar-menus .sidebar-menu-item span.darkmode_switchbutton {
+  background: var(--paper-accent-soft);
+  color: var(--paper-accent-strong);
+}
+
+/* 分页链接色彩 */
+#post #pagination .pagination-info,
+#post #pagination .prev_info,
+#post #pagination .next_info {
+  color: var(--paper-ink);
+}
+
+#post #pagination {
+  border-color: var(--paper-line);
+  background: var(--paper-surface);
+  box-shadow: var(--paper-shadow-soft);
+}
+
+#post #pagination .prev-post,
+#post #pagination .next-post,
+#post #pagination .prev-post a,
+#post #pagination .next-post a {
+  background: var(--paper-surface);
+}
+
+#post #pagination .prev-post a:hover,
+#post #pagination .next-post a:hover {
+  background: var(--paper-accent-soft);
+}
+
+#post #pagination .prev-post a:hover div,
+#post #pagination .next-post a:hover div {
+  color: var(--paper-accent-strong);
+}
+

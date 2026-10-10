@@ -1,0 +1,25 @@
+/* ---------- 焦点可见性 ---------- */
+button,
+a,
+input,
+textarea,
+select {
+  outline-color: var(--paper-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--paper-accent);
+  outline-offset: 3px;
+  box-shadow: var(--efu-focus-ring);
+}
+
+@media screen and (max-width: 1200px) {
+  #nav .menus_items {
+    box-shadow: none;
+  }
+
+  .article-container::before {
+    left: 12px;
+  }
+}
+

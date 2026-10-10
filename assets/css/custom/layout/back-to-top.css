@@ -1,0 +1,110 @@
+/* ---------- 返回顶部按钮（可伸缩） ---------- */
+/* 按钮嵌在 #nav-right 的 1px 框内（空隙仅 3px），自身再画一层 1px 圆角框
+   会与容器弧线在四角交叠咬合出“缺口”。边框透明占位保尺寸、去阴影，
+   框只留容器一层；hover/focus 态的可见边框由下方 :hover 规则恢复。
+   .long/.nav-at-top 宽度博弈规则较多，保持声明先后顺序不可打乱。 */
+#page-header #nav #nav-right #nav-totop a.totopbtn {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: var(--paper-radius-small);
+  background: var(--paper-surface);
+  color: var(--paper-ink);
+  box-shadow: none;
+}
+
+#page-header #nav #nav-right #nav-totop a.totopbtn span {
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+  /* 行盒必须给微软雅黑 12px 布局盒（正好 16px）留余量，否则 DPI 取整会削掉文字上下笔画 */
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#page-header #nav #nav-right #nav-totop a.totopbtn i {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  color: inherit;
+}
+
+#page-header #nav #nav-right #nav-totop:hover a.totopbtn i {
+  opacity: 1;
+}
+
+#page-header #nav #nav-right #nav-totop:hover a.totopbtn span {
+  opacity: 0;
+}
+
+#page-header #nav #nav-right > .nav-button {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+#page-header #nav #nav-right #nav-totop {
+  flex: 0 1 auto;
+  width: 35px;
+  min-width: 35px;
+  height: 35px;
+  margin-left: 0;
+  overflow: visible;
+  transform: none;
+  opacity: 0;
+}
+
+#page-header #nav #nav-right #nav-totop.long {
+  width: clamp(35px, 20vw, 80px);
+}
+
+#page-header:not(.nav-at-top) #nav #nav-right #nav-totop {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#page-header.nav-at-top #nav #nav-right #nav-totop {
+  width: 0;
+  min-width: 0;
+  margin: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+#page-header #nav #nav-right #nav-totop:hover a.totopbtn,
+#page-header #nav #nav-right #nav-totop a.totopbtn:focus-visible {
+  background: var(--paper-accent-soft);
+  border-color: var(--paper-accent);
+  color: var(--paper-accent-strong);
+  box-shadow: var(--paper-shadow-hover);
+}
+
+@media screen and (max-width: 767px) {
+  #page-header #nav #nav-right #nav-totop {
+    width: 35px;
+    min-width: 35px;
+  }
+
+  #page-header #nav #nav-right #nav-totop.long {
+    /* 整数宽度：clamp(55px,18vw,80px) 在常见视口下产生 70.1875 这类分数宽度，
+       1px 边框 + 5px 圆角在分数坐标上抗锯齿发毛，四角看着像被咬掉 */
+    width: 70px;
+  }
+
+  /* .long 宽度规则权重高于 nav-at-top 折叠，说说等异步短页切页瞬间被误加 long
+     时会出现隐形占位，这里在媒体块内后置同权重折叠压回去。 */
+  #page-header.nav-at-top #nav #nav-right #nav-totop.long {
+    width: 0;
+    min-width: 0;
+  }
+}
+

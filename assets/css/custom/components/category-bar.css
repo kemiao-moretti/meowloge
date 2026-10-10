@@ -1,0 +1,26 @@
+/* 首页分类栏及标签导航使用矩形项目，不保留主题默认胶囊形。 */
+.home-category-bar .category-bar-item a,
+.home-category-bar .category-bar-more,
+.home-category-bar .category-bar-next,
+#tag #tag-page-tags,
+#tag #tag-page-tags a {
+  border-radius: var(--paper-radius-small);
+}
+
+.home-category-bar .category-bar-item.select a,
+.home-category-bar .category-bar-item a:hover,
+.home-category-bar .category-bar-more:hover,
+.home-category-bar .category-bar-next:hover,
+#tag #tag-page-tags a.select,
+#tag #tag-page-tags a:hover {
+  color: var(--paper-accent-ink);
+  box-shadow: var(--paper-shadow-soft);
+}
+
+/* 移动端标签按从左到右排列，避免 flex 居中造成右侧空白。 */
+@media screen and (max-width: 768px) {
+  #page .category-lists .tag-cloud-list {
+    justify-content: flex-start;
+  }
+}
+

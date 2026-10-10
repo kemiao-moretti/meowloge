@@ -1,0 +1,28 @@
+/* ---------- 基础 ---------- */
+/* 背景为单一纯色（无固定渐变层、无 blend），保证毛玻璃背后画面稳定、不掉帧；
+   纸张质感由正文容器 .article-container 承担。 */
+html,
+body {
+  background-color: var(--paper-bg);
+  color: var(--paper-ink);
+  font-family: var(--paper-font);
+}
+
+::selection {
+  color: var(--paper-ink);
+  background: var(--paper-accent-soft);
+}
+
+#page-header {
+  background: transparent;
+}
+
+#nav {
+  min-height: 64px;
+}
+
+#nav::before,
+#nav::after {
+  opacity: 0;
+}
+

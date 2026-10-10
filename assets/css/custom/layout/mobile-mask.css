@@ -1,0 +1,44 @@
+/* ---------- 移动端遮罩联动（≤1024px） ---------- */
+@media screen and (max-width: 1024px) {
+  #nav #blog_name::after {
+    display: none;
+  }
+
+  /* 导航音乐 dock 在遮罩层级下隐藏，避免叠在最上层 */
+  html:has(#sidebar-menus.open) #nav-music,
+  html:has(#nav-group-panel.open) #nav-music,
+  html:has(#card-toc.open) #nav-music,
+  html:has(#console.show) #nav-music,
+  html.search-open #nav-music {
+    z-index: var(--toc-layer-under-drawer);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* 移动端紧凑导航抽屉：本文件位于主题样式后，确保打开态不被层叠层级压回隐藏。 */
+  #nav-group-panel {
+    display: flex;
+  }
+
+  #nav-group-panel.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+  }
+
+  #nav-group-mask.show {
+    display: block;
+  }
+
+  /* 手机端沿用原主题的按钮布局，仅移除 nav 整体背景遮罩与横向底栏。 */
+  #page-header #nav,
+  #page-header:not(.nav-fixed) #nav,
+  #page-header.not-top-img #nav {
+    background: transparent;
+    border-bottom: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+

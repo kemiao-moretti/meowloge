@@ -1,0 +1,35 @@
+/* ---------- 音乐播放器 ---------- */
+/* 播放器与站点名使用同一张纸，避免深色模式下仍显示原主题的玻璃渐变。 */
+#nav-music,
+#nav-music .aplayer,
+#nav-music .aplayer .aplayer-body,
+#nav-music .music-capsule-hitarea,
+#nav-music #nav-music-hoverTips {
+  border-radius: var(--paper-radius-small);
+}
+
+#nav-music,
+#nav-music .aplayer {
+  color: var(--paper-ink);
+  background: var(--paper-surface);
+  border-color: var(--paper-line);
+  box-shadow: var(--paper-shadow-soft);
+}
+
+#nav-music #nav-music-hoverTips {
+  color: var(--paper-accent-ink);
+  background: var(--paper-accent-soft);
+}
+
+#nav-music #nav-music-hoverTips .music-control-btn,
+#nav-music .music-capsule-hitarea {
+  color: var(--paper-ink);
+}
+
+#nav-music .music-progress-tooltip {
+  color: var(--paper-ink);
+  background: var(--paper-surface);
+  border-color: var(--paper-line);
+  border-radius: var(--paper-radius-small);
+}
+

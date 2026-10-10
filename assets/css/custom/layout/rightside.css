@@ -1,0 +1,17 @@
+/* ---------- 右侧浮动按钮 ---------- */
+#rightside > div,
+#rightside a,
+#rightside button {
+  border-radius: 4px 7px 5px 6px;
+  background: var(--paper-surface);
+  color: var(--paper-ink);
+  box-shadow: var(--paper-shadow-soft);
+}
+
+#rightside a:hover,
+#rightside button:hover {
+  color: var(--paper-accent-strong);
+  background: var(--paper-accent-soft);
+  transform: translateY(-2px);
+}
+

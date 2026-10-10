@@ -208,12 +208,27 @@ params:
       code_font_family: "ui-monospace, SFMono-Regular, Menlo, monospace"
       webfont_css: ""
 
+    # --- Cookie 同意（隐私弹窗） ---
+    # 契约唯一来源：弹窗逻辑（themes/solitude/assets/ts/core/consent.ts）与 <head> 的拦截引导脚本
+    # （themes/solitude/layouts/_partials/consent-bootstrap.html）都从这里取值，不要在别处硬编码。
+    cookie_consent:
+      cookie: solitude_cookie_consent # 保存同意结果的 Cookie 名
+      version: v2 # 当前契约版本；拦截范围变化时递增，老访客会被重新询问一次
+      max_age: 31536000 # 有效期（秒），默认一年
+      # 参与「拒绝非必要」拦截的分类
+      #   analytics → 统计脚本（extends.head 里打了 data-consent 标记的惰性脚本）
+      #   optional  → 访客 IP 定位卡等非必要功能请求
+      categories: [analytics, optional]
+
     # 注入到 <head> 的自定义 HTML/CSS（不改主题文件，随站点配置生效）
     extends:
       head:
         - "<style>.card-info .description{display:block}.card-info .description kbd{display:inline-block;padding:0 6px;margin:0 2px;border-radius:4px;border:1px solid currentColor;box-shadow:0 2px 0 rgba(0,0,0,.15);font-size:12px;line-height:1.5;vertical-align:middle}</style>"
-        # Umami 站点统计
-        - '<script defer src="https://um.081531.xyz/script.js" data-website-id="668e3622-d145-4b4b-a52f-8b41ae8357a8"></script>'
+        # Umami 站点统计：写成惰性脚本（type="text/plain"），浏览器既不执行也不发请求。
+        # 访客在 Cookie 弹窗里选择「接受全部」后，由 <head> 的 consent-bootstrap.html
+        # 把它复活成真实 <script>；选择「拒绝非必要」则节点永远不会被创建，
+        # 统计请求根本不会发出 —— 这是「拒绝」功能成立的唯一前提。
+        - '<script type="text/plain" data-consent="analytics" data-consent-src="https://um.081531.xyz/script.js" data-consent-attr-data-website-id="668e3622-d145-4b4b-a52f-8b41ae8357a8"></script>'
         # 文章卡片「未读/已读」：用 localStorage 记录已读文章，替代浏览器原生的 :visited
         # （原实现依赖访问历史，清历史/换设备/隐身模式都会重置；这里点击或进入文章即标记，
         #   同一浏览器下稳定生效）。已读的卡片不再显示「未读」标记。
